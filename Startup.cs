@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using DDAC_Assignment.Data;
 
 namespace DDAC_Assignment
 {
@@ -26,6 +28,9 @@ namespace DDAC_Assignment
             services.AddControllersWithViews();
             //services.AddDbContext<>()
             services.AddRazorPages();
+
+            services.AddDbContext<DDAC_AssignmentNewsDatabase>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("DDAC_AssignmentNewsDatabase")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DDAC_Assignment.Migrations
 {
     [DbContext(typeof(DDAC_AssignmentContext))]
-    [Migration("20220405141128_CreateIdentitySchema")]
+    [Migration("20220405142613_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
