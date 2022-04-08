@@ -10,12 +10,13 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data"
+              asp-controller="ManageNews">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ID" />
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" style="width:600px;"/>
+                <input asp-for="Title" class="form-control" style="width:600px;" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -41,28 +42,44 @@
                     <option value="None">--Select--</option>
                     @foreach (var item in ViewBag.Category)
                     {
-                        <option value="@item.CategoryName">@item.CategoryName</option>
+                        @if (@item.ParentCategory != "None")
+                        {
+                            <option value="@item.CategoryName">@item.CategoryName - @item.ParentCategory</option>
+                        }
+                        else
+                        {
+                            <option value="@item.CategoryName">@item.CategoryName</option>
+                        }
                     }
 
                 </select>
                 <span asp-validation-for="Category" class="text-danger"></span>
             </div>
+            <!--<div class="form-group">
+        <label asp-for="ParentCategory" class="control-label"></label>
+        <input asp-for="ParentCategory" class="form-control" />
+        <span asp-validation-for="ParentCategory" class="text-danger"></span>
+    </div>-->
             <div class="form-group">
-                <label asp-for="ParentCategory" class="control-label"></label>
-                <input asp-for="ParentCategory" class="form-control" />
-                <span asp-validation-for="ParentCategory" class="text-danger"></span>
+                <input hidden asp-for="Status" class="form-control" />
+                <input hidden asp-for="ImagePath" class="form-control" />
+            </div>
+            <div class="form-group">
+                <p>Upload image:</p>
+                <input type="file" name="image" />
+               
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

@@ -24,5 +24,7 @@ namespace DDAC_Assignment.Models
 
         public string Status { get; set; }
 
+        [Display(Name = "Image Path")]
+        public string ImagePath { get; set; }
     }
 }

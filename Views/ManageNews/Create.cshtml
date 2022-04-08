@@ -10,7 +10,8 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form method="post" enctype="multipart/form-data"
+                  asp-controller="ManageNews" asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
@@ -25,7 +26,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Actor" class="control-label"></label>
-                <input asp-for="Actor" class="form-control" />
+                <input asp-for="Actor" class="form-control"/>
                 <span asp-validation-for="Actor" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -36,21 +37,27 @@
             <div class="form-group">
                 <label asp-for="Category" class="control-label"></label>
                 <!--<input asp-for="Category" class="form-control" />-->
-                <select asp-for="Category" class="form-control" onchange="CategoryOnChanged()">
+                <select asp-for="Category" class="form-control">
                     <option value="None">--Select--</option>
                     @foreach (var item in ViewBag.Category)
                     {
-                        <option value="@item.CategoryName">@item.CategoryName</option>
+                        @if (@item.ParentCategory != "None")
+                        {
+                            <option value="@item.CategoryName">@item.CategoryName - @item.ParentCategory</option>
+                        }
+                        else
+                        {
+                            <option value="@item.CategoryName">@item.CategoryName</option>
+                        }
                     }
 
                 </select>
                 <span asp-validation-for="Category" class="text-danger"></span>
             </div>
-            <!--<div class="form-group">
-        <label asp-for="ParentCategory" class="control-label"></label>
-        <input asp-for="ParentCategory" class="form-control" disabled/>
-        <span asp-validation-for="ParentCategory" class="text-danger"></span>
-    </div>-->
+            <div class="form-group">
+                <p>Upload image:</p>
+                <input type="file" name="image" accept="image/*"/>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
