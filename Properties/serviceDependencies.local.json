@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "type": "mssql.local",
+      "connectionId": "ConnectionStrings:DDAC_AssignmentContextConnection"
+    },
+    "mssql2": {
+      "type": "mssql.local",
+      "connectionId": "DDAC_AssignmentNewsDatabase"
+    }
+  }
+}

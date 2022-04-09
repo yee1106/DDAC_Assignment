@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:DDAC_AssignmentContextConnection"
+    },
+    "mssql2": {
+      "type": "mssql",
+      "connectionId": "DDAC_AssignmentNewsDatabase"
+    }
+  }
+}
