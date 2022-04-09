@@ -308,7 +308,7 @@ namespace DDAC_Assignment.Controllers
                     }
 
                     //file upload
-                    if (image != null)
+                    /*if (image != null)
                     {
                         long size = image.Length;
                         var filePath = ""; string fileContents = null;
@@ -336,6 +336,15 @@ namespace DDAC_Assignment.Controllers
                             news.ImagePath = image.FileName;
                         }
 
+                    }*/
+
+                    if (image != null)
+                    {
+                        await uploadImageToS3Async(image);
+                        
+
+                        await DeleteImage(news.ImagePath);
+                        news.ImagePath = image.FileName;
                     }
 
                     _context.Update(news);
@@ -378,12 +387,45 @@ namespace DDAC_Assignment.Controllers
             return View(news);
         }
 
+        public async Task<IActionResult> DeleteImage(string ImagePath)
+        {
+            //var originNews = await _context.News.FindAsync(id);
+            string message = "";
+            List<string> credentialInfo = getAWSCredential();
+            var S3client = new AmazonS3Client(credentialInfo[0], credentialInfo[1], credentialInfo[2], Amazon.RegionEndpoint.USEast1);
+
+            //start deleting the related items
+            try
+            {
+                if (string.IsNullOrEmpty(ImagePath))
+                {
+                    return BadRequest("The " + ImagePath + " parameter is empty!");
+                }
+                var deleteObjectRequest = new DeleteObjectRequest
+                {
+                    BucketName = bucketname + "/newsImages",
+                    Key = ImagePath
+                };
+                await S3client.DeleteObjectAsync(deleteObjectRequest);
+                message = ImagePath + " is deleted from the S3 bucket! Please check the S3 bucket whether is it deleted!";
+            }
+            catch (Exception ex)
+            {
+                message = "Error: " + ex.Message;
+            }
+
+            return RedirectToAction("ViewImages", "UploadFile", new { msg = message });
+        }
+
         // POST: News/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var news = await _context.News.FindAsync(id);
+
+            await DeleteImage(news.ImagePath);
+
             _context.News.Remove(news);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

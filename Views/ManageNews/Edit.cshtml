@@ -16,7 +16,7 @@
             <input type="hidden" asp-for="ID" />
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" style="width:600px;" />
+                <input asp-for="Title" class="form-control" style="width:800px;" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -44,7 +44,7 @@
                     {
                         @if (@item.ParentCategory != "None")
                         {
-                            <option value="@item.CategoryName">@item.CategoryName - @item.ParentCategory</option>
+                <option value="@item.CategoryName">@item.ParentCategory - @item.CategoryName</option>
                         }
                         else
                         {
@@ -66,7 +66,7 @@
             </div>
             <div class="form-group">
                 <p>Upload image:</p>
-                <input type="file" name="image" />
+                <input type="file" name="image" accept="image/*"/>
                
             </div>
             <div class="form-group">
