@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DDAC_Assignment.Areas.Identity.Pages.Account
 {
@@ -36,6 +37,16 @@ namespace DDAC_Assignment.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
         }
+
+        public SelectList RoleSelectList = new SelectList(
+                new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
+                {
+                    new SelectListItem { Selected = true, Text = "Select Role", Value = ""},
+                    new SelectListItem { Selected = true, Text = "Admin", Value = "Admin"},
+                    new SelectListItem { Selected = true, Text = "User", Value = "User"},
+                    new SelectListItem { Selected = true, Text = "Staff", Value = "Staff"},
+                }, "Value", "Text", 1
+            );
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -61,6 +72,9 @@ namespace DDAC_Assignment.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Display(Name = "What is your role?")]
+            public string userrole { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -75,7 +89,11 @@ namespace DDAC_Assignment.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new DDAC_AssignmentUser { UserName = Input.Email, Email = Input.Email };
+                var user = new DDAC_AssignmentUser { 
+                    UserName = Input.Email, 
+                    Email = Input.Email,
+                    userrole = Input.userrole,
+                };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

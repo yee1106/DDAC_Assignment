@@ -9,5 +9,7 @@ namespace DDAC_Assignment.Areas.Identity.Data
     // Add profile data for application users by adding properties to the DDAC_AssignmentUser class
     public class DDAC_AssignmentUser : IdentityUser
     {
+        [PersonalData]
+        public string userrole { get; set; }
     }
 }
