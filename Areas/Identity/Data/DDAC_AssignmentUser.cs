@@ -10,6 +10,10 @@ namespace DDAC_Assignment.Areas.Identity.Data
     public class DDAC_AssignmentUser : IdentityUser
     {
         [PersonalData]
+        public string FullName { get; set; }
+
+        [PersonalData]
         public string userrole { get; set; }
+
     }
 }

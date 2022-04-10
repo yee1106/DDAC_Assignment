@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewData["Title"] = "Update";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model DDAC_Assignment.Areas.Identity.Data.DDAC_AssignmentUser
+<h1>Update</h1>
+
+<h1 class="bg-info text-white">Update User</h1>
+<a asp-action="Index" class="btn btn-secondary">Back</a>
+<div asp-validation-summary="All" class="text-danger"></div>
+<form asp-action="update" method="post">
+    <div class="form-group">
+        <label asp-for="Id"></label>
+        <input asp-for="Id" class="form-control" disabled />
+    </div>
+    <div class="form-group">
+        <label asp-for="FullName"></label>
+        <input asp-for="FullName" class="form-control" disabled />
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="userrole"></label>
+        <select asp-for="userrole" asp-items="@ViewBag.users"></select>
+        <span asp-validation-for="userrole" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>

@@ -1,16 +1,24 @@
 ﻿@model IEnumerable<DDAC_Assignment.Areas.Identity.Data.DDAC_AssignmentUser>
 
+
+@if (ViewBag.msg != null)
+{
+    <script>alert("@ViewBag.msg");</script>
+}
+
 <h1 class="bg-info text-white">All Users</h1>
 <a asp-action="create" class="btn btn-secondary">Create a User</a>
 
 <table class="table table-sm table-bordered">
-    <tr><th>ID</th><th>Name</th><th>Email</th><th>User Name</th><th>Date of Birth</th></tr>
+    <tr><th>ID</th><th>Full Name</th><th>Email</th><th>User Name</th><th>Role</th></tr>
     @foreach (DDAC_Assignment.Areas.Identity.Data.DDAC_AssignmentUser user in Model)
     {
         <tr>
             <td>@user.Id</td>
+            <td>@user.FullName</td>
             <td>@user.Email</td>
             <td>@user.UserName</td>
+            <td>@user.userrole</td>
             <td>
                 <a class="btn btn-sm btn-primary" asp-action="Update" asp-route-id="@user.Id">
                     Update

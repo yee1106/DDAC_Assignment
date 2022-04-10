@@ -28,10 +28,11 @@
     else
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
-        </li>
-    }
-</ul>
+            <a class="nav-link text-dark" id="register" a asp-area="" asp-controller="UserInfo" asp-action="registerUser">Register</a>
+            <!--  <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a> -->
+            </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                    </li>
+                }
+            </ul>
