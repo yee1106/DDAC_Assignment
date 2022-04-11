@@ -1,0 +1,52 @@
+﻿
+/*body{
+    background-color: black;
+}*/
+
+.searchButton {
+    color: white;
+    background-color: darkturquoise;
+    border-radius: 5px;
+    border-color: darkturquoise;
+}
+
+.button:hover{
+  font-size: 17px;
+  padding: 3px;
+}
+
+
+.createButton {
+    color: white;
+    background-color: darkslategray;
+    border-radius: 5px;
+    border-color: darkslategray;
+}
+
+
+.editButton {
+    color: white;
+    background-color: darkblue;
+    border-radius: 5px;
+    border-color: darkblue;
+}
+
+
+.deleteButton {
+    color: white;
+    background-color: red;
+    border-radius: 5px;
+    border-color: red;
+}
+
+.detailsButton {
+    color: white;
+    background-color: coral;
+    border-radius: 5px;
+    border-color: coral;
+}
+
+.searchFilter {
+    display: inline;
+    width: 40%;
+}

@@ -46,9 +46,30 @@ namespace DDAC_Assignment.Controllers
         }
 
         // GET: News
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, string Category)
         {
-            return View(await _context.News.ToListAsync());
+            var news = from m in _context.News
+                         select m;
+            //generate the listing for the drop down box
+            IQueryable<string> querydropdownlist = from m in _context.News
+                                                   orderby m.Category
+                                                   select m.Category;
+
+            IEnumerable<SelectListItem> items = new SelectList(await querydropdownlist.Distinct().ToListAsync());
+            ViewBag.Category = items;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                news = news.Where(s => s.Title.Contains(searchString) || s.Actor.Contains(searchString) || s.Content.Contains(searchString));
+            }
+
+            if (!String.IsNullOrEmpty(Category))
+            {
+                news = news.Where(s => s.Category.Equals(Category));
+            }
+            return View(await news.ToListAsync());
+
+            //return View(await _context.News.ToListAsync());
         }
 
         // GET: News/Details/5

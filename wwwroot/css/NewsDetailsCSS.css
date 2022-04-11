@@ -1,0 +1,21 @@
+﻿.categoryTag {
+    padding: 6px;
+    color: white;
+    border-radius: 8px;
+}
+
+.newsDetails{
+    color:dimgray;
+    font-size: 18px;
+}
+
+.displayLayout{
+    display: flex;
+    justify-content:center;
+    align-content: center;
+}
+
+.btnHover:hover{
+    text-decoration: none;
+    color: white;
+}

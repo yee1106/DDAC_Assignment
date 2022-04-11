@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20220411034541_updateAllTable.cs" />
+    <Compile Remove="Migrations\20220411034541_updateAllTable.Designer.cs" />
+    <Compile Remove="Migrations\20220411035249_updateAllTable.cs" />
+    <Compile Remove="Migrations\20220411035249_updateAllTable.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AWSSDK.S3" Version="3.7.8.17" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.23" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.23" />
