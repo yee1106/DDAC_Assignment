@@ -165,7 +165,7 @@ namespace DDAC_Assignment.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Title,Content,Actor,PublishedDate,Category,ParentCategory,Status,ImagePath")] News news, IFormFile image)
+        public async Task<IActionResult> Create([Bind("ID,Title,Content,Actor,Visibility,PublishedDate,Category,ParentCategory,Status,ImagePath")] News news, IFormFile image)
         {
             if (ModelState.IsValid)
             {
@@ -185,6 +185,7 @@ namespace DDAC_Assignment.Controllers
 
                 //set the status to pending after create
                 news.Status = "Pending";
+                news.LastUpdated = DateTime.Now;
 
                 /*//file upload
                 long size = image.Length;
@@ -303,7 +304,7 @@ namespace DDAC_Assignment.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Title,Content,Actor,PublishedDate,Category,ParentCategory,Status,ImagePath")] News news, IFormFile image)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Title,Content,Actor,PublishedDate,Visibility,Category,ParentCategory,Status,ImagePath")] News news, IFormFile image)
         {
             if (id != news.ID)
             {
@@ -358,7 +359,7 @@ namespace DDAC_Assignment.Controllers
                         }
 
                     }*/
-
+                    news.LastUpdated = DateTime.Now;
                     if (image != null)
                     {
                         await uploadImageToS3Async(image);

@@ -11,7 +11,7 @@
 <div class="row">
     <div class="col-md-4">
         <form method="post" enctype="multipart/form-data"
-                  asp-controller="ManageNews" asp-action="Create">
+              asp-controller="ManageNews" asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
@@ -26,7 +26,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Actor" class="control-label"></label>
-                <input asp-for="Actor" class="form-control"/>
+                <input asp-for="Actor" class="form-control" />
                 <span asp-validation-for="Actor" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -36,14 +36,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="Category" class="control-label"></label>
-                <!--<input asp-for="Category" class="form-control" />-->
                 <select asp-for="Category" class="form-control">
                     <option value="None">--Select--</option>
                     @foreach (var item in ViewBag.Category)
                     {
                         @if (@item.ParentCategory != "None")
                         {
-                             <option value="@item.CategoryName">@item.ParentCategory - @item.CategoryName</option>
+                            <option value="@item.CategoryName">@item.ParentCategory - @item.CategoryName</option>
                         }
                         else
                         {
@@ -55,8 +54,16 @@
                 <span asp-validation-for="Category" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Visibility" class="control-label"></label>
+                <select asp-for="Visibility" class="form-control">
+                    <option value="Visible">Visible</option>
+                    <option value="Invisible">Invisible</option>
+                </select>
+                <span asp-validation-for="Visibility" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <p>Upload image:</p>
-                <input type="file" name="image" accept="image/*"/>
+                <input type="file" name="image" accept="image/*" />
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

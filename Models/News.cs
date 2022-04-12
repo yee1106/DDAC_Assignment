@@ -36,5 +36,12 @@ namespace DDAC_Assignment.Models
 
         [Display(Name = "Image Path")]
         public string ImagePath { get; set; }
+
+        public DateTime LastUpdated { get; set; }
+
+        [Required]
+        public string Visibility { get; set; }
+
+        //public int CommentsCount
     }
 }

@@ -44,7 +44,7 @@
                     {
                         @if (@item.ParentCategory != "None")
                         {
-                <option value="@item.CategoryName">@item.ParentCategory - @item.CategoryName</option>
+                            <option value="@item.CategoryName">@item.ParentCategory - @item.CategoryName</option>
                         }
                         else
                         {
@@ -54,6 +54,14 @@
 
                 </select>
                 <span asp-validation-for="Category" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Visibility" class="control-label"></label>
+                <select asp-for="Visibility" class="form-control">
+                    <option value="Visible">Visible</option>
+                    <option value="Invisible">Invisible</option>
+                </select>
+                <span asp-validation-for="Visibility" class="text-danger"></span>
             </div>
             <!--<div class="form-group">
         <label asp-for="ParentCategory" class="control-label"></label>
@@ -66,8 +74,8 @@
             </div>
             <div class="form-group">
                 <p>Upload image:</p>
-                <input type="file" name="image" accept="image/*"/>
-               
+                <input type="file" name="image" accept="image/*" />
+
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
