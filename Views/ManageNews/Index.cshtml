@@ -5,6 +5,8 @@
 }
 
 <link rel="stylesheet" href="~/css/NewsCSS.css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" />
+
 
 <h1>Manage News</h1>
 
@@ -41,16 +43,20 @@
                 <thead>
                     <tr>
                         <th>
-                            @Html.DisplayNameFor(model => model.Title)
+                            <a asp-action="Index" asp-route-sortExpression="@ViewData["SortParamTitle"]">@Html.DisplayNameFor(model => model.Title)</a>
+                            <i class="@ViewData["SortIconTitle"]" aria-hidden="true"></i>
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Actor)
+                            <a asp-action="Index" asp-route-sortExpression="@ViewData["SortActor"]">@Html.DisplayNameFor(model => model.Actor)</a>
+                            <i class="@ViewData["SortIconActor"]" aria-hidden="true"></i>
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.PublishedDate)
+                            <a asp-action="Index" asp-route-sortExpression="@ViewData["SortPublishedDateDesc"]">@Html.DisplayNameFor(model => model.PublishedDate)</a>
+                            <i class="@ViewData["SortIconPublishedDate"]" aria-hidden="true"></i>
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Category)
+                            <a asp-action="Index" asp-route-sortExpression="@ViewData["SortCategory"]">@Html.DisplayNameFor(model => model.Category)</a>
+                            <i class="@ViewData["SortIconCategory"]" aria-hidden="true"></i>
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.ParentCategory)

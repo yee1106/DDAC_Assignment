@@ -7,6 +7,21 @@
 <link rel="stylesheet" href="~/css/NewsDetailsCSS.css" />
 
 <h1>View News</h1>
+<br />
+<div style="display:flex; justify-content:space-between">
+    @if (ViewBag.hasPrevious)
+    {
+        <a class="categoryTag pr-2 btnHover switchPageBtn" style="background-color:lightseagreen; width:80px; display:flex; justify-content:center" asp-action="Details" asp-route-id="@Model.ID" asp-route-switchPageId="@ViewBag.previousId">Previous</a>
+    }
+    else
+    {
+        <span></span>
+    }
+    @if (ViewBag.hasNext)
+    {
+        <a class="categoryTag btnHover switchPageBtn" style="background-color:lightseagreen; width:80px; display:flex; justify-content:center" asp-action="Details" asp-route-id="@Model.ID" asp-route-switchPageId="@ViewBag.nextId">Next</a>
+    }
+</div>
 <hr />
 
 <div class="pb-2">
@@ -104,3 +119,4 @@
     <a class="categoryTag pr-2 btnHover" style="background-color:darkblue" asp-action="Edit" asp-route-id="@Model.ID">Edit</a>
     <a class="categoryTag btnHover" style="background-color:indigo" asp-action="Index">Back to List</a>
 </div>
+

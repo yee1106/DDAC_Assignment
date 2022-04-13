@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Amazon.S3;
 using Amazon.S3.Transfer;
 using Amazon.S3.Model;
+using Microsoft.Data.SqlClient;
 
 namespace DDAC_Assignment.Controllers
 {
@@ -46,7 +47,7 @@ namespace DDAC_Assignment.Controllers
         }
 
         // GET: News
-        public async Task<IActionResult> Index(string searchString, string Category)
+        public async Task<IActionResult> Index(string searchString, string Category, string sortExpression="")
         {
             var news = from m in _context.News
                          select m;
@@ -67,24 +68,184 @@ namespace DDAC_Assignment.Controllers
             {
                 news = news.Where(s => s.Category.Equals(Category));
             }
+
+            /*ViewData["sortByTitle"] = String.IsNullOrEmpty(sortByTitle) ? "Title" : "";
+            var sortByTitleVar = String.IsNullOrEmpty(sortByTitle) ? (news = news.OrderBy(s => s.Title)) : (news = news.OrderByDescending(s => s.Title));
+
+            ViewData["sortByPublishedDate"] = String.IsNullOrEmpty(sortByPublishedDate) ? "PublishedDate" : "";
+            var sortByPublishedDateVar = String.IsNullOrEmpty(sortByPublishedDate) ? (news = news.OrderBy(s => s.PublishedDate)) : (news = news.OrderByDescending(s => s.PublishedDate));*/
+
+            ViewData["SortParamTitle"] = "title";
+            ViewData["SortPublishedDateDesc"] = "publisheddate";
+            ViewData["SortCategory"] = "category";
+            ViewData["SortActor"] = "actor";
+
+            ViewData["SortIconTitle"] = "";
+            ViewData["SortIconPublishedDate"] = "";
+            ViewData["SortIconCategory"] = "";
+            ViewData["SortIconActor"] = "";
+
+            SortOrder sortOrder;
+            string sortproperty;
+
+            switch (sortExpression.ToLower())
+            {
+                case "title_desc":
+                    sortOrder = SortOrder.Descending;
+                    sortproperty = "title";
+                    ViewData["SortIconTitle"] = "fa fa-arrow-up";
+                    ViewData["SortParamTitle"] = "title";
+                    break;
+                case "publisheddate":
+                    sortOrder = SortOrder.Ascending;
+                    sortproperty = "publisheddate";
+                    ViewData["SortIconPublishedDate"] = "fa fa-arrow-down";
+                    ViewData["SortPublishedDateDesc"] = "publisheddate_desc";
+                    break;
+                case "publisheddate_desc":
+                    sortOrder = SortOrder.Descending;
+                    ViewData["SortIconPublishedDate"] = "fa fa-arrow-up";
+                    sortproperty = "publisheddate";
+                    ViewData["SortPublishedDateDesc"] = "publisheddate";
+                    break;
+                case "category":
+                    sortOrder = SortOrder.Ascending;
+                    sortproperty = "category";
+                    ViewData["SortIconCategory"] = "fa fa-arrow-down";
+                    ViewData["SortCategory"] = "category_desc";
+                    break;
+                case "category_desc":
+                    sortOrder = SortOrder.Descending;
+                    sortproperty = "category";
+                    ViewData["SortIconCategory"] = "fa fa-arrow-up";
+                    ViewData["SortCategory"] = "category";
+                    break;
+                case "actor":
+                    sortOrder = SortOrder.Ascending;
+                    sortproperty = "actor";
+                    ViewData["SortIconActor"] = "fa fa-arrow-down";
+                    ViewData["SortActor"] = "actor_desc";
+                    break;
+                case "actor_desc":
+                    sortOrder = SortOrder.Descending;
+                    sortproperty = "actor";
+                    ViewData["SortIconActor"] = "fa fa-arrow-up";
+                    ViewData["SortActor"] = "actor";
+                    break;
+                default:
+                    sortOrder = SortOrder.Ascending;
+                    sortproperty = "title";
+                    ViewData["SortIconTitle"] = "fa fa-arrow-down";
+                    ViewData["SortParamTitle"] = "title_desc";
+                    break;
+            }
+
+            news = GetItems(news, sortproperty, sortOrder);
             return View(await news.ToListAsync());
 
             //return View(await _context.News.ToListAsync());
         }
 
+        public IQueryable<News> GetItems(IQueryable<News> news, string SortProperty, SortOrder sortOrder)
+        {
+            /*var news = from m in _context.News
+                       select m;*/
+            if (SortProperty.ToLower() == "title")
+            {
+                if(sortOrder == SortOrder.Ascending)
+                {
+                    news = news.OrderBy(s => s.Title);
+                }
+                else
+                    news = news.OrderByDescending(s => s.Title);
+            }
+            else if(SortProperty.ToLower() == "publisheddate")
+            {
+                if (sortOrder == SortOrder.Ascending)
+                {
+                    news = news.OrderBy(s => s.PublishedDate);
+                }
+                else
+                    news = news.OrderByDescending(s => s.PublishedDate);
+            }
+            else if (SortProperty.ToLower() == "category")
+            {
+                if (sortOrder == SortOrder.Ascending)
+                {
+                    news = news.OrderBy(s => s.Category);
+                }
+                else
+                    news = news.OrderByDescending(s => s.Category);
+            }
+            else if (SortProperty.ToLower() == "actor")
+            {
+                if (sortOrder == SortOrder.Ascending)
+                {
+                    news = news.OrderBy(s => s.Actor);
+                }
+                else
+                    news = news.OrderByDescending(s => s.Actor);
+            }
+
+            return news;
+        }
+
         // GET: News/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, int switchPageId = -1)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
+            var ID = id;
+
+            if(switchPageId != -1)
+            {
+                ID = switchPageId;
+            }
+
             var news = await _context.News
-                .FirstOrDefaultAsync(m => m.ID == id);
+                .FirstOrDefaultAsync(m => m.ID == ID);
+
+
             if (news == null)
             {
                 return NotFound();
+            }
+
+            var newsItems = from m in _context.News
+                            orderby m.PublishedDate
+                            select m;
+
+            var newsList = new List<News>(newsItems);
+
+            for (int i = 0; i<newsList.Count; i++)
+            {
+                if(newsList[i].ID == ID)
+                {
+                    if (i == 0)
+                    {
+                        ViewBag.hasPrevious = false;
+                    }
+                    else
+                    {
+                        ViewBag.hasPrevious = true;
+                        ViewBag.previousId = newsList[i - 1].ID;
+                    }
+                    if(i == newsList.Count - 1)
+                    {
+                        ViewBag.hasNext = false;
+                    }
+                    else
+                    {
+                        ViewBag.hasNext = true;
+                        ViewBag.nextId = newsList[i + 1].ID;
+
+                    }
+
+                    break;
+                }
             }
 
             //get image from S3
