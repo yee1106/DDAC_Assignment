@@ -30,7 +30,7 @@ namespace DDAC_Assignment.Controllers
             _hostEnvironemnt = environment;
         }
 
-        const string bucketname = "newsimagebucket";
+        const string bucketname = "ddacimagebucket";
 
         public List<string> getAWSCredential()
         {

@@ -13,7 +13,7 @@ namespace DDAC_Assignment.Models
 
         [Required(ErrorMessage ="You must key in Category Name")]
         [Display(Name = "Category Name")]
-        [StringLength(60, ErrorMessage = "The Category Name between 6 - 60 characters!", MinimumLength = 6)]
+        [StringLength(60, ErrorMessage = "The Category Name between 3 - 60 characters!", MinimumLength = 3)]
         public string CategoryName { get; set; }
 
         [Display(Name = "Parent Category")]

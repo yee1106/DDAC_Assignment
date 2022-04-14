@@ -17,5 +17,7 @@ namespace DDAC_Assignment.Data
         public DbSet<DDAC_Assignment.Models.News> News { get; set; }
 
         public DbSet<DDAC_Assignment.Models.Category> Category { get; set; }
+
+        public DbSet<DDAC_Assignment.Models.Advertisement> Advertisement { get; set; }
     }
 }

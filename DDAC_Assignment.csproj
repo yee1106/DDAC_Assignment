@@ -30,6 +30,10 @@
     <Compile Remove="Migrations\20220412044616_createnewstable.Designer.cs" />
     <Compile Remove="Migrations\20220412044641_createnewstable.cs" />
     <Compile Remove="Migrations\20220412044641_createnewstable.Designer.cs" />
+    <Compile Remove="Migrations\20220413100720_createAdvertisement.cs" />
+    <Compile Remove="Migrations\20220413100720_createAdvertisement.Designer.cs" />
+    <Compile Remove="Migrations\20220413101634_createAdvertisement.cs" />
+    <Compile Remove="Migrations\20220413101634_createAdvertisement.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
