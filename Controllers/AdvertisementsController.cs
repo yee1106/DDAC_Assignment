@@ -15,6 +15,7 @@ using Amazon.S3.Transfer;
 using Amazon.S3.Model;
 using System.Net.Http;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Hosting;
 
 namespace DDAC_Assignment.Controllers
 {
@@ -22,19 +23,23 @@ namespace DDAC_Assignment.Controllers
     {
         private readonly DDAC_AssignmentNewsDatabase _context;
         const string bucketname = "ddacimagebucket";
-        Uri addressForRefresh = new Uri("https://bvokae4fjl.execute-api.us-east-1.amazonaws.com/refreshNewsTemplateAPI");
-        Uri addressForReturn = new Uri("https://tkdrgxui7j.execute-api.us-east-1.amazonaws.com/newsTemplateAPI");
+        Uri addressForRefresh = new Uri("https://40jdw173md.execute-api.us-east-1.amazonaws.com/refreshNewsTemplateAPI");
+        Uri addressForReturn = new Uri("https://pauyre9e93.execute-api.us-east-1.amazonaws.com/getNewsTemplate");
         HttpClient clientRefresh;
         HttpClient clientReturn;
+        NewsTemplate headerTemplate;
+        NewsTemplate footerTemplate;
+        private IWebHostEnvironment _hostEnvironemnt;
 
-        public AdvertisementsController(DDAC_AssignmentNewsDatabase context)
+        public AdvertisementsController(DDAC_AssignmentNewsDatabase context, IWebHostEnvironment environment)
         {
             clientRefresh = new HttpClient();
             clientReturn = new HttpClient();
             clientRefresh.BaseAddress = addressForRefresh;
             clientReturn.BaseAddress = addressForReturn;
-
+            GetApiModel();
             _context = context;
+            _hostEnvironemnt = environment;
         }
 
         public List<string> getAWSCredential()
@@ -65,24 +70,6 @@ namespace DDAC_Assignment.Controllers
                 return NotFound();
             }
 
-            List<GetApiModel> getApiModel = new List<GetApiModel>();
-
-            HttpResponseMessage responseRefresh = clientRefresh.GetAsync(clientRefresh.BaseAddress).Result;
-            HttpResponseMessage responseReturn = clientReturn.GetAsync(clientReturn.BaseAddress).Result;
-            if (responseRefresh.IsSuccessStatusCode)
-            {
-                string data = responseRefresh.Content.ReadAsStringAsync().Result;
-                //getApiModel = JsonConvert.DeserializeObject<List<GetApiModel>>(data);
-                //ViewBag.username = getApiModel[0].userName;
-                ViewBag.data = data;
-                if (responseRefresh.IsSuccessStatusCode)
-                {
-                    string dataReturn = responseReturn.Content.ReadAsStringAsync().Result;
-
-                    ViewBag.dataReturn = dataReturn;
-                }
-            }
-
             var advertisement = await _context.Advertisement
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (advertisement == null)
@@ -90,10 +77,46 @@ namespace DDAC_Assignment.Controllers
                 return NotFound();
             }
 
+
+            if (advertisement.Position == "Header")
+            {
+                ViewBag.Position = "Header";
+                ViewBag.data = headerTemplate;
+            }
+            else
+            {
+                ViewBag.Position = "Footer";
+                ViewBag.data = footerTemplate;
+            }
+            
+
             //get image from S3
             await ViewImageFromS3(advertisement);
 
             return View(advertisement);
+        }
+
+        public async Task GetApiModel(){
+            GetApiModel getApiModel = new GetApiModel();
+            //HttpResponseMessage responseRefresh = clientRefresh.GetAsync(clientRefresh.BaseAddress).Result;
+            HttpResponseMessage responseReturn = clientReturn.GetAsync(clientReturn.BaseAddress).Result;
+
+            if (responseReturn.IsSuccessStatusCode)
+            {
+                string data = responseReturn.Content.ReadAsStringAsync().Result;
+                getApiModel = JsonConvert.DeserializeObject<GetApiModel>(data);
+
+                if (getApiModel.body[0].MessageID == "001")
+                {
+                    headerTemplate = getApiModel.body[0];
+                    footerTemplate = getApiModel.body[1];
+                }
+                else
+                {
+                    headerTemplate = getApiModel.body[1];
+                    footerTemplate = getApiModel.body[2];
+                }
+            }
         }
 
         // GET: Advertisements/Create

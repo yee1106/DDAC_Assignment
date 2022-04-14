@@ -3,15 +3,56 @@
 @{
     ViewData["Title"] = "Details";
 }
+<link rel="stylesheet" href="~/css/NewsDetailsCSS.css" />
 
-<h1>Details</h1>
+<h1>Preview</h1>
 
 <div>
     <h4>Advertisement</h4>
     <hr />
-    <!--<img src="@ViewBag.path" width="700px" height="300px" />-->
-    <span>@ViewBag.dataReturn</span>
-    <span>@ViewBag.data</span>
+    @if (ViewBag.Position == "Header")
+    {
+        <div class="displayLayout mb-1"><img src="@ViewBag.path" width="700px" height="300px" /></div>
+        <div class="displayLayout mb-3" style="font-size:14px; color:grey">Advertisement</div>
+    }
+    <div class="pb-2">
+        <span class="categoryTag pr-2" style="background-color:indianred">@ViewBag.data.ParentCategory</span>
+        <span style="background-color: lightcoral" class="categoryTag">@ViewBag.data.Category</span>
+    </div>
+
+    <div>
+        <h1 class="pb-2" style="font-weight:bold;">@ViewBag.data.Title</h1>
+        <div class="newsDetails mb-4">
+            <div><strong class="mr-1">By</strong>@ViewBag.data.Actor</div>
+            <span><strong class="mr-1">Published</strong>@ViewBag.data.PublishedDate</span>
+            <span><strong class="mr-1">Updated</strong>@ViewBag.data.LastUpdatedDate</span>
+        </div>
+        <div class="mb-4">
+            @if (ViewBag.Position == "Header")
+            {
+                <div class="displayLayout"><img src="/newsImage/techImage.png" /></div>
+            }
+            else
+            {
+                <div class="displayLayout"><img src="/newsImage/businessImage.png" /></div>
+            }
+            <div class="displayLayout mb-4" style="font-size:14px; color:grey">@ViewBag.data.ImageDesciption</div>
+            <!--<div style="flex-wrap: wrap;">@ViewBag.data.Content</div>-->
+
+            @foreach (var item in @ViewBag.data.Content.Split("\n"))
+            {
+                <div class="px-5" style="font-size: 18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@item</div>
+                <br />
+            }
+            @if (ViewBag.Position == "Footer")
+            {
+                <div class="displayLayout mx-3"><img src="@ViewBag.path" width="700px" height="300px" /></div>
+                <div class="displayLayout mb-3" style="font-size:14px; color:grey">Advertisement</div>
+            }
+        </div>
+
+    </div>
+    <h2>Comments</h2>
 
     <!--<dl class="row">
         <dt class="col-sm-2">
@@ -61,7 +102,7 @@
         </dd>
     </dl>-->
 </div>
-<div>
+<div class="mb-2">
     <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
