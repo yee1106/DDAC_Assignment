@@ -5,7 +5,8 @@
 {
     <script>alert("@ViewBag.msg");</script>
 }
-<a asp-action="create" class="btn btn-inverse-primary btn-fw">Create User</a>
+
+
 <div class="container-fluid page-body-wrapper">
     <div class="main-panel">
         <div class="content-wrapper">
@@ -13,33 +14,42 @@
                 <div class="col-lg-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">User Management</h4>
+                            <a asp-action="registerUser" class="btn btn-inverse-primary btn-fw">Create User</a>
+                            <br />
+                            <h4 class="card-title text-primary" style="text-align: center">User Management</h4>
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
-                                        <tr><th>ID</th><th>Full Name</th><th>Email</th><th>User Name</th><th>Role</th></tr>
+                                        <tr style="text-align: center">
+                                            <th>ID</th>
+                                            <th >Full Name</th>
+                                            <th>Email</th>
+                                            <th>User Name</th>
+                                            <th>Role</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
                                         @foreach (DDAC_Assignment.Areas.Identity.Data.DDAC_AssignmentUser user in Model)
                                         {
-                                            <tr>
-                                                <td>@user.Id</td>
-                                                <td>@user.FullName</td>
-                                                <td>@user.Email</td>
-                                                <td>@user.UserName</td>
-                                                <td>@user.userrole</td>
-                                                <td>
-                                                    <a class="btn btn-sm btn-primary" asp-action="Update" asp-route-id="@user.Id">
-                                                        Update
-                                                    </a>
-                                                </td>
-                                                <td>
-                                                    <a class="btn btn-sm btn-primary" asp-action="Delete" asp-route-id="@user.Id">
-                                                        Delete
+                                        <tr style="text-align: center">
+                                            <td>@user.Id</td>
+                                            <td>@user.FullName</td>
+                                            <td>@user.Email</td>
+                                            <td>@user.UserName</td>
+                                            <td>@user.userrole</td>
+                                            <td>
+                                                <a class="btn btn-outline-info" asp-action="" asp-route-id="@user.Id">
+                                                    Details
+                                                </a>
+                                                <a class="btn btn-outline-success" asp-action="Update" asp-route-id="@user.Id">
+                                                    Update
+                                                </a>
+                                                <a class="btn btn-outline-danger btn-fw" asp-action="Delete" asp-route-id="@user.Id">
+                                                    Delete
 
-                                                    </a>
-                                                </td>
-                                            </tr>
+                                                </a>
+                                            </td>
+                                        </tr>
                                         }
                                     </tbody>
                                 </table>
