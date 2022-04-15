@@ -53,6 +53,7 @@
     </select>
 
     <div style="margin-top:10px; display: inline">
+        <i class="fas fa-search"></i>
         <input class="searchButton button" type="submit" name="submit" value="Search advertisement" />
     </div>
     <br /><br /><br />
@@ -153,9 +154,9 @@
                                 @Html.DisplayFor(modelItem => item.Duration)
                             </td>
                             <td>
-                                <a asp-action="Edit" asp-route-id="@item.ID"><input type="button" class="editButton mb-2" style="width:80px" value="Edit" /></a>
-                                <a asp-action="Details" asp-route-id="@item.ID"><input type="button" class="detailsButton mb-2" style="width:80px" value="Details" /></a>
-                                <a asp-action="Delete" asp-route-id="@item.ID"><input type="button" class="deleteButton mb-2" style="width:80px" value="Delete" /></a>
+                                <a asp-action="Edit" asp-route-id="@item.ID"><input type="button" class="editButton mb-2 button" style="width:80px" value="Edit" /></a>
+                                <a asp-action="Details" asp-route-id="@item.ID"><input type="button" class="detailsButton mb-2 button" style="width:80px" value="Details" /></a>
+                                <a asp-action="Delete" asp-route-id="@item.ID"><input type="button" class="deleteButton mb-2 button" style="width:80px" value="Delete" /></a>
                             </td>
                         </tr>
                     }

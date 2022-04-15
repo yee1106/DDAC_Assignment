@@ -5,7 +5,7 @@
 }
 
 <link rel="stylesheet" href="~/css/NewsCSS.css" />
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" />
+
 
 
 <h1>Manage News</h1>
@@ -17,6 +17,7 @@
     @Html.DropDownList("Category", @ViewBag.Category, "All Category", new { @class = "form-control searchFilter" })
 
     <div style="margin-top:10px; display: inline">
+        <i class="fas fa-search"></i>
         <input class="searchButton button" type="submit" name="submit" value="Search News" />
     </div>
     <br /><br /><br />
@@ -62,7 +63,7 @@
                             @Html.DisplayNameFor(model => model.ParentCategory)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.ImagePath)
+                            @Html.DisplayNameFor(model => model.ImagePath)sear
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.Content)

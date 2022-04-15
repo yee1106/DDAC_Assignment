@@ -4,33 +4,53 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<link rel="stylesheet" href="~/css/NewsDetailsCSS.css" />
+<style>
+    .formLayout {
+        padding: 50px;
+        background-color: #dea67e;
+        border-radius: 25px;
+    }
+    .editButton {
+        color: white;
+        background-color: darkblue;
+        border-radius: 5px;
+        border-color: darkblue;
+        width: 80px;
+    }
+</style>
 
-<div>
-    <h4>Category</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CategoryName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CategoryName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ParentCategory)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ParentCategory)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="displayLayout">
+    <div class="formLayout">
+
+        <h1 style="color: white">Category Details</h1>
+        <div>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.CategoryName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.CategoryName)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.ParentCategory)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.ParentCategory)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+            </dl>
+        </div>
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.ID"><input type="button" class="editButton mb-2" style="width:80px" value="Edit" /></a>
+            <a class="ml-2" style="color: white" asp-action="Index">Back to List</a>
+
+        </div>
+     </div>
 </div>

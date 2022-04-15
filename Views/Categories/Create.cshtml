@@ -4,51 +4,57 @@
     ViewData["Title"] = "Create";
 }
 
+<link rel="stylesheet" href="~/css/NewsDetailsCSS.css" />
+<style>
+    .formLayout {
+        padding: 50px;
+        background-color: #74bfb4;
+        border-radius: 25px;
+    }
+</style>
 
-<h1>Create</h1>
 
-<h4>Category</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CategoryName" class="control-label font-color-blue"></label>
-                <input asp-for="CategoryName" class="form-control" />
-                <span asp-validation-for="CategoryName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ParentCategory" class="control-label"></label>
-                <!--<input asp-for="ParentCategory" class="form-control" />-->
-                <select asp-for="ParentCategory" class="form-control">
-                    <option value="None">---- Select ----</option>
-                    @foreach (var item in ViewBag.Category)
-                    {
-                        <option value="@item">@item</option>
-                    }
+<div class="displayLayout">
+    <div class="formLayout">
+        <h1 style="color: white">Create Category</h1>
+        <div style="width: 400px">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="CategoryName" class="control-label font-color-blue font-weight-bold"></label>
+                    <input asp-for="CategoryName" class="form-control" />
+                    <span asp-validation-for="CategoryName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ParentCategory" class="control-label font-weight-bold"></label>
+                    <!--<input asp-for="ParentCategory" class="form-control" />-->
+                    <select asp-for="ParentCategory" class="form-control">
+                        <option value="None">---- Select ----</option>
+                        @foreach (var item in ViewBag.Category)
+                        {
+                            <option value="@item">@item</option>
+                        }
 
-                </select>
-                
-                <span asp-validation-for="ParentCategory" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <textarea class="form-control" placeholder="Description for the category/subcategory" asp-for="Description"></textarea>
-                <!--<input asp-for="Description" class="form-control" />-->
+                    </select>
 
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+                    <span asp-validation-for="ParentCategory" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label font-weight-bold"></label>
+                    <textarea class="form-control" placeholder="Description for the category/subcategory" asp-for="Description"></textarea>
+                    <!--<input asp-for="Description" class="form-control" />-->
+
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" style="background-color:darkslategrey" />
+                    <a class="ml-2" style="color: white" asp-action="Index">Back to List</a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

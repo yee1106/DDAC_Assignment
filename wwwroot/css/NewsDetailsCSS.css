@@ -9,11 +9,12 @@
     font-size: 18px;
 }
 
-.displayLayout{
+.displayLayout {
     display: flex;
-    justify-content:center;
+    justify-content: center;
     align-content: center;
 }
+
 
 .btnHover:hover{
     text-decoration: none;
