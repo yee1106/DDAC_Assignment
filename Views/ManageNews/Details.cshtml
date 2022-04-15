@@ -25,9 +25,15 @@
 <hr />
 
 <div class="pb-2">
-    <span class="categoryTag pr-2" style="background-color:indianred">@Html.DisplayFor(model => model.ParentCategory)</span>
-    <span style="background-color: lightcoral" class="categoryTag" >@Html.DisplayFor(model => model.Category)</span>
-</div>
+    @if (Model.ParentCategory != "None")
+    {
+        <span class="categoryTag pr-2" style="background-color:indianred">@Html.DisplayFor(model => model.ParentCategory)</span>
+    }
+    @if (Model.Category != "None")
+    {
+        <span style="background-color: lightcoral" class="categoryTag">@Html.DisplayFor(model => model.Category)</span>
+    }
+    </div>
 
 <div>
     <h1 class="pb-2" style="font-weight:bold;">@Html.DisplayFor(model => model.Title)</h1>

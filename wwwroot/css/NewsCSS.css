@@ -29,6 +29,7 @@
     background-color: darkblue;
     border-radius: 5px;
     border-color: darkblue;
+    width: 80px;
 }
 
 
@@ -37,6 +38,7 @@
     background-color: red;
     border-radius: 5px;
     border-color: red;
+    width: 80px;
 }
 
 .detailsButton {
@@ -44,9 +46,12 @@
     background-color: coral;
     border-radius: 5px;
     border-color: coral;
+    width: 80px;
 }
 
 .searchFilter {
     display: inline;
     width: 40%;
 }
+
+

@@ -4,68 +4,163 @@
     ViewData["Title"] = "Index";
 }
 
+<link rel="stylesheet" href="~/css/NewsCSS.css" />
+<style>
+    .gridDisplay {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .displayLayout {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+    }
+
+    .tagRow{
+        display:flex;
+        align-items:center;
+    }
+
+    .publishedDate {
+        padding: 6px;
+        border-radius: 8px;
+        background-color: #151550;
+        color: white;
+    }
+
+    .durationTag {
+        padding: 4px;
+        border-radius: 20px;
+        background-color: #8d12a2;
+        color: white;
+        margin-left: 10px;
+    }
+</style>
+
 <h1>Index</h1>
 
+<form method="" action="">
+    <input class="form-control searchFilter" placeholder="Search with description/advertiser" type="text" name="searchString" id="searchString" />
+
+    <select name="publishedDate" class="form-control searchFilter">
+        <option value="All">Filter published date</option>
+        <option value="future">Not yet due</option>
+        <option value="pastSevenDays">Past 7 days</option>
+        <option value="pastThirtyDays">Past 30 days</option>
+        <option value="pastThreeMonths">Past 3 months</option>
+        <option value="pastOneYear">Past 1 year</option>
+    </select>
+
+    <div style="margin-top:10px; display: inline">
+        <input class="searchButton button" type="submit" name="submit" value="Search advertisement" />
+    </div>
+    <br /><br /><br />
+</form>
+
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create"><input type="button" class="createButton mb-2 button" style="width:100px" value="Create New" /></a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Advertiser)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Position)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImagePath)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PublishedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Visibility)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Duration)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Advertiser)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Position)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImagePath)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PublishedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Visibility)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Duration)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+<div id="content">
+    <ul id="tabs" class="nav nav-tabs">
+        <li class="nav-item active">
+            <a class="nav-link active" href="#tab1" data-toggle="tab">Advertisement View</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#tab2" data-toggle="tab">Advertisement Details</a>
+        </li>
+
+    </ul>
+    <div id="my-tab-content" class="tab-content">
+        <div class="tab-pane active" id="tab1">
+            <div class="gridDisplay mt-2">
+                @foreach (var item in Model)
+                {
+                    @foreach (var items in @ViewBag.URLs)
+                    {
+                        @if (items.Split("\n")[1] == ("advertisementImages/" + item.ImagePath))
+                        {
+                            <div class="displayLayout mt-5">
+                                <a style="text-decoration: none" asp-action="Details" asp-route-id="@item.ID">
+                                    <div>
+                                        <img src="@items.Split("\n")[0]" width="450px" height="300px" />
+                                        <h5><strong>@item.Description</strong></h5>
+                                        <div class="mb-1" style="color:darkgrey; font-size:18px;">@item.Advertiser</div>
+                                        <div class="tagRow">
+                                            <div class="publishedDate">@item.PublishedDate</div>
+                                            <div class="durationTag">@item.Duration Days</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+                    }
+                }
+            </div>
+        </div>
+        <div class="tab-pane" id="tab2">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Advertiser)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Position)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ImagePath)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PublishedDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Visibility)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Duration)
+                        </th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Advertiser)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Position)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ImagePath)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PublishedDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Visibility)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Duration)
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.ID"><input type="button" class="editButton mb-2" style="width:80px" value="Edit" /></a>
+                                <a asp-action="Details" asp-route-id="@item.ID"><input type="button" class="detailsButton mb-2" style="width:80px" value="Details" /></a>
+                                <a asp-action="Delete" asp-route-id="@item.ID"><input type="button" class="deleteButton mb-2" style="width:80px" value="Delete" /></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

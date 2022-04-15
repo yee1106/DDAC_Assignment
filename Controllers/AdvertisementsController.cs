@@ -57,9 +57,89 @@ namespace DDAC_Assignment.Controllers
         }
 
         // GET: Advertisements
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, string publishedDate)
         {
-            return View(await _context.Advertisement.ToListAsync());
+            var advertisement = from m in _context.Advertisement
+                                select m;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                advertisement = advertisement.Where(s => s.Description.Contains(searchString) || s.Advertiser.Contains(searchString));
+            }
+
+            if (!String.IsNullOrEmpty(publishedDate))
+            {
+                if (publishedDate == "future")
+                {
+                    advertisement = advertisement.Where(s =>s.PublishedDate >= DateTime.Now);
+                }
+                else if (publishedDate == "pastSevenDays")
+                {
+                    advertisement = advertisement.Where(s => s.PublishedDate >= DateTime.Now.AddDays(-7) && s.PublishedDate <= DateTime.Now);
+                }
+                else if (publishedDate == "pastThirtyDays")
+                {
+                    advertisement = advertisement.Where(s => s.PublishedDate >= DateTime.Now.AddMonths(-1) && s.PublishedDate <= DateTime.Now);
+                }
+                else if(publishedDate == "pastThreeMonths")
+                {
+                    advertisement = advertisement.Where(s => s.PublishedDate >= DateTime.Now.AddMonths(-3) && s.PublishedDate <= DateTime.Now);
+                }
+                else if(publishedDate == "pastOneYear")
+                {
+                    advertisement = advertisement.Where(s => s.PublishedDate >= DateTime.Now.AddYears(-1) && s.PublishedDate <= DateTime.Now);
+                }
+            }
+
+            await GetImageFromS3();
+            return View(await advertisement.ToListAsync());
+        }
+
+        public async Task GetImageFromS3()
+        {
+            List<string> accesskeylist = getAWSCredential();
+            var result = new List<S3Object>();
+            List<string> presignedURLS = new List<string>();
+
+            try
+            {
+                AmazonS3Client s3Client = new AmazonS3Client(accesskeylist[0], accesskeylist[1], accesskeylist[2], Amazon.RegionEndpoint.USEast1);
+
+                //grab the objects and its information
+                string token = null;
+                do
+                {
+                    ListObjectsRequest request = new ListObjectsRequest()
+                    {
+                        BucketName = bucketname,
+                        Prefix = "advertisementImages"
+                    };
+                    ListObjectsResponse response = await s3Client.ListObjectsAsync(request).ConfigureAwait(false);
+                    result.AddRange(response.S3Objects);
+                    token = response.NextMarker;
+                }
+                while (token != null);
+
+                //create each presign URL to the objects
+                foreach (var image in result)
+                {
+                    //create presigned URL for temp access from public
+                    GetPreSignedUrlRequest request = new GetPreSignedUrlRequest
+                    {
+                        BucketName = bucketname,
+                        Key = image.Key,
+                        Expires = DateTime.Now.AddMinutes(1)
+                    };
+
+                    //get the generated URL path
+                    presignedURLS.Add(s3Client.GetPreSignedURL(request) + "\n" + image.Key);
+                }
+                ViewBag.URLs = presignedURLS;
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         // GET: Advertisements/Details/5

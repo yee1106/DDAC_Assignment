@@ -11,11 +11,11 @@ namespace DDAC_Assignment.Models
         public int ID { get; set; }
 
         [Required(ErrorMessage = "You must key in description!")]
-        [StringLength(512, ErrorMessage = "The description between 5 - 512 characters!", MinimumLength = 5)]
+        [StringLength(512, ErrorMessage = "The description between 3 - 512 characters!", MinimumLength = 3)]
         public string Description { get; set; }
 
         [Required(ErrorMessage = "You must key in advertisor name!")]
-        [StringLength(256, ErrorMessage = "The description between 5 - 80 characters!", MinimumLength = 5)]
+        [StringLength(80, ErrorMessage = "The description between 3 - 80 characters!", MinimumLength = 3)]
         [Display(Name = "Advertisor Name / Company")]
         public string Advertiser { get; set; }
 

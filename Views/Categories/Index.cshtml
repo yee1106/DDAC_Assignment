@@ -4,6 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
+<link rel="stylesheet" href="~/css/NewsCSS.css" />
+
 <h1>Index</h1>
 
 <p>
@@ -37,9 +39,9 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ID"><input type="button" class="editButton mb-2" value="Edit" /></a>
-                <a asp-action="Details" asp-route-id="@item.ID"><input type="button" class="detailsButton mb-2" value="Details" /></a>
-                <a asp-action="Delete" asp-route-id="@item.ID"><input type="button" class="deleteButton mb-2" value="Delete" /></a>
+                <a asp-action="Edit" asp-route-id="@item.ID"><input type="button" class="editButton mb-2" style="width:80px" value="Edit" /></a>
+                <a asp-action="Details" asp-route-id="@item.ID"><input type="button" class="detailsButton mb-2" style="width:80px" value="Details" /></a>
+                <a asp-action="Delete" asp-route-id="@item.ID"><input type="button" class="deleteButton mb-2" style="width:80px" value="Delete" /></a>
             </td>
         </tr>
 }
