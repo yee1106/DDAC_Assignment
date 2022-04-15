@@ -365,5 +365,4 @@ Migrations/20220405143519_CreateIdentitySchema.cs
 Migrations/20220405143519_CreateIdentitySchema.Designer.cs
 Migrations/
 DDAC_Assignment - Backup.csproj
-DDAC_Assignment.csproj
 DDAC_Assignment.csproj~admin-role
