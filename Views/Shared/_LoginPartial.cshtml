@@ -4,38 +4,46 @@
 @inject SignInManager<DDAC_AssignmentUser> SignInManager
 @inject UserManager<DDAC_AssignmentUser> UserManager
 
-<ul class="navbar-nav">
-    @if (SignInManager.IsSignedIn(User))
-    {
-        <li class="nav-item">
-            <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-        </li>
-        <li>
-            <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Category</a>
-        </li>
-        <li>
-            <a class="nav-link text-dark" asp-area="" asp-controller="ManageNews" asp-action="Index">Manage News</a>
-        </li>
-        <li>
-            <a class="nav-link text-dark" asp-area="" asp-controller="Advertisements" asp-action="Index">Manage Advertisement</a>
-        </li>
-        <li>
-            <a class="nav-link text-dark" asp-area="" asp-controller="UserInfo" asp-action="Index">User Info</a>
-        </li>
-        <li class="nav-item">
-            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-            </form>
-        </li>
-    }
-    else
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" id="register" a asp-area="" asp-controller="UserInfo" asp-action="registerUser">Register</a>
-            <!--  <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a> -->
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
-        </li>
-    }
-</ul>
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item">
+        <a class="nav-link" asp-area="" asp-controller="Categories" asp-action="Index">
+            <i class="mdi mdi-view-grid menu-icon"></i>
+            <span class="menu-title">Category</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" asp-area="" asp-controller="ManageNews" asp-action="Index">
+            <i class="mdi mdi-newspaper menu-icon"></i>
+            <span class="menu-title">Manage News</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" asp-area="" asp-controller="Advertisements" asp-action="Index">
+            <i class="mdi mdi-star-outline menu-icon"></i>
+            <span class="menu-title">Manage Advertisement</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" asp-area="" asp-controller="UserInfo" asp-action="Index">
+            <i class="mdi mdi-account menu-icon"></i>
+            <span class="menu-title">User Management</span>
+        </a>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link" id="register" a asp-area="" asp-controller="UserInfo" asp-action="registerUser">
+            <i class="mdi mdi-account-plus menu-icon"></i>
+            <span class="menu-title">Register</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="login" asp-area="Identity" asp-page="/Account/Login">
+            <i class="mdi mdi-login menu-icon"></i>
+            <span class="menu-title">Login</span>
+        </a>
+    </li>
+}
+
