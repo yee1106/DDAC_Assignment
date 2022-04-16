@@ -9,12 +9,12 @@
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="row">
-                <a asp-action="Index" class="btn btn-secondary">Back</a>
                 <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="col-md-1" > </div>
-                <div class="col-md-10 grid-margin stretch-card">
+                <div class="col-md-3" > </div>
+                <div class="col-md-6 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
+                            <a asp-action="Index" class="btn btn-secondary">Back</a>
                             <h4 class="card-title text-success" style="text-align: center">Update User</h4>
                             <form asp-action="Update" method="post">
                                 <div class="form-group">
@@ -35,12 +35,12 @@
                                     <select asp-for="userrole" asp-items="@ViewBag.users" class="form-control"></select>
                                     <span asp-validation-for="userrole" class="text-danger"></span>
                                 </div>
-                                <button type="submit" class="btn btn-primary me-2">Save</button>
+                                <button type="submit" class="btn btn-success me-2" style="color:white">Save</button>
                             </form>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-1">  </div>
+                <div class="col-md-3">  </div>
             </div>
         </div>
     </div>
