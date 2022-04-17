@@ -37,7 +37,7 @@
                                         <label asp-for="@Model.roleSelectors"></label>
                                         @for (int i = 0; i < Model.roleSelectors.Count; i++)
                                         {
-                                            <div class="form-check form-check-success">
+                                            <div class="form-check form-check-primary">
                                                 <label class="form-check-label" asp-for="@Model.roleSelectors[i].Selected">
                                                     @Model.roleSelectors[i].Name
                                                     <input type="hidden" asp-for="@Model.roleSelectors[i].Id" />

@@ -29,31 +29,33 @@
                                         <tr style="text-align: center">
                                             <td>@role.Id</td>
                                             <td>@role.Name</td>
-                                            @if ((role.Name == "User") || (role.Name == "Admin") || (role.Name == "Staff"))
-                                            {
-                                                <td>
-                                                    <a class="btn btn-outline-success" style="pointer-events: none" >
+                                            <td>
+                                                <a class="btn btn-outline-info btn-fw" asp-action="ViewUser" asp-route-id="@role.Id">
+                                                    View User
+                                                </a>
+                                                @if ((role.Name == "User") || (role.Name == "Admin") || (role.Name == "Staff"))
+                                                {
+
+                                                    <a class="btn btn-outline-success" style="pointer-events: none">
                                                         Update
                                                     </a>
-                                                    <a class="btn btn-outline-danger btn-fw" style="pointer-events: none" >
+                                                    <a class="btn btn-outline-danger btn-fw" style="pointer-events: none">
                                                         Delete
                                                     </a>
-                                                </td>
-                                            }
-                                            else
-                                            {
-                                                <td>
+
+                                                }
+                                                else
+                                                {
                                                     <a class="btn btn-outline-success" asp-action="Update" asp-route-id="@role.Id">
                                                         Update
                                                     </a>
                                                     <a class="btn btn-outline-danger btn-fw" asp-action="Delete" asp-route-id="@role.Id">
                                                         Delete
                                                     </a>
-                                                </td>
-                                            }
-
-                                        </tr>
-                                        }
+                                                }
+                                            </td>
+                                         </tr>
+                                         }
                                     </tbody>
                                 </table>
                             </div>
