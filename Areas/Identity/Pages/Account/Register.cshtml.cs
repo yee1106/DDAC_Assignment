@@ -68,13 +68,15 @@ namespace DDAC_Assignment.Areas.Identity.Pages.Account
             [Display(Name = "Password")]
             public string Password { get; set; }
 
+            [Required]
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-            [Display(Name = "What is your role?")]
-            public string userrole { get; set; }
+            [Required]
+            [Display(Name = "Full Name")]
+            public string FullName { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -90,9 +92,10 @@ namespace DDAC_Assignment.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new DDAC_AssignmentUser { 
+                    FullName = Input.FullName,
                     UserName = Input.Email, 
                     Email = Input.Email,
-                    userrole = Input.userrole,
+                    userrole = "User",
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)

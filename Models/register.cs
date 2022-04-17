@@ -32,7 +32,7 @@ namespace DDAC_Assignment.Models
         public string FullName { get; set; }
 
 
-        [Display(Name = "What is your role?")]
+        [Display(Name = "User Role")]
         public string userroles { get; set; }
 
     }

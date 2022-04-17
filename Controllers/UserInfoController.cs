@@ -44,7 +44,6 @@ namespace DDAC_Assignment.Controllers
                 };
                 IdentityResult result = await userManager.CreateAsync(webUser, user.Password);
                 if (result.Succeeded)
-                    // return RedirectToPage("/Account/Login", new { area = "Identity" });
                     return RedirectToAction("Index", "UserInfo");
                 else
                 {
