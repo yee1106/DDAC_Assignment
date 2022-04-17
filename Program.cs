@@ -10,12 +10,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using DDAC_Assignment.Areas.Identity.Data;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
 
 namespace DDAC_Assignment
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             //CreateHostBuilder(args).Build().Run();
             var host = CreateHostBuilder(args).Build();
@@ -24,6 +29,7 @@ namespace DDAC_Assignment
             using (var Scope = host.Services.CreateScope())
             {
                 var services = Scope.ServiceProvider;
+                var logger = services.GetRequiredService<ILogger<Program>>(); // display error msg to the output section
 
                 try
                 {
@@ -33,8 +39,21 @@ namespace DDAC_Assignment
                 }
                 catch (Exception ex)
                 {
-                    var logger = services.GetRequiredService<ILogger<Program>>(); // display error msg to the output section
                     logger.LogError(ex, "An error occured seeding the database");
+                }
+
+                // seed user database
+                try
+                {
+                    var context = services.GetRequiredService<DDAC_AssignmentContext>();
+                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                    var userManager = services.GetRequiredService<UserManager<DDAC_AssignmentUser>>();
+                    await SeedUserDatabase.SeedRolesAsync(roleManager);
+                    await SeedUserDatabase.SeedAdminAsync(userManager, roleManager);
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "An error occurred seeding the user database.");
                 }
             }
 

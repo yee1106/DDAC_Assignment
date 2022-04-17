@@ -7,30 +7,51 @@ using Microsoft.AspNetCore.Identity;
 using DDAC_Assignment.Areas.Identity.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using DDAC_Assignment.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DDAC_Assignment.Controllers
 {
     public class UserInfoController : Controller
     {
         private UserManager<DDAC_AssignmentUser> userManager;
+        private RoleManager<IdentityRole> roleManager;
 
-        public UserInfoController(UserManager<DDAC_AssignmentUser> usrMgr)
+        public UserInfoController(UserManager<DDAC_AssignmentUser> usrMgr, RoleManager<IdentityRole> roleMgr)
         {
             userManager = usrMgr;
+            roleManager = roleMgr;
         }
-        public IActionResult Index(string msg=null)
+
+        private async Task<List<string>> GetUserRoles(DDAC_AssignmentUser user)
+        {
+            return new List<string>(await userManager.GetRolesAsync(user));
+        }
+        public async Task<IActionResult> IndexAsync(string msg=null)
         {
             ViewBag.msg = msg;
-            return View(userManager.Users);
+            var users = await userManager.Users.ToListAsync(); 
+            var UserModelList = new List<User>();
+            foreach (DDAC_AssignmentUser user in users)
+            {
+                var UserModel = new User();
+                UserModel.Id = user.Id;
+                UserModel.Email = user.Email;
+                UserModel.FullName = user.FullName;
+                UserModel.Roles = await GetUserRoles(user);
+                UserModelList.Add(UserModel);
+            }
+            return View(UserModelList);
         }
 
         public IActionResult registerUser()
         {
+            ViewBag.Role = new SelectList(roleManager.Roles.Where(u => !u.Name.Contains("Admin"))
+                                    .ToList(), "Name", "Name");
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> registerUser(register user)
+        public async Task<IActionResult> registerUser(User user)
         {
             if (ModelState.IsValid)
             {
@@ -72,9 +93,6 @@ namespace DDAC_Assignment.Controllers
             else if (user.userrole == "Staff")
             {
                 c = true;
-            }else
-            {
-                d = true;
             }
             ViewBag.users = new List<SelectListItem>
             {
@@ -97,6 +115,7 @@ namespace DDAC_Assignment.Controllers
             {
                 user.FullName = FullName;
                 user.Email = email;
+                user.UserName = email;
                 user.userrole = userrole;
 
                 IdentityResult result = await userManager.UpdateAsync(user);
@@ -123,5 +142,6 @@ namespace DDAC_Assignment.Controllers
             }
             return RedirectToAction("Index", "UserInfo", new { msg = "User deleted!" });
         }
+
     }
 }

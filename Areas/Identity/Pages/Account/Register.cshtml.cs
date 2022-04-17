@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using DDAC_Assignment.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace DDAC_Assignment.Areas.Identity.Pages.Account
 {
@@ -25,14 +27,17 @@ namespace DDAC_Assignment.Areas.Identity.Pages.Account
         private readonly UserManager<DDAC_AssignmentUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly RoleManager<IdentityRole> roleManager;
 
         public RegisterModel(
             UserManager<DDAC_AssignmentUser> userManager,
+            RoleManager<IdentityRole> roleMgr,
             SignInManager<DDAC_AssignmentUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
             _userManager = userManager;
+            roleManager = roleMgr;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
@@ -77,6 +82,9 @@ namespace DDAC_Assignment.Areas.Identity.Pages.Account
             [Required]
             [Display(Name = "Full Name")]
             public string FullName { get; set; }
+
+            [Display(Name = "User Role")]
+            public string userroles { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -100,7 +108,10 @@ namespace DDAC_Assignment.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    
                     _logger.LogInformation("User created a new account with password.");
+                    
+                    await _userManager.AddToRoleAsync(user, role.Roles.User.ToString()); // assign user role
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
