@@ -82,26 +82,13 @@ namespace DDAC_Assignment.Areas.Identity.Pages.Account
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
 
-                var users = from m in _userManager.Users
-                            where m.Email.Equals(Input.Email)
-                            select m.userrole;
-
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
 
                     //  Login to Differ Page Based On Differ Roles
-                    foreach (string userrole in users)
-                    {
-                        if (String.IsNullOrEmpty(userrole))
-                            return RedirectToAction("Privacy", "Home");
-                        else if (userrole.Equals("Admin"))
-                            return RedirectToAction("Index", "UserInfo");
-                        else
-                            return LocalRedirect(returnUrl);
-                    }
 
-                    //return LocalRedirect(returnUrl);
+                    return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
                 {

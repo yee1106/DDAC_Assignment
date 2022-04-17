@@ -12,8 +12,5 @@ namespace DDAC_Assignment.Areas.Identity.Data
         [PersonalData]
         public string FullName { get; set; }
 
-        [PersonalData]
-        public string userrole { get; set; }
-
     }
 }

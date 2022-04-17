@@ -39,10 +39,6 @@ namespace DDAC_Assignment.Models
         [DataType(DataType.Text)]
         public string FullName { get; set; }
 
-
-        [Display(Name = "User Role")]
-        public string userroles { get; set; }
-
         public IEnumerable<string> Roles { get; set; }
 
         [Display(Name = "User Role")]

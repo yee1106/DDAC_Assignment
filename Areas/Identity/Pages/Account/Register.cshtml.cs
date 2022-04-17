@@ -102,8 +102,7 @@ namespace DDAC_Assignment.Areas.Identity.Pages.Account
                 var user = new DDAC_AssignmentUser { 
                     FullName = Input.FullName,
                     UserName = Input.Email, 
-                    Email = Input.Email,
-                    userrole = "User",
+                    Email = Input.Email
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)

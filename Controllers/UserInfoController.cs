@@ -28,6 +28,7 @@ namespace DDAC_Assignment.Controllers
         }
         public async Task<IActionResult> IndexAsync(string msg=null)
         {
+            
             ViewBag.msg = msg;
             var users = await userManager.Users.ToListAsync(); 
             var UserModelList = new List<User>();
@@ -45,9 +46,21 @@ namespace DDAC_Assignment.Controllers
 
         public IActionResult registerUser()
         {
-            ViewBag.Role = new SelectList(roleManager.Roles.Where(u => !u.Name.Contains("Admin"))
-                                    .ToList(), "Name", "Name");
-            return View();
+            User user = new User();
+            // retrieve all identity roles
+            var UserRoleList = new List<role.RoleSelector>();
+            foreach (var role in roleManager.Roles)
+            {
+                var Role = new role.RoleSelector
+                {
+                    Id = role.Id,
+                    Name = role.Name,
+                    Selected = false
+                };
+                UserRoleList.Add(Role);
+            }
+            user.roleSelectors = UserRoleList;
+            return View(user);
         }
 
         [HttpPost]
@@ -60,17 +73,19 @@ namespace DDAC_Assignment.Controllers
                     UserName = user.Email,
                     Email = user.Email,
                     FullName = user.FullName,
-                    userrole = user.userroles,
                     EmailConfirmed = true,
                 };
                 IdentityResult result = await userManager.CreateAsync(webUser, user.Password);
-                if (result.Succeeded)
-                    return RedirectToAction("Index", "UserInfo");
-                else
+
+                result = await userManager.AddToRolesAsync(webUser, user.roleSelectors.Where(x => x.Selected).Select(y => y.Name));
+                if (!result.Succeeded)
                 {
-                    foreach (IdentityError error in result.Errors)
-                        ModelState.AddModelError("", error.Description);
+                    ModelState.AddModelError("", "Cannot add selected roles to user");
+                    ViewBag.msg = "Cannot add selected roles to user";
+                    return View(user);
                 }
+
+                return RedirectToAction("Index", "UserInfo", new { msg="User created!" });
 
             }
             return View(user);
@@ -87,7 +102,7 @@ namespace DDAC_Assignment.Controllers
             UserModel.Email = user.Email;
             UserModel.FullName = user.FullName;
 
-            // retrieve current user role list
+            // retrieve current user role list selector
             var UserRoleList = new List<role.RoleSelector>();
             foreach (var role in roleManager.Roles)
             {
@@ -136,6 +151,7 @@ namespace DDAC_Assignment.Controllers
                     return View(user);
                 }
                 
+                // add selected roles
                 result = await userManager.AddToRolesAsync(current_user, user.roleSelectors.Where(x => x.Selected).Select(y => y.Name));
                 if (!result.Succeeded)
                 {
