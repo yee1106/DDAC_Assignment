@@ -6,34 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20220411034541_updateAllTable.cs" />
-    <Compile Remove="Migrations\20220411034541_updateAllTable.Designer.cs" />
-    <Compile Remove="Migrations\20220411035249_updateAllTable.cs" />
-    <Compile Remove="Migrations\20220411035249_updateAllTable.Designer.cs" />
-    <Compile Remove="Migrations\20220412031516_changeNewsTable.cs" />
-    <Compile Remove="Migrations\20220412031516_changeNewsTable.Designer.cs" />
-    <Compile Remove="Migrations\20220412034416_changeNewsTable.cs" />
-    <Compile Remove="Migrations\20220412034416_changeNewsTable.Designer.cs" />
-    <Compile Remove="Migrations\20220412034643_changeNewsTable.cs" />
-    <Compile Remove="Migrations\20220412034643_changeNewsTable.Designer.cs" />
-    <Compile Remove="Migrations\20220412035043_changeNewsTable.cs" />
-    <Compile Remove="Migrations\20220412035043_changeNewsTable.Designer.cs" />
-    <Compile Remove="Migrations\20220412040430_createnewsdatabase.cs" />
-    <Compile Remove="Migrations\20220412040430_createnewsdatabase.Designer.cs" />
-    <Compile Remove="Migrations\20220412041633_createnewsdatabase.cs" />
-    <Compile Remove="Migrations\20220412041633_createnewsdatabase.Designer.cs" />
-    <Compile Remove="Migrations\20220412043013_createnewstable.cs" />
-    <Compile Remove="Migrations\20220412043013_createnewstable.Designer.cs" />
-    <Compile Remove="Migrations\20220412043515_createnewstable.cs" />
-    <Compile Remove="Migrations\20220412043515_createnewstable.Designer.cs" />
-    <Compile Remove="Migrations\20220412044616_createnewstable.cs" />
-    <Compile Remove="Migrations\20220412044616_createnewstable.Designer.cs" />
-    <Compile Remove="Migrations\20220412044641_createnewstable.cs" />
-    <Compile Remove="Migrations\20220412044641_createnewstable.Designer.cs" />
-    <Compile Remove="Migrations\20220413100720_createAdvertisement.cs" />
-    <Compile Remove="Migrations\20220413100720_createAdvertisement.Designer.cs" />
-    <Compile Remove="Migrations\20220413101634_createAdvertisement.cs" />
-    <Compile Remove="Migrations\20220413101634_createAdvertisement.Designer.cs" />
+    <Compile Remove="Migrations\20220416085809_user.cs" />
+    <Compile Remove="Migrations\20220416085809_user.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

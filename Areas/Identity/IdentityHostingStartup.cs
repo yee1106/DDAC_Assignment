@@ -21,6 +21,7 @@ namespace DDAC_Assignment.Areas.Identity
                         context.Configuration.GetConnectionString("DDAC_AssignmentContextConnection")));
 
                 services.AddDefaultIdentity<DDAC_AssignmentUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                    .AddRoles<IdentityRole>() // add roles
                     .AddEntityFrameworkStores<DDAC_AssignmentContext>();
             });
         }
