@@ -91,11 +91,12 @@ namespace DDAC_Assignment.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(string id, string email, string userrole)
+        public async Task<IActionResult> Update(string id, string FullName, string email, string userrole)
         {
             DDAC_AssignmentUser user = await userManager.FindByIdAsync(id);
             if (user != null)
             {
+                user.FullName = FullName;
                 user.Email = email;
                 user.userrole = userrole;
 
