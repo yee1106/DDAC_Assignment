@@ -14,6 +14,12 @@ namespace DDAC_Assignment.Models
             User,
             Staff
         }
+        public class RoleSelector
+        {
+            public string Id { get; set; }
+            public string Name { get; set; }
+            public bool Selected { get; set; }
+        }
 
         [Required(ErrorMessage = "You must key in the role before submit!")]
         [Display(Name = "Role")]

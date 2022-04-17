@@ -78,54 +78,89 @@ namespace DDAC_Assignment.Controllers
 
 
 
-        public async Task<IActionResult> Update(string id)
+        public async Task<IActionResult> Update(string id, string msg=null)
         {
+            ViewBag.msg = msg;
             DDAC_AssignmentUser user = await userManager.FindByIdAsync(id);
-            Boolean a = false; Boolean b = false; Boolean c = false; Boolean d = false;
-            if (user.userrole == "Admin")
+            var UserModel = new User();
+            UserModel.Id = user.Id;
+            UserModel.Email = user.Email;
+            UserModel.FullName = user.FullName;
+
+            // retrieve current user role list
+            var UserRoleList = new List<role.RoleSelector>();
+            foreach (var role in roleManager.Roles)
             {
-                a = true;
+                var UserRole = new role.RoleSelector
+                {
+                    Id = role.Id,
+                    Name = role.Name
+                };
+
+                if (await userManager.IsInRoleAsync(user, role.Name))
+                {
+                    UserRole.Selected = true;
+                }
+                else
+                {
+                    UserRole.Selected = false;
+                }
+                UserRoleList.Add(UserRole);
             }
-            else if (user.userrole == "User")
-            {
-                b = true;
-            }
-            else if (user.userrole == "Staff")
-            {
-                c = true;
-            }
-            ViewBag.users = new List<SelectListItem>
-            {
-                new SelectListItem {Selected = c, Text = "Select Option", Value = ""},
-                new SelectListItem {Selected = a, Text = "Admin", Value = "Admin"},
-                new SelectListItem {Selected = b, Text = "User", Value = "User"},
-                new SelectListItem {Selected = b, Text = "Staff", Value = "Staff"}
-            };
+            UserModel.roleSelectors = UserRoleList;
+
             if (user != null)
-                return View(user);
+                return View(UserModel);
             else
                 return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(string id, string FullName, string email, string userrole)
+        public async Task<IActionResult> Update(string FullName, string email, User user)
         {
-            DDAC_AssignmentUser user = await userManager.FindByIdAsync(id);
+            ViewBag.msg = null;
+            DDAC_AssignmentUser current_user = await userManager.FindByIdAsync(user.Id);
             if (user != null)
             {
-                user.FullName = FullName;
-                user.Email = email;
-                user.UserName = email;
-                user.userrole = userrole;
+                current_user.FullName = FullName;
+                current_user.Email = email;
+                current_user.UserName = email;
 
-                IdentityResult result = await userManager.UpdateAsync(user);
-                if (result.Succeeded)
-                    return RedirectToAction("Index");
-                else
+                // remove user existing roles 
+                var existing_roles = await userManager.GetRolesAsync(current_user);
+                var result = await userManager.RemoveFromRolesAsync(current_user, existing_roles); 
+                if (!result.Succeeded)
+                {
+                    ModelState.AddModelError("", "Cannot remove user existing roles");
+                    ViewBag.msg = "Cannot remove user existing roles";
                     return View(user);
+                }
+                
+                result = await userManager.AddToRolesAsync(current_user, user.roleSelectors.Where(x => x.Selected).Select(y => y.Name));
+                if (!result.Succeeded)
+                {
+                    ModelState.AddModelError("", "Cannot add selected roles to user");
+                    ViewBag.msg = "Cannot add selected roles to user";
+                    return View(user);
+                }
+
+                // save updated data for current user 
+                IdentityResult identity_result = await userManager.UpdateAsync(current_user);
+                
+                if (!identity_result.Succeeded)
+                {
+                    ModelState.AddModelError("", "Cannot save current user");
+                    ViewBag.msg = "Cannot save current user";
+                }
+                    
             }
             else
+            {
                 ModelState.AddModelError("", "User Not Found");
+                ViewBag.msg = "User Not Found";
+            }
+
+            ViewBag.msg = "User Updated!";
             return View(user);
         }
 
