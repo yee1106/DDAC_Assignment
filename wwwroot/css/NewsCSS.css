@@ -8,6 +8,7 @@
     background-color: darkturquoise;
     border-radius: 5px;
     border-color: darkturquoise;
+    height: 40px;
 }
 
 .button:hover{
