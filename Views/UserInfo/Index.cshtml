@@ -37,10 +37,18 @@
                                                     <a class="btn btn-outline-success" asp-action="Update" asp-route-id="@user.Id">
                                                         Update
                                                     </a>
-                                                    <a class="btn btn-outline-danger btn-fw" asp-action="Delete" asp-route-id="@user.Id">
-                                                        Delete
-
-                                                    </a>
+                                                    @if (user.Email == "admin@ddac.com")
+                                                    {
+                                                        <a class="btn btn-outline-danger btn-fw" style="pointer-events: none">
+                                                            Delete
+                                                        </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a class="btn btn-outline-danger btn-fw" asp-action="Delete" asp-route-id="@user.Id">
+                                                            Delete
+                                                        </a>
+                                                    }
                                                 </td>
                                             </tr>
                                         }

@@ -131,15 +131,32 @@ namespace DDAC_Assignment.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(string FullName, string email, User user)
+        public async Task<IActionResult> Update(User user)
         {
             ViewBag.msg = null;
             DDAC_AssignmentUser current_user = await userManager.FindByIdAsync(user.Id);
             if (user != null)
             {
-                current_user.FullName = FullName;
-                current_user.Email = email;
-                current_user.UserName = email;
+ 
+                current_user.FullName = user.FullName;
+                if (current_user.Email != "admin@ddac.com")
+                {
+                    current_user.Email = user.Email;
+                    current_user.UserName = user.Email;
+                }
+                else
+                {
+                    user.Email = current_user.Email;
+                }
+
+                // save updated data for current user 
+                IdentityResult identity_result = await userManager.UpdateAsync(current_user);
+                if (!identity_result.Succeeded)
+                {
+                    ModelState.AddModelError("", "Cannot save current user");
+                    ViewBag.msg = "Cannot save current user";
+                    return View(user);
+                }
 
                 // remove user existing roles 
                 var existing_roles = await userManager.GetRolesAsync(current_user);
@@ -158,17 +175,7 @@ namespace DDAC_Assignment.Controllers
                     ModelState.AddModelError("", "Cannot add selected roles to user");
                     ViewBag.msg = "Cannot add selected roles to user";
                     return View(user);
-                }
-
-                // save updated data for current user 
-                IdentityResult identity_result = await userManager.UpdateAsync(current_user);
-                
-                if (!identity_result.Succeeded)
-                {
-                    ModelState.AddModelError("", "Cannot save current user");
-                    ViewBag.msg = "Cannot save current user";
-                }
-                    
+                } 
             }
             else
             {
