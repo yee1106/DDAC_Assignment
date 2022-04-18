@@ -1,0 +1,47 @@
+﻿.categoryTag {
+    padding: 6px;
+    color: white;
+    border-radius: 8px;
+}
+
+.newsDetails{
+    color:dimgray;
+    font-size: 18px;
+}
+
+.displayLayout {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+
+.btnHover:hover{
+    text-decoration: none;
+    color: white;
+}
+
+.detailsFormLayout{
+    padding: 50px;
+    background-color: #dea67e;
+    border-radius: 15px;
+}
+
+.deleteFormLayout {
+    padding: 50px;
+    background-color: #f59b9b;
+    border-radius: 15px;
+}
+
+.content-my{
+    margin-top: 30px;
+    margin-bottom: 460px;
+}
+
+.create-bg-color {
+    background-color: #aad9c9;
+}
+
+.edit-bg-color {
+    background-color: #b6c4df;
+}

@@ -5,17 +5,10 @@
 }
 
 
-<link rel="stylesheet" href="~/css/NewsDetailsCSS.css" />
-<style>
-    .formLayout {
-        padding: 50px;
-        background-color: #f59b9b;
-        border-radius: 25px;
-    }
-</style>
+<link rel="stylesheet" href="~/css/ContentCSS.css" />
 
-<div class="displayLayout">
-    <div class="formLayout">
+<div class="displayLayout content-my">
+    <div class="deleteFormLayout shadow">
         <h1 style="color: aliceblue;">Delete Category</h1>
         <h3 class="font-weight-bold text-black">Are you sure you want to delete this?</h3>
         <div>
@@ -44,7 +37,7 @@
             <form asp-action="Delete">
                 <input type="hidden" asp-for="ID" />
                 <input type="submit" value="Delete" class="btn btn-danger" />
-                <a class="ml-2" style="color: white" asp-action="Index">Back to List</a>
+                <a class="ml-2 btn btn-secondary" asp-action="Index">Back</a>
             </form>
         </div>
     </div>

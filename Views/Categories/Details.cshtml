@@ -4,24 +4,10 @@
     ViewData["Title"] = "Details";
 }
 
-<link rel="stylesheet" href="~/css/NewsDetailsCSS.css" />
-<style>
-    .formLayout {
-        padding: 50px;
-        background-color: #dea67e;
-        border-radius: 25px;
-    }
-    .editButton {
-        color: white;
-        background-color: darkblue;
-        border-radius: 5px;
-        border-color: darkblue;
-        width: 80px;
-    }
-</style>
+<link rel="stylesheet" href="~/css/ContentCSS.css" />
 
-<div class="displayLayout">
-    <div class="formLayout">
+<div class="displayLayout content-my">
+    <div class="detailsFormLayout shadow">
 
         <h1 style="color: white">Category Details</h1>
         <div>
@@ -48,9 +34,9 @@
             </dl>
         </div>
         <div>
-            <a asp-action="Edit" asp-route-id="@Model.ID"><input type="button" class="editButton mb-2" style="width:80px" value="Edit" /></a>
-            <a class="ml-2" style="color: white" asp-action="Index">Back to List</a>
+            <a asp-action="Edit" asp-route-id="@Model.ID"><input type="button" class="btn btn-primary" value="Edit" style="background-color:darkblue;"/></a>
+            <a class="ml-2 btn btn-secondary" asp-action="Index">Back</a>
 
         </div>
-     </div>
+    </div>
 </div>
