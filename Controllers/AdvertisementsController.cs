@@ -385,6 +385,8 @@ namespace DDAC_Assignment.Controllers
             {
                 return NotFound();
             }
+            //get image from S3
+            await ViewImageFromS3(advertisement);
 
             return View(advertisement);
         }
