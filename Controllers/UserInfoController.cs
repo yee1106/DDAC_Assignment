@@ -133,7 +133,7 @@ namespace DDAC_Assignment.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(User user)
         {
-            ViewBag.msg = null;
+            string msg = null;
             DDAC_AssignmentUser current_user = await userManager.FindByIdAsync(user.Id);
             if (user != null)
             {
@@ -146,7 +146,18 @@ namespace DDAC_Assignment.Controllers
                 }
                 else
                 {
+                    // put back admin details
+                    System.Diagnostics.Debug.WriteLine("put back admin details");
                     user.Email = current_user.Email;
+                    for (int s = 0; s < user.roleSelectors.Count; s++)
+                    {
+                        if (user.roleSelectors[s].Name == "Admin")
+                        {
+                            System.Diagnostics.Debug.WriteLine("set selector as true");
+                            user.roleSelectors[s].Selected = true;
+                        }
+                    }
+                    
                 }
 
                 // save updated data for current user 
@@ -160,6 +171,8 @@ namespace DDAC_Assignment.Controllers
 
                 // remove user existing roles 
                 var existing_roles = await userManager.GetRolesAsync(current_user);
+                System.Diagnostics.Debug.WriteLine(existing_roles.ToString());
+
                 var result = await userManager.RemoveFromRolesAsync(current_user, existing_roles); 
                 if (!result.Succeeded)
                 {
@@ -175,16 +188,16 @@ namespace DDAC_Assignment.Controllers
                     ModelState.AddModelError("", "Cannot add selected roles to user");
                     ViewBag.msg = "Cannot add selected roles to user";
                     return View(user);
-                } 
+                }
             }
             else
             {
                 ModelState.AddModelError("", "User Not Found");
-                ViewBag.msg = "User Not Found";
+                msg = "User Not Found";
             }
 
-            ViewBag.msg = "User Updated!";
-            return View(user);
+            msg = "User Updated!";
+            return RedirectToAction("Update", "UserInfo", new { msg = msg });
         }
 
         public async Task<IActionResult> Delete(string id)
