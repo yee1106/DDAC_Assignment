@@ -53,6 +53,50 @@
 .searchFilter {
     display: inline;
     width: 40%;
+    height: 43px;
 }
 
-.dis
+.gridDisplay {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+}
+
+.displayLayout {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.tagRow {
+    display: flex;
+    align-items: center;
+}
+
+.publishedDate {
+    padding: 6px;
+    border-radius: 8px;
+    background-color: #151550;
+    color: white;
+}
+
+.durationTag {
+    padding: 4px;
+    border-radius: 20px;
+    background-color: #8d12a2;
+    color: white;
+    margin-left: 10px;
+}
+
+.item{
+    padding: 20px;
+}
+
+.item:hover {
+    background-color: #f1f1f1;
+}
+
+.table thead th{
+    font-weight: bold!important;
+    color: black;
+}
+

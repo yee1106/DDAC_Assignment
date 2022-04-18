@@ -248,6 +248,15 @@ namespace DDAC_Assignment.Controllers
                 }
             }
 
+            if (!string.IsNullOrEmpty(news.ImagePath))
+            {
+                ViewBag.isImagePathNull = "No";
+            }
+            else
+            {
+                ViewBag.isImagePathNull = "Yes";
+            }
+
             //get image from S3
             await ViewImageFromS3(news);
            
@@ -345,7 +354,7 @@ namespace DDAC_Assignment.Controllers
                 }
 
                 //set the status to pending after create
-                news.Status = "Pending";
+                //news.Status = "Pending";
                 news.LastUpdated = DateTime.Now;
 
                 /*//file upload

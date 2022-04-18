@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Details";
 }
-<link rel="stylesheet" href="~/css/NewsDetailsCSS.css" />
+<link rel="stylesheet" href="~/css/ContentCSS.css" />
 
 <h1>Preview</h1>
 
@@ -41,7 +41,7 @@
 
             @foreach (var item in @ViewBag.data.Content.Split("\n"))
             {
-                <div class="px-5" style="font-size: 18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@item</div>
+                <div class="px-5 mx-2" style="font-size: 18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@item</div>
                 <br />
             }
             @if (ViewBag.Position == "Footer")

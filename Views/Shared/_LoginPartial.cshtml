@@ -9,19 +9,19 @@
     <li class="nav-item">
         <a class="nav-link" asp-area="" asp-controller="Categories" asp-action="Index">
             <i class="mdi mdi-view-grid menu-icon"></i>
-            <span class="menu-title">Category</span>
+            <span class="menu-title">Category Management</span>
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link" asp-area="" asp-controller="ManageNews" asp-action="Index">
             <i class="mdi mdi-newspaper menu-icon"></i>
-            <span class="menu-title">Manage News</span>
+            <span class="menu-title">News Management</span>
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link" asp-area="" asp-controller="Advertisements" asp-action="Index">
             <i class="mdi mdi-star-outline menu-icon"></i>
-            <span class="menu-title">Manage Advertisement</span>
+            <span class="menu-title">Advertisement Management</span>
         </a>
     </li>
     @if (User.IsInRole("Admin"))

@@ -56,6 +56,14 @@
                 <span asp-validation-for="Category" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <select asp-for="Status" class="form-control">
+                    <option value="Pending">Pending</option>
+                    <option value="Approved">Approved</option>
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Visibility" class="control-label"></label>
                 <select asp-for="Visibility" class="form-control">
                     <option value="Visible">Visible</option>
@@ -63,13 +71,8 @@
                 </select>
                 <span asp-validation-for="Visibility" class="text-danger"></span>
             </div>
-            <!--<div class="form-group">
-        <label asp-for="ParentCategory" class="control-label"></label>
-        <input asp-for="ParentCategory" class="form-control" />
-        <span asp-validation-for="ParentCategory" class="text-danger"></span>
-    </div>-->
+
             <div class="form-group">
-                <input hidden asp-for="Status" class="form-control" />
                 <input hidden asp-for="ImagePath" class="form-control" />
             </div>
             <div class="form-group">

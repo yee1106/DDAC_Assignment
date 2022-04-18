@@ -186,15 +186,18 @@ namespace DDAC_Assignment.Controllers
                 string data = responseReturn.Content.ReadAsStringAsync().Result;
                 getApiModel = JsonConvert.DeserializeObject<GetApiModel>(data);
 
-                if (getApiModel.body[0].MessageID == "001")
+                if (getApiModel != null)
                 {
-                    headerTemplate = getApiModel.body[0];
-                    footerTemplate = getApiModel.body[1];
-                }
-                else
-                {
-                    headerTemplate = getApiModel.body[1];
-                    footerTemplate = getApiModel.body[2];
+                    if ("001" == getApiModel.body[0].MessageID)
+                    {
+                        headerTemplate = getApiModel.body[0];
+                        footerTemplate = getApiModel.body[1];
+                    }
+                    else
+                    {
+                        headerTemplate = getApiModel.body[1];
+                        footerTemplate = getApiModel.body[2];
+                    }
                 }
             }
         }

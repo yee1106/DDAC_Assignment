@@ -4,7 +4,7 @@
     ViewData["Title"] = "Details";
 }
 
-<link rel="stylesheet" href="~/css/NewsDetailsCSS.css" />
+<link rel="stylesheet" href="~/css/ContentCSS.css" />
 
 <h1>View News</h1>
 <br />
@@ -42,12 +42,16 @@
         <span><strong class="mr-1">Published</strong>@Html.DisplayFor(model => model.PublishedDate)</span>
         <span><strong class="mr-1">Updated</strong>@Html.DisplayFor(model => model.LastUpdated)</span>
     </div>
+
     <div class="mb-4">
-        <div class="displayLayout mb-4"><img src="@ViewBag.path" width="300px" , height="300px" /></div>
+        @if (ViewBag.isImagePathNull == "No")
+        {
+            <div class="displayLayout mb-4"><img src="@ViewBag.path" width="300px" , height="300px" /></div>
+        }
         <!--<div style="flex-wrap: wrap;">@Html.DisplayFor(model => model.Content)</div>-->
         @foreach (var item in Model.Content.Split("\n"))
         {
-            <div>&nbsp;&nbsp;&nbsp;&nbsp; @item</div>
+            <div class="px-5 mx-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @item</div>
         }
     </div>
 
