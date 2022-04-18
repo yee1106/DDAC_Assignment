@@ -89,6 +89,9 @@
                                                         @Html.DisplayNameFor(model => model.Position)
                                                     </th>
                                                     <th>
+                                                        @Html.DisplayNameFor(model => model.Category)
+                                                    </th>
+                                                    <th>
                                                         @Html.DisplayNameFor(model => model.ImagePath)
                                                     </th>
                                                     <th>
@@ -106,34 +109,37 @@
                                             <tbody>
                                                 @foreach (var item in Model)
                                                 {
-                                                    <tr>
-                                                        <td>
-                                                            @Html.DisplayFor(modelItem => item.Description)
-                                                        </td>
-                                                        <td>
-                                                            @Html.DisplayFor(modelItem => item.Advertiser)
-                                                        </td>
-                                                        <td>
-                                                            @Html.DisplayFor(modelItem => item.Position)
-                                                        </td>
-                                                        <td>
-                                                            @Html.DisplayFor(modelItem => item.ImagePath)
-                                                        </td>
-                                                        <td>
-                                                            @Html.DisplayFor(modelItem => item.PublishedDate)
-                                                        </td>
-                                                        <td>
-                                                            @Html.DisplayFor(modelItem => item.Visibility)
-                                                        </td>
-                                                        <td>
-                                                            @Html.DisplayFor(modelItem => item.Duration)
-                                                        </td>
-                                                        <td>
-                                                            <a asp-action="Edit" asp-route-id="@item.ID"><input type="button" class="editButton mb-2 button" style="width:80px" value="Edit" /></a>
-                                                            <a asp-action="Details" asp-route-id="@item.ID"><input type="button" class="detailsButton mb-2 button" style="width:80px" value="Details" /></a>
-                                                            <a asp-action="Delete" asp-route-id="@item.ID"><input type="button" class="deleteButton mb-2 button" style="width:80px" value="Delete" /></a>
-                                                        </td>
-                                                    </tr>
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Description)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Advertiser)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Position)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Category)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.ImagePath)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.PublishedDate)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Visibility)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Duration)
+                                                    </td>
+                                                    <td>
+                                                        <a asp-action="Edit" asp-route-id="@item.ID"><input type="button" class="editButton mb-2 button" style="width:80px" value="Edit" /></a>
+                                                        <a asp-action="Details" asp-route-id="@item.ID"><input type="button" class="detailsButton mb-2 button" style="width:80px" value="Details" /></a>
+                                                        <a asp-action="Delete" asp-route-id="@item.ID"><input type="button" class="deleteButton mb-2 button" style="width:80px" value="Delete" /></a>
+                                                    </td>
+                                                </tr>
                                                 }
                                             </tbody>
                                         </table>

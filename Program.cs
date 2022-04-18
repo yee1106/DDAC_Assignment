@@ -39,7 +39,7 @@ namespace DDAC_Assignment
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(ex, "An error occured seeding the database");
+                    logger.LogError(ex, "An error occured seeding the category database");
                 }
 
                 // seed user database

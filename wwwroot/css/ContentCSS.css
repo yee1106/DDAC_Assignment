@@ -21,15 +21,15 @@
     color: white;
 }
 
-.detailsFormLayout{
+.detailsFormLayout {
     padding: 50px;
-    background-color: #dea67e;
+    background: linear-gradient(#dea67e, #ffcd00);
     border-radius: 15px;
 }
 
 .deleteFormLayout {
     padding: 50px;
-    background-color: #f59b9b;
+    background: linear-gradient(#c7678b, #f59b9b);
     border-radius: 15px;
 }
 
@@ -39,9 +39,14 @@
 }
 
 .create-bg-color {
-    background-color: #aad9c9;
+    background: linear-gradient(#aad9c9, #80c8d6)
 }
 
 .edit-bg-color {
-    background-color: #b6c4df;
+    background: linear-gradient(#b6c4df, #cdabfb)
+}
+
+.contentMargin{
+    margin-left: 100px;
+    margin-right: 100px;
 }

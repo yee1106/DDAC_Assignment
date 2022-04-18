@@ -27,8 +27,7 @@ namespace DDAC_Assignment.Controllers
         Uri addressForReturn = new Uri("https://pauyre9e93.execute-api.us-east-1.amazonaws.com/getNewsTemplate");
         HttpClient clientRefresh;
         HttpClient clientReturn;
-        NewsTemplate headerTemplate;
-        NewsTemplate footerTemplate;
+        List<NewsTemplate> advertisementTemplate;
         private IWebHostEnvironment _hostEnvironemnt;
 
         public AdvertisementsController(DDAC_AssignmentNewsDatabase context, IWebHostEnvironment environment)
@@ -161,14 +160,23 @@ namespace DDAC_Assignment.Controllers
             if (advertisement.Position == "Header")
             {
                 ViewBag.Position = "Header";
-                ViewBag.data = headerTemplate;
             }
             else
             {
                 ViewBag.Position = "Footer";
-                ViewBag.data = footerTemplate;
             }
-            
+
+            ViewBag.data = advertisementTemplate.Find(item => item.ParentCategory == "Local");
+            ViewBag.category = advertisementTemplate.Find(item => item.ParentCategory == "Local").ParentCategory;
+
+            for (int i = 0; i< advertisementTemplate.Count; i++)
+            {
+                if (advertisement.Category.Equals(advertisementTemplate[i].ParentCategory))
+                {
+                    ViewBag.data = advertisementTemplate[i];
+                    ViewBag.category = advertisementTemplate[i].ParentCategory;
+                }
+            }
 
             //get image from S3
             await ViewImageFromS3(advertisement);
@@ -188,7 +196,7 @@ namespace DDAC_Assignment.Controllers
 
                 if (getApiModel != null)
                 {
-                    if ("001" == getApiModel.body[0].MessageID)
+                    /*if ("001" == getApiModel.body[0].MessageID)
                     {
                         headerTemplate = getApiModel.body[0];
                         footerTemplate = getApiModel.body[1];
@@ -197,14 +205,22 @@ namespace DDAC_Assignment.Controllers
                     {
                         headerTemplate = getApiModel.body[1];
                         footerTemplate = getApiModel.body[2];
-                    }
+                    }*/
+                    advertisementTemplate = getApiModel.body;
                 }
             }
         }
 
         // GET: Advertisements/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(string msg = "")
         {
+            //generate the listing for the drop down box
+            IQueryable<Category> querydropdownlist = from m in _context.Category
+                                                     orderby m.CategoryName
+                                                     select m;
+            List<Category> list = new List<Category>(await querydropdownlist.Distinct().ToListAsync());
+            ViewBag.Category = list;
+            ViewBag.msg = msg;
             return View();
         }
 
@@ -213,7 +229,7 @@ namespace DDAC_Assignment.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Description,Advertiser,Position,PublishedDate,Visibility,Duration,ImagePath")] Advertisement advertisement, IFormFile image)
+        public async Task<IActionResult> Create([Bind("ID,Description,Advertiser,Position,Category,PublishedDate,Visibility,Duration,ImagePath")] Advertisement advertisement, IFormFile image)
         {
             if (ModelState.IsValid)
             {
@@ -222,6 +238,11 @@ namespace DDAC_Assignment.Controllers
                 {
                     advertisement.ImagePath = image.FileName;
                     await uploadImageToS3Async(image);   
+                }
+                else
+                {
+                    string message = "You must select an image!!!";
+                    return RedirectToAction("Create", "Advertisements", new { msg = message });
                 }
                 _context.Add(advertisement);
                 await _context.SaveChangesAsync();
@@ -269,6 +290,13 @@ namespace DDAC_Assignment.Controllers
             {
                 return NotFound();
             }
+            //generate the listing for the drop down box
+            IQueryable<Category> querydropdownlist = from m in _context.Category
+                                                     orderby m.CategoryName
+                                                     select m;
+            List<Category> list = new List<Category>(await querydropdownlist.Distinct().ToListAsync());
+            ViewBag.Category = list;
+
             return View(advertisement);
         }
 
@@ -277,7 +305,7 @@ namespace DDAC_Assignment.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Description,Advertiser,Position,PublishedDate,Visibility,Duration,ImagePath")] Advertisement advertisement, IFormFile image)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Description,Advertiser,Position,Category,PublishedDate,Visibility,Duration,ImagePath")] Advertisement advertisement, IFormFile image)
         {
             if (id != advertisement.ID)
             {

@@ -68,9 +68,6 @@
                                                         @Html.DisplayNameFor(model => model.ParentCategory)
                                                     </th>
                                                     <th>
-                                                        @Html.DisplayNameFor(model => model.ImagePath)
-                                                    </th>
-                                                    <th>
                                                         @Html.DisplayNameFor(model => model.Content)
                                                     </th>
                                                     <th>Action</th>
@@ -94,16 +91,6 @@
                                                         </td>
                                                         <td>
                                                             @Html.DisplayFor(modelItem => item.ParentCategory)
-                                                        </td>
-                                                        <td>
-                                                            @if (string.IsNullOrEmpty(item.ImagePath))
-                                                            {
-                                                                <span>None</span>
-                                                            }
-                                                            else
-                                                            {
-                                                                @Html.DisplayFor(modelItem => item.ImagePath)
-                                                            }
                                                         </td>
                                                         <td>
                                                             @Html.DisplayFor(modelItem => item.Content)
@@ -133,6 +120,9 @@
                                                         @Html.DisplayNameFor(model => model.Status)
                                                     </th>
                                                     <th>
+                                                        @Html.DisplayNameFor(model => model.ImagePath)
+                                                    </th>
+                                                    <th>
                                                         @Html.DisplayNameFor(model => model.LastUpdated)
                                                     </th>
                                                     <th>Action</th>
@@ -150,6 +140,16 @@
                                                         </td>
                                                         <td>
                                                             @Html.DisplayFor(modelItem => item.Status)
+                                                        </td>
+                                                        <td>
+                                                            @if (string.IsNullOrEmpty(item.ImagePath))
+                                                            {
+                                                                <span>None</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.DisplayFor(modelItem => item.ImagePath)
+                                                            }
                                                         </td>
                                                         <td>
                                                             @Html.DisplayFor(modelItem => item.LastUpdated)

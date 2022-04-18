@@ -4,86 +4,94 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<div class="container-fluid page-body-wrapper">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h1>Create</h1>
 
-<h4>News</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post" enctype="multipart/form-data"
-              asp-controller="ManageNews" asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" style="width:800px;" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
-                <textarea style="width:800px; min-height:300px" class="form-control" placeholder="Enter the content" asp-for="Content"></textarea>
-                <!--<input asp-for="Content" class="form-control" />-->
-                <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Actor" class="control-label"></label>
-                <input asp-for="Actor" class="form-control" />
-                <span asp-validation-for="Actor" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PublishedDate" class="control-label"></label>
-                <input asp-for="PublishedDate" class="form-control" />
-                <span asp-validation-for="PublishedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Category" class="control-label"></label>
-                <select asp-for="Category" class="form-control">
-                    <option value="None">--Select--</option>
-                    @foreach (var item in ViewBag.Category)
-                    {
-                        @if (@item.ParentCategory != "None")
-                        {
-                            <option value="@item.CategoryName">@item.ParentCategory - @item.CategoryName</option>
-                        }
-                        else
-                        {
-                            <option value="@item.CategoryName">@item.CategoryName</option>
-                        }
-                    }
+                        <h4>News</h4>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-4">
+                                <form method="post" enctype="multipart/form-data"
+                                      asp-controller="ManageNews" asp-action="Create">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <div class="form-group">
+                                        <label asp-for="Title" class="control-label"></label>
+                                        <input asp-for="Title" class="form-control" style="width:800px;" />
+                                        <span asp-validation-for="Title" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Content" class="control-label"></label>
+                                        <textarea style="width:800px; min-height:300px" class="form-control" placeholder="Enter the content" asp-for="Content"></textarea>
+                                        <!--<input asp-for="Content" class="form-control" />-->
+                                        <span asp-validation-for="Content" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Actor" class="control-label"></label>
+                                        <input asp-for="Actor" class="form-control" />
+                                        <span asp-validation-for="Actor" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="PublishedDate" class="control-label"></label>
+                                        <input asp-for="PublishedDate" class="form-control" />
+                                        <span asp-validation-for="PublishedDate" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Category" class="control-label"></label>
+                                        <select asp-for="Category" class="form-control">
+                                            <option value="None">--Select--</option>
+                                            @foreach (var item in ViewBag.Category)
+                                            {
+                                                @if (@item.ParentCategory != "None")
+                                                {
+                                                    <option value="@item.CategoryName">@item.ParentCategory - @item.CategoryName</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@item.CategoryName">@item.CategoryName</option>
+                                                }
+                                            }
 
-                </select>
-                <span asp-validation-for="Category" class="text-danger"></span>
+                                        </select>
+                                        <span asp-validation-for="Category" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Status" class="control-label"></label>
+                                        <select asp-for="Status" class="form-control">
+                                            <option value="Pending">Pending</option>
+                                            <option value="Approved">Approved</option>
+                                        </select>
+                                        <span asp-validation-for="Visibility" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Visibility" class="control-label"></label>
+                                        <select asp-for="Visibility" class="form-control">
+                                            <option value="Invisible">Invisible</option>
+                                            <option value="Visible">Visible</option>
+                                        </select>
+                                        <span asp-validation-for="Visibility" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <p>Upload image:</p>
+                                        <input class="form-control" type="file" name="image" accept="image/*" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="submit" value="Create" class="btn btn-primary" />
+                                        <a class="ml-2 btn btn-secondary" asp-action="Index">Back</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" class="form-control">
-                    <option value="Pending">Pending</option>
-                    <option value="Approved">Approved</option>
-                </select>
-                <span asp-validation-for="Visibility" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Visibility" class="control-label"></label>
-                <select asp-for="Visibility" class="form-control">
-                    <option value="Invisible">Invisible</option>
-                    <option value="Visible">Visible</option>
-                </select>
-                <span asp-validation-for="Visibility" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <p>Upload image:</p>
-                <input type="file" name="image" accept="image/*" />
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
