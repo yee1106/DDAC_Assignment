@@ -92,8 +92,8 @@
                                                         <td>
                                                             @Html.DisplayFor(modelItem => item.ParentCategory)
                                                         </td>
-                                                        <td>
-                                                            @Html.DisplayFor(modelItem => item.Content)
+                                                        <td style="white-space: nowrap; overflow:hidden; text-overflow:ellipsis;">
+                                                            @Html.Raw(item.Content)
                                                         </td>
                                                         <td>
                                                             <a asp-action="Edit" asp-route-id="@item.ID"><input type="button" class="editButton mb-2 button" style="width:80px" value="Edit" /></a>

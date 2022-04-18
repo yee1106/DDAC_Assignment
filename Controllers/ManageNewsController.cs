@@ -16,6 +16,7 @@ using Amazon.S3;
 using Amazon.S3.Transfer;
 using Amazon.S3.Model;
 using Microsoft.Data.SqlClient;
+using Microsoft.AspNetCore.Html;
 
 namespace DDAC_Assignment.Controllers
 {
@@ -141,6 +142,17 @@ namespace DDAC_Assignment.Controllers
             }
 
             news = GetItems(news, sortproperty, sortOrder);
+
+            /*foreach(var item in news)
+            {
+                HtmlString str = new HtmlString(item.Content);
+                if (str.ToString().Length > 100)
+                {
+                    item.Content = str.ToString().Substring(0, 100) + "...";
+                    
+                }
+                
+            }*/
             return View(await news.ToListAsync());
 
             //return View(await _context.News.ToListAsync());

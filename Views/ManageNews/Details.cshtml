@@ -47,13 +47,15 @@
         <div class="mb-4">
             @if (ViewBag.isImagePathNull == "No")
             {
-                <div class="displayLayout mb-4"><img src="@ViewBag.path" style="max-width: 900px; max-height: 500px"/></div>
+                <div class="displayLayout mb-4"><img src="@ViewBag.path" style="max-width: 900px; max-height: 500px" /></div>
             }
             <!--<div style="flex-wrap: wrap;">@Html.DisplayFor(model => model.Content)</div>-->
-            @foreach (var item in Model.Content.Split("\n"))
+            <!--@foreach (var item in Model.Content.Split("\n"))
             {
-                <div style="font-size:18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @item</div>
-            }
+                <div id="summernote" style="font-size:18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @item</div>
+            }-->
+
+            <div style="font-size:18px;">@Html.Raw(@Model.Content)</div>
         </div>
 
     </div>
