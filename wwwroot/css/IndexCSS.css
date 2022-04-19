@@ -100,3 +100,27 @@
     color: black;
 }
 
+.contentRow {
+    overflow: auto;
+    width: 400px;
+    height: 300px;
+    padding-right: 8px;
+}
+
+.contentRow::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+.contentRow::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    border: 2px solid grey; /* should match background, can't be transparent */
+}
+
+.contentRow::-webkit-scrollbar:vertical {
+    width: 11px;
+}
+
+.statisticLayout{
+    display:flex;
+    align-items: center;
+}

@@ -6,104 +6,137 @@
 
 <link rel="stylesheet" href="~/css/IndexCSS.css" />
 
-<div class="container-fluid page-body-wrapper">
-    <div class="content-wrapper">
-        <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card">
-                <div class="card">
-                    <div class="card-body">
 
-                        <h1>News Management</h1>
+<div class="row">
+    <div class="col-lg-4 d-flex grid-margin stretch-card">
+        <div class="card sale-visit-statistics-border">
+            <div class="card-body">
+                <h2 class="text-dark mb-2 font-weight-bold statisticLayout"><i class="mdi mdi-newspaper menu-icon"></i>@ViewBag.totalNews</h2>
+                <h4 class="card-title mb-2">Total News</h4>
+                <small class="text-muted">@ViewBag.today</small>
+            </div>
+        </div>
+    </div>
 
-                        <form method="" action="">
-                            <!--<strong>Enter the title, actor or content that you want to search = </strong>-->
-                            <input class="form-control searchFilter" placeholder="Search with title, actor or content" type="text" name="searchString" id="searchString" />
+    <div class="col-lg-4 d-flex grid-margin stretch-card">
+        <div class="card sale-diffrence-border">
+            <div class="card-body">
+                <h2 class="text-dark mb-2 font-weight-bold statisticLayout"><i class="mdi mdi-playlist-check menu-icon"></i>@ViewBag.totalApproved</h2>
+                <h4 class="card-title mb-2">Total Approved</h4>
+                <small class="text-muted">Status</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 d-flex grid-margin stretch-card">
+        <div class="card sale-visit-statistics-border">
+            <div class="card-body">
+                <h2 class="text-dark mb-2 font-weight-bold statisticLayout"><i class="mdi mdi-calendar-today"></i>@ViewBag.totalNotPublish</h2>
+                <h4 class="card-title mb-2">Not Yet Published</h4>
+                <small class="text-muted">@ViewBag.today</small>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="container-fluid page-body-wrapper">
+        <div class="content-wrapper">
+            <div class="row">
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
 
-                            @Html.DropDownList("Category", @ViewBag.Category, "All Category", new { @class = "form-control searchFilter" })
+                            <h1>News Management</h1>
 
-                            <div style="margin-top:10px; display: inline">
-                                <i class="fas fa-search"></i>
-                                <input class="searchButton button" type="submit" name="submit" value="Search News" />
-                            </div>
-                            <br /><br /><br />
-                        </form>
+                            <form method="" action="">
+                                <!--<strong>Enter the title, actor or content that you want to search = </strong>-->
+                                <input class="form-control searchFilter" placeholder="Search with title, actor or content" type="text" name="searchString" id="searchString" />
 
-                        <p>
-                            <a asp-action="Create"><input type="button" class="createButton mb-2 button" style="width:100px" value="Create New" /></a>
-                        </p>
+                                @Html.DropDownList("Category", @ViewBag.Category, "All Category", new { @class = "form-control searchFilter" })
 
-                        <div id="content">
-                            <ul id="tabs" class="nav nav-tabs">
-                                <li class="nav-item active">
-                                    <a class="nav-link active" href="#tab1" data-toggle="tab">News Content</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#tab2" data-toggle="tab">News Details</a>
-                                </li>
+                                <div style="margin-top:10px; display: inline">
+                                    <i class="fas fa-search"></i>
+                                    <input class="searchButton button" type="submit" name="submit" value="Search News" />
+                                </div>
+                                <br /><br /><br />
+                            </form>
 
-                            </ul>
-                            <div id="my-tab-content" class="tab-content">
-                                <div class="tab-pane active" id="tab1">
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        <a class="text-decoration-none" asp-action="Index" asp-route-sortExpression="@ViewData["SortParamTitle"]">@Html.DisplayNameFor(model => model.Title)</a>
-                                                        <i class="@ViewData["SortIconTitle"]" aria-hidden="true"></i>
-                                                    </th>
-                                                    <th>
-                                                        <a class="text-decoration-none" asp-action="Index" asp-route-sortExpression="@ViewData["SortActor"]">@Html.DisplayNameFor(model => model.Actor)</a>
-                                                        <i class="@ViewData["SortIconActor"]" aria-hidden="true"></i>
-                                                    </th>
-                                                    <th>
-                                                        <a class="text-decoration-none" asp-action="Index" asp-route-sortExpression="@ViewData["SortPublishedDateDesc"]">@Html.DisplayNameFor(model => model.PublishedDate)</a>
-                                                        <i class="@ViewData["SortIconPublishedDate"]" aria-hidden="true"></i>
-                                                    </th>
-                                                    <th>
-                                                        <a class="text-decoration-none" asp-action="Index" asp-route-sortExpression="@ViewData["SortCategory"]">@Html.DisplayNameFor(model => model.Category)</a>
-                                                        <i class="@ViewData["SortIconCategory"]" aria-hidden="true"></i>
-                                                    </th>
-                                                    <th>
-                                                        @Html.DisplayNameFor(model => model.ParentCategory)
-                                                    </th>
-                                                    <th>
-                                                        @Html.DisplayNameFor(model => model.Content)
-                                                    </th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (var item in Model)
-                                                {
+                            <p>
+                                <a asp-action="Create"><input type="button" class="createButton mb-2 button" style="width:100px" value="Create New" /></a>
+                            </p>
+
+                            <div id="content">
+                                <ul id="tabs" class="nav nav-tabs">
+                                    <li class="nav-item active">
+                                        <a class="nav-link active" href="#tab1" data-toggle="tab">News Content</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#tab2" data-toggle="tab">News Details</a>
+                                    </li>
+
+                                </ul>
+                                <div id="my-tab-content" class="tab-content">
+                                    <div class="tab-pane active" id="tab1">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
                                                     <tr>
-                                                        <td>
-                                                            @Html.DisplayFor(modelItem => item.Title)
-                                                        </td>
-                                                        <td>
-                                                            @Html.DisplayFor(modelItem => item.Actor)
-                                                        </td>
-                                                        <td>
-                                                            @Html.DisplayFor(modelItem => item.PublishedDate)
-                                                        </td>
-                                                        <td>
-                                                            @Html.DisplayFor(modelItem => item.Category)
-                                                        </td>
-                                                        <td>
-                                                            @Html.DisplayFor(modelItem => item.ParentCategory)
-                                                        </td>
-                                                        <td style="white-space: nowrap; overflow:hidden; text-overflow:ellipsis;">
-                                                            @Html.Raw(item.Content)
-                                                        </td>
-                                                        <td>
-                                                            <a asp-action="Edit" asp-route-id="@item.ID"><input type="button" class="editButton mb-2 button" style="width:80px" value="Edit" /></a>
-                                                            <a asp-action="Details" asp-route-id="@item.ID"><input type="button" class="detailsButton mb-2 button" style="width:80px" value="View" /></a>
-                                                            <a asp-action="Delete" asp-route-id="@item.ID"><input type="button" class="deleteButton mb-2 button" style="width:80px" value="Delete" /></a>
-                                                        </td>
+                                                        <th>
+                                                            <a class="text-decoration-none" asp-action="Index" asp-route-sortExpression="@ViewData["SortParamTitle"]">@Html.DisplayNameFor(model => model.Title)</a>
+                                                            <i class="@ViewData["SortIconTitle"]" aria-hidden="true"></i>
+                                                        </th>
+                                                        <th>
+                                                            <a class="text-decoration-none" asp-action="Index" asp-route-sortExpression="@ViewData["SortActor"]">@Html.DisplayNameFor(model => model.Actor)</a>
+                                                            <i class="@ViewData["SortIconActor"]" aria-hidden="true"></i>
+                                                        </th>
+                                                        <th>
+                                                            <a class="text-decoration-none" asp-action="Index" asp-route-sortExpression="@ViewData["SortPublishedDateDesc"]">@Html.DisplayNameFor(model => model.PublishedDate)</a>
+                                                            <i class="@ViewData["SortIconPublishedDate"]" aria-hidden="true"></i>
+                                                        </th>
+                                                        <th>
+                                                            <a class="text-decoration-none" asp-action="Index" asp-route-sortExpression="@ViewData["SortCategory"]">@Html.DisplayNameFor(model => model.Category)</a>
+                                                            <i class="@ViewData["SortIconCategory"]" aria-hidden="true"></i>
+                                                        </th>
+                                                        <th>
+                                                            @Html.DisplayNameFor(model => model.ParentCategory)
+                                                        </th>
+                                                        <th>
+                                                            @Html.DisplayNameFor(model => model.Content)
+                                                        </th>
+                                                        <th>Action</th>
                                                     </tr>
-                                                }
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item in Model)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => item.Title)
+                                                            </td>
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => item.Actor)
+                                                            </td>
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => item.PublishedDate)
+                                                            </td>
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => item.Category)
+                                                            </td>
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => item.ParentCategory)
+                                                            </td>
+                                                            <td>
+                                                                <div class="contentRow">
+                                                                    @Html.Raw(item.Content)
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <a asp-action="Edit" asp-route-id="@item.ID"><input type="button" class="editButton mb-2 button" style="width:80px" value="Edit" /></a>
+                                                                <a asp-action="Details" asp-route-id="@item.ID"><input type="button" class="detailsButton mb-2 button" style="width:80px" value="View" /></a>
+                                                                <a asp-action="Delete" asp-route-id="@item.ID"><input type="button" class="deleteButton mb-2 button" style="width:80px" value="Delete" /></a>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                     <div class="tab-pane table-responsive" id="tab2">
@@ -165,10 +198,10 @@
                                         </table>
                                     </div>
                                 </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>

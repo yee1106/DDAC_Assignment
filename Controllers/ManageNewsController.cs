@@ -60,6 +60,25 @@ namespace DDAC_Assignment.Controllers
             IEnumerable<SelectListItem> items = new SelectList(await querydropdownlist.Distinct().ToListAsync());
             ViewBag.Category = items;
 
+            ViewBag.totalNews = news.Count();
+            int totalApproved = 0;
+            int totalNotPublish = 0;
+            foreach (var item in news)
+            {
+                if (item.Status == "Approved")
+                {
+                    totalApproved++;
+                }
+                if(item.PublishedDate > DateTime.Now)
+                {
+                    totalNotPublish++;
+                }
+            }
+            ViewBag.totalNotPublish = totalNotPublish;
+            ViewBag.totalApproved = totalApproved;
+            ViewBag.today = DateTime.Now;
+
+
             if (!String.IsNullOrEmpty(searchString))
             {
                 news = news.Where(s => s.Title.Contains(searchString) || s.Actor.Contains(searchString) || s.Content.Contains(searchString));
@@ -143,16 +162,6 @@ namespace DDAC_Assignment.Controllers
 
             news = GetItems(news, sortproperty, sortOrder);
 
-            /*foreach(var item in news)
-            {
-                HtmlString str = new HtmlString(item.Content);
-                if (str.ToString().Length > 100)
-                {
-                    item.Content = str.ToString().Substring(0, 100) + "...";
-                    
-                }
-                
-            }*/
             return View(await news.ToListAsync());
 
             //return View(await _context.News.ToListAsync());

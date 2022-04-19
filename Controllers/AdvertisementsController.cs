@@ -89,7 +89,6 @@ namespace DDAC_Assignment.Controllers
                     advertisement = advertisement.Where(s => s.PublishedDate >= DateTime.Now.AddYears(-1) && s.PublishedDate <= DateTime.Now);
                 }
             }
-
             await GetImageFromS3();
             return View(await advertisement.ToListAsync());
         }
