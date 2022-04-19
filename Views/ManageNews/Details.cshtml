@@ -11,7 +11,7 @@
 <div style="display:flex; justify-content:space-between">
     @if (ViewBag.hasPrevious)
     {
-        <a class="categoryTag pr-2 btnHover switchPageBtn" style="background-color:lightseagreen; width:80px; display:flex; justify-content:center" asp-action="Details" asp-route-id="@Model.ID" asp-route-switchPageId="@ViewBag.previousId">Previous</a>
+        <a class="categoryTag pr-2 btnHover switchPageBtn" asp-action="Details" asp-route-id="@Model.ID" asp-route-switchPageId="@ViewBag.previousId"><i class="mdi mdi-arrow-left"></i>Previous</a>
     }
     else
     {
@@ -19,7 +19,7 @@
     }
     @if (ViewBag.hasNext)
     {
-        <a class="categoryTag btnHover switchPageBtn" style="background-color:lightseagreen; width:80px; display:flex; justify-content:center" asp-action="Details" asp-route-id="@Model.ID" asp-route-switchPageId="@ViewBag.nextId">Next</a>
+        <a class="categoryTag btnHover switchPageBtn" asp-action="Details" asp-route-id="@Model.ID" asp-route-switchPageId="@ViewBag.nextId"><i class="mdi mdi-arrow-right"></i>Next</a>
     }
 </div>
 <hr />
@@ -62,7 +62,7 @@
     <h2>Comments</h2>
 </div>
 <div class="mt-5">
-    <a class="categoryTag pr-2 btnHover" style="background-color:darkblue" asp-action="Edit" asp-route-id="@Model.ID">Edit</a>
-    <a class="categoryTag btnHover" style="background-color:indigo" asp-action="Index">Back to List</a>
+    <a class="categoryTag pr-2 btnHover" style="background-color:darkblue; text-decoration: none;" asp-action="Edit" asp-route-id="@Model.ID">Edit</a>
+    <a class="categoryTag btnHover" style="background-color:indigo; text-decoration: none;" asp-action="Index">Back</a>
 </div>
 

@@ -9,7 +9,7 @@
 
 <div class="row">
     <div class="col-lg-4 d-flex grid-margin stretch-card">
-        <div class="card sale-visit-statistics-border">
+        <div class="card sale-visit-statistics-border cardStatistic">
             <div class="card-body">
                 <h2 class="text-dark mb-2 font-weight-bold statisticLayout"><i class="mdi mdi-newspaper menu-icon"></i>@ViewBag.totalNews</h2>
                 <h4 class="card-title mb-2">Total News</h4>
@@ -19,7 +19,7 @@
     </div>
 
     <div class="col-lg-4 d-flex grid-margin stretch-card">
-        <div class="card sale-diffrence-border">
+        <div class="card sale-diffrence-border cardStatistic">
             <div class="card-body">
                 <h2 class="text-dark mb-2 font-weight-bold statisticLayout"><i class="mdi mdi-playlist-check menu-icon"></i>@ViewBag.totalApproved</h2>
                 <h4 class="card-title mb-2">Total Approved</h4>
@@ -28,7 +28,7 @@
         </div>
     </div>
     <div class="col-lg-4 d-flex grid-margin stretch-card">
-        <div class="card sale-visit-statistics-border">
+        <div class="card sale-visit-statistics-border cardStatistic">
             <div class="card-body">
                 <h2 class="text-dark mb-2 font-weight-bold statisticLayout"><i class="mdi mdi-calendar-today"></i>@ViewBag.totalNotPublish</h2>
                 <h4 class="card-title mb-2">Not Yet Published</h4>
@@ -51,6 +51,21 @@
                                 <input class="form-control searchFilter" placeholder="Search with title, actor or content" type="text" name="searchString" id="searchString" />
 
                                 @Html.DropDownList("Category", @ViewBag.Category, "All Category", new { @class = "form-control searchFilter" })
+
+                                <div class="form-group" style="display: inline">
+                                    <select name="Status" class="form-control searchFilter">
+                                        <option value="">Filter Status</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Approved">Approved</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="display: inline">
+                                    <select name="Visibility" class="form-control searchFilter">
+                                        <option value="">Filter Visibility</option>
+                                        <option value="Visible">Visible</option>
+                                        <option value="Invisible">Invisible</option>
+                                    </select>
+                                </div>
 
                                 <div style="margin-top:10px; display: inline">
                                     <i class="fas fa-search"></i>

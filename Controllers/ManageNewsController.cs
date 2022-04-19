@@ -48,7 +48,7 @@ namespace DDAC_Assignment.Controllers
         }
 
         // GET: News
-        public async Task<IActionResult> Index(string searchString, string Category, string sortExpression="")
+        public async Task<IActionResult> Index(string searchString, string Category, string Status, string Visibility, string sortExpression="")
         {
             var news = from m in _context.News
                          select m;
@@ -87,6 +87,16 @@ namespace DDAC_Assignment.Controllers
             if (!String.IsNullOrEmpty(Category))
             {
                 news = news.Where(s => s.Category.Equals(Category));
+            }
+
+            if (!String.IsNullOrEmpty(Status))
+            {
+                news = news.Where(s => s.Status.Equals(Status));
+            }
+
+            if (!String.IsNullOrEmpty(Visibility))
+            {
+                news = news.Where(s => s.Visibility.Equals(Visibility));
             }
 
             /*ViewData["sortByTitle"] = String.IsNullOrEmpty(sortByTitle) ? "Title" : "";

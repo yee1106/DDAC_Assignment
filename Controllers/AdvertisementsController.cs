@@ -56,7 +56,7 @@ namespace DDAC_Assignment.Controllers
         }
 
         // GET: Advertisements
-        public async Task<IActionResult> Index(string searchString, string publishedDate)
+        public async Task<IActionResult> Index(string searchString, string publishedDate, string Position, string Visibility)
         {
             var advertisement = from m in _context.Advertisement
                                 select m;
@@ -88,6 +88,16 @@ namespace DDAC_Assignment.Controllers
                 {
                     advertisement = advertisement.Where(s => s.PublishedDate >= DateTime.Now.AddYears(-1) && s.PublishedDate <= DateTime.Now);
                 }
+            }
+
+            if (!String.IsNullOrEmpty(Position))
+            {
+                advertisement = advertisement.Where(s => s.Position.Equals(Position));
+            }
+
+            if (!String.IsNullOrEmpty(Visibility))
+            {
+                advertisement = advertisement.Where(s => s.Visibility.Equals(Visibility));
             }
             await GetImageFromS3();
             return View(await advertisement.ToListAsync());
