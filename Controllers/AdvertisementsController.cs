@@ -16,6 +16,7 @@ using Amazon.S3.Model;
 using System.Net.Http;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Hosting;
+using System.Text;
 
 namespace DDAC_Assignment.Controllers
 {
@@ -23,20 +24,22 @@ namespace DDAC_Assignment.Controllers
     {
         private readonly DDAC_AssignmentNewsDatabase _context;
         const string bucketname = "ddacimagebucket";
-        Uri addressForRefresh = new Uri("https://40jdw173md.execute-api.us-east-1.amazonaws.com/refreshNewsTemplateAPI");
+        /*Uri addressForRefresh = new Uri("https://40jdw173md.execute-api.us-east-1.amazonaws.com/refreshNewsTemplateAPI");
+        string refreshURL = "https://40jdw173md.execute-api.us-east-1.amazonaws.com/refreshNewsTemplateAPI";
         Uri addressForReturn = new Uri("https://pauyre9e93.execute-api.us-east-1.amazonaws.com/getNewsTemplate");
         HttpClient clientRefresh;
-        HttpClient clientReturn;
+        HttpClient clientReturn;*/
         List<NewsTemplate> advertisementTemplate;
         private IWebHostEnvironment _hostEnvironemnt;
 
         public AdvertisementsController(DDAC_AssignmentNewsDatabase context, IWebHostEnvironment environment)
         {
-            clientRefresh = new HttpClient();
+            /*clientRefresh = new HttpClient();
             clientReturn = new HttpClient();
             clientRefresh.BaseAddress = addressForRefresh;
-            clientReturn.BaseAddress = addressForReturn;
-            GetApiModel();
+            clientReturn.BaseAddress = addressForReturn;*/
+            //GetApiModel();
+            advertisementTemplate = Program.advertisementTemplateList;
             _context = context;
             _hostEnvironemnt = environment;
         }
@@ -193,9 +196,12 @@ namespace DDAC_Assignment.Controllers
             return View(advertisement);
         }
 
-        public async Task GetApiModel(){
+        /*public async Task GetApiModel(){
             GetApiModel getApiModel = new GetApiModel();
             //HttpResponseMessage responseRefresh = clientRefresh.GetAsync(clientRefresh.BaseAddress).Result;
+            GetApiModel postApiModel = new GetApiModel();
+            HttpResponseMessage responseRefresh1 = clientRefresh.PostAsync(refreshURL, new StringContent(JsonConvert.SerializeObject(postApiModel), Encoding.UTF8, "application/json")).Result;
+
             HttpResponseMessage responseReturn = clientReturn.GetAsync(clientReturn.BaseAddress).Result;
 
             if (responseReturn.IsSuccessStatusCode)
@@ -205,20 +211,10 @@ namespace DDAC_Assignment.Controllers
 
                 if (getApiModel != null)
                 {
-                    /*if ("001" == getApiModel.body[0].MessageID)
-                    {
-                        headerTemplate = getApiModel.body[0];
-                        footerTemplate = getApiModel.body[1];
-                    }
-                    else
-                    {
-                        headerTemplate = getApiModel.body[1];
-                        footerTemplate = getApiModel.body[2];
-                    }*/
                     advertisementTemplate = getApiModel.body;
                 }
             }
-        }
+        }*/
 
         // GET: Advertisements/Create
         public async Task<IActionResult> Create(string msg = "")

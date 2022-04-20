@@ -19,7 +19,7 @@
     }
     @if (ViewBag.hasNext)
     {
-        <a class="categoryTag btnHover switchPageBtn" asp-action="Details" asp-route-id="@Model.ID" asp-route-switchPageId="@ViewBag.nextId"><i class="mdi mdi-arrow-right"></i>Next</a>
+        <a class="categoryTag btnHover switchPageBtn" asp-action="Details" asp-route-id="@Model.ID" asp-route-switchPageId="@ViewBag.nextId">Next<i class="mdi mdi-arrow-right"></i></a>
     }
 </div>
 <hr />

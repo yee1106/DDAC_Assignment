@@ -20,10 +20,18 @@ namespace DDAC_Assignment
 {
     public class Program
     {
+        public static List<NewsTemplate> advertisementTemplateList = new List<NewsTemplate>(); 
         public static async Task Main(string[] args)
         {
             //CreateHostBuilder(args).Build().Run();
             var host = CreateHostBuilder(args).Build();
+
+            //invoke news template URL and retrive data
+            try
+            {
+                advertisementTemplateList = AdvertisementDatabase.Initialize();
+            }
+            catch (Exception ex){}
 
             //call the initialize function here
             using (var Scope = host.Services.CreateScope())
