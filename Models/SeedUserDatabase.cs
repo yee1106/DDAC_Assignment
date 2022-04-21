@@ -22,8 +22,8 @@ namespace DDAC_Assignment.Models
         {
             var defaultUser = new DDAC_AssignmentUser
             {
-                UserName = "admin@ddac.com",
-                Email = "admin@ddac.com",
+                UserName = Configuration.default_admin.UserName,
+                Email = Configuration.default_admin.Email,
                 FullName = "Admin",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true
@@ -34,7 +34,7 @@ namespace DDAC_Assignment.Models
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(defaultUser, "DDACadmin123@");
+                    await userManager.CreateAsync(defaultUser, Configuration.default_admin.password);
                     await userManager.AddToRoleAsync(defaultUser, role.Roles.User.ToString());
                     await userManager.AddToRoleAsync(defaultUser, role.Roles.Admin.ToString());
                     await userManager.AddToRoleAsync(defaultUser, role.Roles.Staff.ToString());

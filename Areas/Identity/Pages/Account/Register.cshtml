@@ -34,6 +34,11 @@
                                         <input asp-for="Input.ConfirmPassword" class="form-control" />
                                         <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                                     </div>
+                                    <div class="form-group">
+                                        <label asp-for="Input.userrole"></label>
+                                        <select asp-for="Input.userrole" asp-items="Model.RoleSelectList" class="form-control"></select>
+                                        <span asp-validation-for="Input.userrole" class="text-danger"></span>
+                                    </div>
                                     <button type="submit" class="btn btn-success" style="color: white">Register</button>
                                     <div class="text-center mt-4 font-weight-light">
                                         Already have account? <a asp-area="Identity" asp-page="/Account/Login" class="text-primary">Log In</a>

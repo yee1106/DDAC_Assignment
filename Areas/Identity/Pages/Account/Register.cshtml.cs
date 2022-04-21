@@ -48,9 +48,8 @@ namespace DDAC_Assignment.Areas.Identity.Pages.Account
                 new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
                 {
                     new SelectListItem { Selected = true, Text = "Select Role", Value = ""},
-                    new SelectListItem { Selected = true, Text = "Admin", Value = "Admin"},
-                    new SelectListItem { Selected = true, Text = "User", Value = "User"},
-                    new SelectListItem { Selected = true, Text = "Staff", Value = "Staff"},
+                    new SelectListItem { Selected = true, Text = role.Roles.User.ToString(), Value = role.Roles.User.ToString()},
+                    new SelectListItem { Selected = true, Text = role.Roles.Staff.ToString(), Value = role.Roles.Staff.ToString()},
                 }, "Value", "Text", 1
             );
 
@@ -85,7 +84,7 @@ namespace DDAC_Assignment.Areas.Identity.Pages.Account
             public string FullName { get; set; }
 
             [Display(Name = "User Role")]
-            public string userroles { get; set; }
+            public string userrole { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -109,9 +108,9 @@ namespace DDAC_Assignment.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     
-                    _logger.LogInformation("User created a new account with password.");
-                    
-                    await _userManager.AddToRoleAsync(user, role.Roles.User.ToString()); // assign user role
+                    _logger.LogInformation("User created a new account with password.");         
+
+                    await _userManager.AddToRoleAsync(user, Input.userrole); // assign user role
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -122,7 +121,7 @@ namespace DDAC_Assignment.Areas.Identity.Pages.Account
                         protocol: Request.Scheme);
 
                     // Call api to send confirmation email by using aws lambda function
-                    // await Email.send_email_confirmation_api(user.Email, user.FullName, callbackUrl);
+                    //await Email.send_email_confirmation_api(user.Email, user.FullName, callbackUrl);
 
                     // TODO Remove these lines
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
