@@ -24,5 +24,7 @@ namespace DDAC_Assignment.Models
         public string Category { get; set; }
 
         public string ParentCategory { get; set; }
+
+        public string ImagePath { get; set; }
     }
 }

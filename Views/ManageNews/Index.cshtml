@@ -1,4 +1,7 @@
-﻿@model IEnumerable<DDAC_Assignment.Models.News>
+﻿@using X.PagedList.Mvc.Core; <!--import to get HTML Helper-->
+@using X.PagedList;
+
+@model IEnumerable<DDAC_Assignment.Models.News>
 
 @{
     ViewData["Title"] = "Index";
@@ -37,46 +40,49 @@
         </div>
     </div>
 </div>
-    <div class="container-fluid page-body-wrapper">
-        <div class="content-wrapper">
-            <div class="row">
-                <div class="col-lg-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
+<div class="container-fluid page-body-wrapper">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
 
-                            <h1>News Management</h1>
+                        <h1>News Management</h1>
 
-                            <form method="" action="">
-                                <!--<strong>Enter the title, actor or content that you want to search = </strong>-->
-                                <input class="form-control searchFilter" placeholder="Search with title, actor or content" type="text" name="searchString" id="searchString" />
+                        <form method="" action="">
+                            <!--<strong>Enter the title, actor or content that you want to search = </strong>-->
+                            <input class="form-control searchFilter" placeholder="Search with title, actor or content" type="text" name="searchString" id="searchString" />
 
-                                @Html.DropDownList("Category", @ViewBag.Category, "All Category", new { @class = "form-control searchFilter" })
+                            @Html.DropDownList("Category", @ViewBag.Category, "All Category", new { @class = "form-control searchFilter" })
+                            @Html.DropDownList("Status", @ViewBag.Status, "Filter Status", new { @class = "form-control searchFilter" })
+                            @Html.DropDownList("Visibility", @ViewBag.Visibility, "Filter Visibility", new { @class = "form-control searchFilter" })
+                            <!--<div class="form-group" style="display: inline">
+                                <select name="Status" class="form-control searchFilter">
+                                    <option value="">Filter Status</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Approved">Approved</option>
+                                </select>
+                            </div>-->
 
-                                <div class="form-group" style="display: inline">
-                                    <select name="Status" class="form-control searchFilter">
-                                        <option value="">Filter Status</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Approved">Approved</option>
-                                    </select>
-                                </div>
-                                <div class="form-group" style="display: inline">
-                                    <select name="Visibility" class="form-control searchFilter">
-                                        <option value="">Filter Visibility</option>
-                                        <option value="Visible">Visible</option>
-                                        <option value="Invisible">Invisible</option>
-                                    </select>
-                                </div>
-
-                                <div style="margin-top:10px; display: inline">
-                                    <i class="fas fa-search"></i>
-                                    <input class="searchButton button" type="submit" name="submit" value="Search News" />
-                                </div>
-                                <br /><br /><br />
-                            </form>
+                            <div style="margin-top:10px; display: inline">
+                                <i class="fas fa-search"></i>
+                                <input class="searchButton button" type="submit" name="submit" value="Search News" />
+                            </div>
+                            <br /><br /><br />
+                        </form>
 
                             <p>
                                 <a asp-action="Create"><input type="button" class="createButton mb-2 button" style="width:100px" value="Create New" /></a>
                             </p>
+
+                            @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page = page }),
+                            new X.PagedList.Mvc.Common.PagedListRenderOptions
+                            {
+                                DisplayItemSliceAndTotal = true,
+                                ContainerDivClasses = new[] { "navigation" },
+                                LiElementClasses = new[] { "page-item" },
+                                PageClasses = new[] { "page-link" },
+                            })
 
                             <div id="content">
                                 <ul id="tabs" class="nav nav-tabs">
@@ -220,3 +226,14 @@
             </div>
         </div>
     </div>
+
+    @section Scripts{
+        <script>
+            // Workaround to fix style of text for showing items .. through ..
+            // Problem related to Boostrap 4 according to issue in link below
+            // https://github.com/dncuug/X.PagedList/issues/127
+            $(document).ready(function () {
+                $('ul.pagination > li.disabled > a').addClass('page-link');
+            });
+        </script>
+    }

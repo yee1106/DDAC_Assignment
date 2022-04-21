@@ -120,9 +120,12 @@
 .contentRow::-webkit-scrollbar:vertical {
     width: 11px;
 }
+.contentRow::-webkit-scrollbar:horizontal{
+    height: 11px;
+}
 
-.statisticLayout{
-    display:flex;
+.statisticLayout {
+    display: flex;
 }
 
 .cardStatistic:hover {

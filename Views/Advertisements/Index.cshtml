@@ -67,14 +67,16 @@
                                     <div class="gridDisplay mt-2">
                                         @foreach (var item in Model)
                                         {
-                                            @foreach (var items in @ViewBag.URLs)
+                                            
+                                            @foreach (var items in @ViewBag.result)
                                             {
-                                                @if (items.Split("\n")[1] == ("advertisementImages/" + item.ImagePath))
+                                                @if (items.Key == ("advertisementImages/" + item.ImagePath))
                                                 {
+                                                    string link = "https://" + items.BucketName + ".s3.amazonaws.com/" + items.Key;
                                                     <div class="displayLayout mt-2 item">
                                                         <a style="text-decoration: none" asp-action="Details" asp-route-id="@item.ID">
                                                             <div>
-                                                                <img src="@items.Split("\n")[0]" width="450px" height="300px" />
+                                                                <img src="@link" width="450px" height="300px" />
                                                                 <h5><strong>@item.Description</strong></h5>
                                                                 <div class="mb-1" style="color:darkgrey; font-size:18px;">@item.Advertiser</div>
                                                                 <div class="tagRow">

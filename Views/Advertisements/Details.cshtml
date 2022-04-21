@@ -32,38 +32,46 @@
                 <span><strong class="mr-1">Updated</strong>@ViewBag.data.LastUpdatedDate</span>
             </div>
             <div class="mb-4">
-                @if (ViewBag.category == "Technology")
+                <!--@if (ViewBag.category == "Technology")
+    {
+        string str = "/newsImage/techImage.png";
+        <div class="displayLayout"><img src="@str" /></div>
+    }
+    else if (ViewBag.category == "Business")
+    {
+        <div class="displayLayout"><img src="/newsImage/businessImage.png" /></div>
+    }
+    else if (ViewBag.category == "World")
+    {
+        <div class="displayLayout"><img src="/newsImage/worldImage.png" /></div>
+    }
+    else if (ViewBag.category == "Entertainment")
+    {
+        <div class="displayLayout"><img src="/newsImage/entertainmentImage.png" /></div>
+    }
+    else if (ViewBag.category == "Sport")
+    {
+        <div class="displayLayout"><img src="/newsImage/sportImage.png" /></div>
+    }
+    else if (ViewBag.category == "Science")
+    {
+        <div class="displayLayout"><img src="/newsImage/scienceImage.png" /></div>
+    }
+    else if (ViewBag.category == "Health")
+    {
+        <div class="displayLayout"><img src="/newsImage/healthImage.png" /></div>
+    }
+    else
+    {
+        <div class="displayLayout"><img src="/newsImage/localImage.png" /></div>
+    }-->
+                @if (!string.IsNullOrEmpty(ViewBag.data.ImagePath))
                 {
-                    <div class="displayLayout"><img src="/newsImage/techImage.png" /></div>
+                    string path = "/newsImage/" + @ViewBag.data.ImagePath;
+                    <div class="displayLayout"><img src="@path" /></div>
                 }
-                else if (ViewBag.category == "Business")
-                {
-                    <div class="displayLayout"><img src="/newsImage/businessImage.png" /></div>
-                }
-                else if (ViewBag.category == "World")
-                {
-                    <div class="displayLayout"><img src="/newsImage/worldImage.png" /></div>
-                }
-                else if (ViewBag.category == "Entertainment")
-                {
-                    <div class="displayLayout"><img src="/newsImage/entertainmentImage.png" /></div>
-                }
-                else if (ViewBag.category == "Sport")
-                {
-                    <div class="displayLayout"><img src="/newsImage/sportImage.png" /></div>
-                }
-                else if (ViewBag.category == "Science")
-                {
-                    <div class="displayLayout"><img src="/newsImage/scienceImage.png" /></div>
-                }
-                else if (ViewBag.category == "Health")
-                {
-                    <div class="displayLayout"><img src="/newsImage/healthImage.png" /></div>
-                }
-                else
-                {
-                    <div class="displayLayout"><img src="/newsImage/localImage.png" /></div>
-                }
+
+
 
                 <div class="displayLayout mb-4" style="font-size:14px; color:grey">@ViewBag.data.ImageDesciption</div>
 

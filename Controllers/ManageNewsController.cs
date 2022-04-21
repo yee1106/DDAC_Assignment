@@ -17,6 +17,7 @@ using Amazon.S3.Transfer;
 using Amazon.S3.Model;
 using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.Html;
+using X.PagedList;
 
 namespace DDAC_Assignment.Controllers
 {
@@ -48,7 +49,7 @@ namespace DDAC_Assignment.Controllers
         }
 
         // GET: News
-        public async Task<IActionResult> Index(string searchString, string Category, string Status, string Visibility, string sortExpression="")
+        public async Task<IActionResult> Index(int? page, string searchString, string Category, string Status, string Visibility, string sortExpression="")
         {
             var news = from m in _context.News
                          select m;
@@ -59,6 +60,16 @@ namespace DDAC_Assignment.Controllers
 
             IEnumerable<SelectListItem> items = new SelectList(await querydropdownlist.Distinct().ToListAsync());
             ViewBag.Category = items;
+
+            var statusList = new List<SelectListItem>();
+            statusList.Add(new SelectListItem() { Text = "Pending", Value = "Pending" });
+            statusList.Add(new SelectListItem() { Text = "Approved", Value = "Approved" });
+            ViewBag.Status = statusList;
+
+            var visibilityList = new List<SelectListItem>();
+            visibilityList.Add(new SelectListItem() { Text = "Visible", Value = "Visible" });
+            visibilityList.Add(new SelectListItem() { Text = "Invisible", Value = "Invisible" });
+            ViewBag.Visibility = visibilityList;
 
             ViewBag.totalNews = news.Count();
             int totalApproved = 0;
@@ -172,7 +183,11 @@ namespace DDAC_Assignment.Controllers
 
             news = GetItems(news, sortproperty, sortOrder);
 
-            return View(await news.ToListAsync());
+            var pageNumber = page ?? 1;
+            int pageSize = 5;
+            var newsList = news.ToPagedList(pageNumber, pageSize);
+            return View(newsList);
+            //return View(await news.ToListAsync());
 
             //return View(await _context.News.ToListAsync());
         }
@@ -327,7 +342,7 @@ namespace DDAC_Assignment.Controllers
                 {
                     if (image.Key == path)
                     {
-                        //create presigned URL for temp access from public
+                       /* //create presigned URL for temp access from public
                         GetPreSignedUrlRequest request = new GetPreSignedUrlRequest
                         {
                             BucketName = bucketname,
@@ -337,7 +352,11 @@ namespace DDAC_Assignment.Controllers
 
                         //get the generated URL path
                         //presignedURLS.Add(s3Client.GetPreSignedURL(request));
-                        urlForImage = s3Client.GetPreSignedURL(request);
+                        urlForImage = s3Client.GetPreSignedURL(request);*/
+
+                        //permanent image access
+                        string link = "https://" + image.BucketName + ".s3.amazonaws.com/" + image.Key;
+                        urlForImage = link;
                     }
                 }
                 

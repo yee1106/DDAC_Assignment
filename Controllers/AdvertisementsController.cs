@@ -131,7 +131,7 @@ namespace DDAC_Assignment.Controllers
                 }
                 while (token != null);
 
-                //create each presign URL to the objects
+                /*//create each presign URL to the objects
                 foreach (var image in result)
                 {
                     //create presigned URL for temp access from public
@@ -145,11 +145,13 @@ namespace DDAC_Assignment.Controllers
                     //get the generated URL path
                     presignedURLS.Add(s3Client.GetPreSignedURL(request) + "\n" + image.Key);
                 }
-                ViewBag.URLs = presignedURLS;
+                ViewBag.URLs = presignedURLS;*/
+
+                ViewBag.result = result;
             }
             catch (Exception ex)
             {
-
+                ViewBag.result = result;
             }
         }
 
@@ -179,14 +181,14 @@ namespace DDAC_Assignment.Controllers
             }
 
             ViewBag.data = advertisementTemplate.Find(item => item.ParentCategory == "Local");
-            ViewBag.category = advertisementTemplate.Find(item => item.ParentCategory == "Local").ParentCategory;
+            //ViewBag.category = advertisementTemplate.Find(item => item.ParentCategory == "Local").ParentCategory;
 
             for (int i = 0; i< advertisementTemplate.Count; i++)
             {
                 if (advertisement.Category.Equals(advertisementTemplate[i].ParentCategory))
                 {
                     ViewBag.data = advertisementTemplate[i];
-                    ViewBag.category = advertisementTemplate[i].ParentCategory;
+                    //ViewBag.category = advertisementTemplate[i].ParentCategory;
                 }
             }
 
@@ -446,20 +448,24 @@ namespace DDAC_Assignment.Controllers
                 {
                     if (image.Key == path)
                     {
-                        //create presigned URL for temp access from public
+                       /* //create presigned URL for temp access from public
                         GetPreSignedUrlRequest request = new GetPreSignedUrlRequest
                         {
                             BucketName = bucketname,
                             Key = image.Key,
                             Expires = DateTime.Now.AddMinutes(1)
-                        };
+                        };*/
 
                         //get the generated URL path
                         //presignedURLS.Add(s3Client.GetPreSignedURL(request));
-                        urlForImage = s3Client.GetPreSignedURL(request);
+                        //urlForImage = s3Client.GetPreSignedURL(request);
+
+                        //permanent image access
+                        string link = "https://" + image.BucketName + ".s3.amazonaws.com/" + image.Key;
+                        urlForImage = link;
                     }
                 }
-
+                
             }
             catch (Exception ex)
             {
