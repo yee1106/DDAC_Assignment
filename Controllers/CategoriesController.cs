@@ -110,8 +110,10 @@ namespace DDAC_Assignment.Controllers
             {
                 try
                 {
-                    _context.Update(category);
+                     UpdateItem(id, category);
+                    //_context.Update(category);
                     await _context.SaveChangesAsync();
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -127,6 +129,53 @@ namespace DDAC_Assignment.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
+        }
+
+        public async Task UpdateItem(int id, Category category)
+        {
+            var categories = _context.Category.ToList();
+            var oldCategory = await _context.Category.FindAsync(id);
+
+            if (oldCategory.CategoryName != category.CategoryName)
+            {
+                foreach (var item in categories)
+                {
+                    if (item.ParentCategory == oldCategory.CategoryName)
+                    {
+                        item.ParentCategory = category.CategoryName;
+                        _context.Update(item);
+                    }
+                }
+
+                var news = _context.News.ToList();
+                foreach (var newItem in news)
+                {
+                    if (newItem.ParentCategory == oldCategory.CategoryName)
+                    {
+                        newItem.ParentCategory = category.CategoryName;
+                        _context.Update(newItem);
+                    }
+                    if (newItem.Category == oldCategory.CategoryName)
+                    {
+                        newItem.Category = category.CategoryName;
+                        _context.Update(newItem);
+                    }
+                }
+
+                var advertisement = _context.Advertisement.ToList();
+                foreach (var advertisementItem in advertisement)
+                {
+                    if (advertisementItem.Category.Contains(oldCategory.CategoryName))
+                    {
+                        advertisementItem.Category = advertisementItem.Category.Replace(oldCategory.CategoryName, category.CategoryName);
+                    }
+                    _context.Update(advertisementItem);
+                }
+            }
+            oldCategory.CategoryName = category.CategoryName;
+            //oldCategory.ParentCategory = category.ParentCategory;
+            oldCategory.Description = category.Description;
+            _context.Update(oldCategory);
         }
 
         // GET: Categories/Delete/5
