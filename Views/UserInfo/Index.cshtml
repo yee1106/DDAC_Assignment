@@ -37,7 +37,7 @@
                                                     <a class="btn btn-outline-success" asp-action="Update" asp-route-id="@user.Id">
                                                         Update
                                                     </a>
-                                                    @if (user.Email == "admin@ddac.com")
+                                                    @if (user.Email == Configuration.default_admin.Email)
                                                     {
                                                         <a class="btn btn-outline-danger btn-fw" style="pointer-events: none">
                                                             Delete
