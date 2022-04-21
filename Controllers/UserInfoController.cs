@@ -76,6 +76,14 @@ namespace DDAC_Assignment.Controllers
                     EmailConfirmed = true,
                 };
                 IdentityResult result = await userManager.CreateAsync(webUser, user.Password);
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                    return View(user);
+                }
 
                 result = await userManager.AddToRolesAsync(webUser, user.roleSelectors.Where(x => x.Selected).Select(y => y.Name));
                 if (!result.Succeeded)
