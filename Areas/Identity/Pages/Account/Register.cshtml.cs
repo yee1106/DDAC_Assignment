@@ -17,6 +17,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using DDAC_Assignment.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using DDAC_Assignment.Models.APIs;
 
 namespace DDAC_Assignment.Areas.Identity.Pages.Account
 {
@@ -120,6 +121,10 @@ namespace DDAC_Assignment.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
+                    // Call api to send confirmation email by using aws lambda function
+                    // await Email.send_email_confirmation_api(user.Email, user.FullName, callbackUrl);
+
+                    // TODO Remove these lines
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
@@ -133,6 +138,7 @@ namespace DDAC_Assignment.Areas.Identity.Pages.Account
                         return LocalRedirect(returnUrl);
                     }
                 }
+                
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
