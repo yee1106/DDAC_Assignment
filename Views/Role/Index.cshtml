@@ -7,45 +7,48 @@
 
 
 <div class="container-fluid page-body-wrapper">
-        <div class="content-wrapper">
-            <div class="row">
-                <div class="col-lg-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <a asp-action="Create" class="btn btn-inverse-primary btn-fw">Create Role</a>
-                            <br />
-                            <h4 class="card-title text-info" style="text-align: center">Role Management</h4>
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr style="text-align: center">
-                                            <th>ID</th>
-                                            <th>Name</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (Microsoft.AspNetCore.Identity.IdentityRole role in Model)
-                                        {
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <a asp-action="Create" class="btn btn-inverse-primary btn-fw">Create Role</a>
+                        <br />
+                        <h4 class="card-title text-info" style="text-align: center">Role Management</h4>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr style="text-align: center">
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (Microsoft.AspNetCore.Identity.IdentityRole role in Model)
+                                    {
                                         <tr style="text-align: center">
                                             <td>@role.Id</td>
                                             <td>@role.Name</td>
                                             <td>
-                                                <a class="btn btn-outline-info btn-fw" asp-action="ViewUser" asp-route-id="@role.Id">
+                                                <a class="btn btn-inverse-primary btn-fw" asp-action="ViewUser" asp-route-id="@role.Id">
                                                     View Users
+                                                </a>
+                                                <a class="btn btn-inverse-info btn-fw" asp-controller="Permission" asp-action="Index" asp-route-roleId="@role.Id">
+                                                    Manage Permissions
                                                 </a>
                                                 @if ((role.Name == "User") || (role.Name == "Admin") || (role.Name == "Staff"))
                                                 {
-
-                                                    <a class="btn btn-outline-success" style="pointer-events: none">
+                                                    <a class="btn btn-inverse-success" style="pointer-events: none">
                                                         Update
                                                     </a>
-                                                    <a class="btn btn-outline-danger btn-fw" style="pointer-events: none">
+
+                                                    <a class="btn btn-inverse-danger btn-fw" style="pointer-events: none">
                                                         Delete
                                                     </a>
-
                                                 }
                                                 else
                                                 {
+
                                                     <a class="btn btn-outline-success" asp-action="Update" asp-route-id="@role.Id">
                                                         Update
                                                     </a>
@@ -54,15 +57,15 @@
                                                     </a>
                                                 }
                                             </td>
-                                         </tr>
-                                         }
-                                    </tbody>
-                                </table>
-                            </div>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 </div>
 

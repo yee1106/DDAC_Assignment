@@ -10,6 +10,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using DDAC_Assignment.Data;
+using Microsoft.AspNetCore.Authorization;
+using DDAC_Assignment.Models.Permission;
 
 namespace DDAC_Assignment
 {
@@ -25,8 +27,11 @@ namespace DDAC_Assignment
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Registering the Service for Permissions Authorization
+            services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+            services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+
             services.AddControllersWithViews();
-            //services.AddDbContext<>()
             services.AddRazorPages();
 
             services.AddDbContext<DDAC_AssignmentNewsDatabase>(options =>

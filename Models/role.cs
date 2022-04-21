@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace DDAC_Assignment.Models
@@ -27,4 +29,12 @@ namespace DDAC_Assignment.Models
         [DataType(DataType.Text)]
         public string Name { get; set; }
     }
+
+    public class RoleClaimsViewModel
+    {
+        public string Type { get; set; }
+        public string Value { get; set; }
+        public bool Selected { get; set; }
+    }
+
 }
