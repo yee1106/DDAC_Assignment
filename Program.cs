@@ -50,6 +50,17 @@ namespace DDAC_Assignment
                     logger.LogError(ex, "An error occured seeding the category database");
                 }
 
+                try
+                {
+                    var context = services.GetRequiredService<DDAC_AssignmentNewsDatabase>();
+                    context.Database.Migrate();
+                    SeedNewsDatabase.Initialize(services); // invoke the category database function before run the program
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "An error occured seeding the news database");
+                }
+
                 // seed user database
                 try
                 {
