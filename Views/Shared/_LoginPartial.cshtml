@@ -1,37 +1,44 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using DDAC_Assignment.Areas.Identity.Data
 
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using DDAC_Assignment.Models
+
 @inject SignInManager<DDAC_AssignmentUser> SignInManager
 @inject UserManager<DDAC_AssignmentUser> UserManager
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <a class="nav-link" asp-area="" asp-controller="Categories" asp-action="Index">
-            <i class="mdi mdi-view-grid menu-icon"></i>
-            <span class="menu-title">Category Management</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" asp-area="" asp-controller="ManageNews" asp-action="Index">
-            <i class="mdi mdi-newspaper menu-icon"></i>
-            <span class="menu-title">News Management</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" asp-area="" asp-controller="Advertisements" asp-action="Index">
-            <i class="mdi mdi-star-outline menu-icon"></i>
-            <span class="menu-title">Advertisement Management</span>
-        </a>
-    </li>
-    @if (User.IsInRole("Admin"))
+    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Category.View)).Result.Succeeded)
     {
         <li class="nav-item">
-            <a class="nav-link" asp-area="" asp-controller="UserInfo" asp-action="Index">
-                <i class="mdi mdi-account menu-icon"></i>
-                <span class="menu-title">User Management</span>
+            <a class="nav-link" asp-area="" asp-controller="Categories" asp-action="Index">
+                <i class="mdi mdi-view-grid menu-icon"></i>
+                <span class="menu-title">Category Management</span>
             </a>
         </li>
+    }
+    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.News.View)).Result.Succeeded)
+    {
+        <li class="nav-item">
+            <a class="nav-link" asp-area="" asp-controller="ManageNews" asp-action="Index">
+                <i class="mdi mdi-newspaper menu-icon"></i>
+                <span class="menu-title">News Management</span>
+            </a>
+        </li>
+    }
+    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Advertisements.View)).Result.Succeeded)
+    {
+        <li class="nav-item">
+            <a class="nav-link" asp-area="" asp-controller="Advertisements" asp-action="Index">
+                <i class="mdi mdi-star-outline menu-icon"></i>
+                <span class="menu-title">Advertisement Management</span>
+            </a>
+        </li>
+    }
+    @if (User.IsInRole("Admin"))
+    {
         <li class="nav-item">
             <a class="nav-link" asp-area="" asp-controller="Role" asp-action="Index">
                 <i class="mdi mdi-account-multiple-outline menu-icon"></i>
@@ -39,7 +46,15 @@
             </a>
         </li>
     }
-
+    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.User.View)).Result.Succeeded)
+    {
+        <li class="nav-item">
+            <a class="nav-link" asp-area="" asp-controller="UserInfo" asp-action="Index">
+                <i class="mdi mdi-account menu-icon"></i>
+                <span class="menu-title">User Management</span>
+            </a>
+        </li>
+    }
 }
 else
 {
