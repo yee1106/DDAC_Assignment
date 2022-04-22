@@ -61,7 +61,7 @@
             </a>
         </li>
     }
-    @if (User.IsInRole("Admin"))
+    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.ReadNews.Read)).Result.Succeeded)
     {
         @foreach (var item in Program.navigationItem)
         {
