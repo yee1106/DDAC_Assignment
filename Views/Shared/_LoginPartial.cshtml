@@ -8,6 +8,10 @@
 @inject SignInManager<DDAC_AssignmentUser> SignInManager
 @inject UserManager<DDAC_AssignmentUser> UserManager
 
+@{
+    string path = Context.Request.Path;
+}
+
 @if (SignInManager.IsSignedIn(User))
 {
     @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Category.View)).Result.Succeeded)
@@ -55,6 +59,18 @@
             </a>
         </li>
     }
+    @*@if (User.IsInRole("User"))
+    {
+        @foreach (var item in Program.navigationItem)
+        {
+            <li class="nav-item">
+                <a class="nav-link" id="@item" asp-area="" asp-route-page="@item" asp-controller="News" asp-action="Index">
+                    <i class="mdi mdi-account menu-icon"></i>
+                    <span class="menu-title">@item</span>
+                </a>
+            </li>
+        }
+    }*@
 }
 else
 {
