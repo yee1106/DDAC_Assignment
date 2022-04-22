@@ -58,6 +58,9 @@ namespace DDAC_Assignment.Areas.Identity.Pages.Account
 
         public string ReturnUrl { get; set; }
 
+        [TempData]
+        public string StatusMessage { get; set; }
+
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
         public class InputModel
@@ -83,6 +86,7 @@ namespace DDAC_Assignment.Areas.Identity.Pages.Account
             [Display(Name = "Full Name")]
             public string FullName { get; set; }
 
+            [Required]
             [Display(Name = "User Role")]
             public string userrole { get; set; }
         }
@@ -102,7 +106,8 @@ namespace DDAC_Assignment.Areas.Identity.Pages.Account
                 var user = new DDAC_AssignmentUser { 
                     FullName = Input.FullName,
                     UserName = Input.Email, 
-                    Email = Input.Email
+                    Email = Input.Email,
+                    ProfilePicture = false,
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
@@ -140,7 +145,7 @@ namespace DDAC_Assignment.Areas.Identity.Pages.Account
                 
                 foreach (var error in result.Errors)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    StatusMessage = error.Description;
                 }
             }
 

@@ -78,6 +78,7 @@ namespace DDAC_Assignment.Controllers
                     Email = user.Email,
                     FullName = user.FullName,
                     EmailConfirmed = true,
+                    ProfilePicture = false,
                 };
                 string password = "DDAC"+webUser.Id;
                 
@@ -178,13 +179,11 @@ namespace DDAC_Assignment.Controllers
                 else
                 {
                     // put back admin details
-                    System.Diagnostics.Debug.WriteLine("put back admin details");
                     user.Email = current_user.Email;
                     for (int s = 0; s < user.roleSelectors.Count; s++)
                     {
                         if (user.roleSelectors[s].Name == "Admin")
                         {
-                            System.Diagnostics.Debug.WriteLine("set selector as true");
                             user.roleSelectors[s].Selected = true;
                         }
                     }

@@ -26,7 +26,8 @@ namespace DDAC_Assignment.Models
                 Email = Configuration.default_admin.Email,
                 FullName = "Admin",
                 EmailConfirmed = true,
-                PhoneNumberConfirmed = true
+                PhoneNumberConfirmed = true,
+                ProfilePicture = false
             };
 
             if (userManager.Users.All(u => u.Id != defaultUser.Id))

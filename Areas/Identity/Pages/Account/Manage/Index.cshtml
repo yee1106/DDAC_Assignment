@@ -4,27 +4,64 @@
     ViewData["Title"] = "Profile";
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
-
-<h4>@ViewData["Title"]</h4>
+@using static DDAC_Assignment.Configuration;
 <partial name="_StatusMessage" model="Model.StatusMessage" />
-<div class="row">
-    <div class="col-md-6">
-        <form id="profile-form" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Username"></label>
-                <input asp-for="Username" class="form-control" disabled />
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title text-success" >@ViewData["Title"]</h4>
+        <div class="row">
+            <div class="col-md-12">
+                <form id="profile-form" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <img src="@Model.profilePictureS3Path" alt="Profile Picture"
+                         style="border-radius: 50%; margin: 10px; text-align: center;"
+                         width="110" height="110" id="profile_pic">
+
+                    <br>
+                    <label class="btn btn-inverse-success " style="cursor: pointer;">
+                        <input type="file" asp-for="@Model.ProfilePicture" class="file-upload-default " accept="image/*" onchange="loadFile(event)" style="display: none;" />
+                        Change Photo
+                    </label>
+                        <br>
+                        <br>
+                        <div class="form-group">
+                            <label asp-for="Username"></label>
+                            <input asp-for="Username" class="form-control" disabled>
+                        </div>
+                        @if (@Model.Input.Email == default_admin.Email)
+                        {
+                            <div class="form-group">
+                                <label asp-for="Input.Email"></label>
+                                <input asp-for="Input.Email" class="form-control" placeholder="Email" disabled>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                <label asp-for="Input.Email"></label>
+                                <input asp-for="Input.Email" class="form-control" placeholder="Email">
+                            </div>
+                        }
+                        <div class="form-group">
+                            <label asp-for="Input.FullName"></label>
+                            <input asp-for="Input.FullName" class="form-control" placeholder="Email">
+                        </div>
+                        <button id="update-profile-button" type="submit" class="btn btn-success" style="color: white;">Save</button>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="Input.PhoneNumber"></label>
-                <input asp-for="Input.PhoneNumber" class="form-control" />
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-            </div>
-            <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
-        </form>
+        </div>
     </div>
 </div>
+<script>
+    var loadFile = function (event) {
 
+        var image = document.getElementById('profile_pic');
+        source = URL.createObjectURL(event.target.files[0])
+        image.src = source;
+        console.log(source)
+    };
+</script>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

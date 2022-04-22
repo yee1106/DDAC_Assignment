@@ -12,5 +12,8 @@ namespace DDAC_Assignment.Areas.Identity.Data
         [PersonalData]
         public string FullName { get; set; }
 
+        
+        public bool ProfilePicture { get; set; }
+
     }
 }

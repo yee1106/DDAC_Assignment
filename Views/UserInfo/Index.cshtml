@@ -34,18 +34,18 @@
                                                 <td>@user.Email</td>
                                                 <td>@string.Join(", ", user.Roles.ToList())</td>
                                                 <td>
-                                                    <a class="btn btn-outline-success" asp-action="Update" asp-route-id="@user.Id">
+                                                    <a class="btn btn-inverse-success" asp-action="Update" asp-route-id="@user.Id">
                                                         Update
                                                     </a>
                                                     @if (user.Email == Configuration.default_admin.Email)
                                                     {
-                                                        <a class="btn btn-outline-danger btn-fw" style="pointer-events: none">
+                                                        <a class="btn btn-inverse-danger btn-fw" style="pointer-events: none">
                                                             Delete
                                                         </a>
                                                     }
                                                     else
                                                     {
-                                                        <a class="btn btn-outline-danger btn-fw" asp-action="Delete" asp-route-id="@user.Id">
+                                                        <a class="btn btn-inverse-danger btn-fw" asp-action="Delete" asp-route-id="@user.Id">
                                                             Delete
                                                         </a>
                                                     }
