@@ -79,7 +79,9 @@ namespace DDAC_Assignment.Controllers
                     FullName = user.FullName,
                     EmailConfirmed = true,
                 };
-                IdentityResult result = await userManager.CreateAsync(webUser, user.Password);
+                string password = "DDAC"+webUser.Id;
+                
+                IdentityResult result = await userManager.CreateAsync(webUser, password);
                 if (!result.Succeeded)
                 {
                     foreach (var error in result.Errors)
@@ -88,6 +90,23 @@ namespace DDAC_Assignment.Controllers
                     }
                     return View(user);
                 }
+
+                // Call api to send password reset email by using aws lambda function
+                var code = await userManager.GeneratePasswordResetTokenAsync(webUser);
+                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                var callbackUrl = Url.Page(
+                    "/Account/ResetPassword",
+                    pageHandler: null,
+                    values: new { area = "Identity", code },
+                    protocol: Request.Scheme);
+                var response = JObject.Parse(await Email.register_and_send_password_reset_link_api(user.Email, user.FullName, callbackUrl, password));
+                if (!(response["statusCode"].ToString() == "200"))
+                {
+                    ModelState.AddModelError("", "Cannot send password reset email.");
+                    ViewBag.msg = "Cannot send password reset email.";
+                    return View(user);
+                }
+
 
                 result = await userManager.AddToRolesAsync(webUser, user.roleSelectors.Where(x => x.Selected).Select(y => y.Name));
                 if (!result.Succeeded)
