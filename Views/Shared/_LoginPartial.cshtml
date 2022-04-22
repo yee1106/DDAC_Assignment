@@ -12,6 +12,8 @@
     string path = Context.Request.Path;
 }
 
+<link rel="stylesheet" href="~/css/IndexCSS.css" />
+
 @if (SignInManager.IsSignedIn(User))
 {
     @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Category.View)).Result.Succeeded)
@@ -59,18 +61,28 @@
             </a>
         </li>
     }
-    @*@if (User.IsInRole("User"))
+    @if (User.IsInRole("Admin"))
     {
         @foreach (var item in Program.navigationItem)
         {
-            <li class="nav-item">
-                <a class="nav-link" id="@item" asp-area="" asp-route-page="@item" asp-controller="News" asp-action="Index">
-                    <i class="mdi mdi-account menu-icon"></i>
-                    <span class="menu-title">@item</span>
-                </a>
-            </li>
+            @if (Program.selectedPage == item)
+            {
+                <li class="nav-item  d-flex align-items-end">
+                    <a class="nav-link" id="@item" asp-area="" asp-route-page="@item" asp-controller="News" asp-action="Page">
+                        <span class="menu-title">@item</span>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item  d-flex align-items-end">
+                    <a class="nav-category" id="@item" asp-area="" asp-route-page="@item" asp-controller="News" asp-action="Page">
+                        <span class="menu-title">@item</span>
+                    </a>
+                </li>
+            }
         }
-    }*@
+    }
 }
 else
 {

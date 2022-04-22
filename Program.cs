@@ -22,6 +22,7 @@ namespace DDAC_Assignment
     {
         public static List<NewsTemplate> advertisementTemplateList = new List<NewsTemplate>();
         public static List<string> navigationItem = new List<string>();
+        public static string selectedPage = "";
         public static async Task Main(string[] args)
         {
             //CreateHostBuilder(args).Build().Run();

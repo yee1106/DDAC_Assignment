@@ -8,10 +8,11 @@ namespace DDAC_Assignment.Controllers
 {
     public class NewsController : Controller
     {
-        public IActionResult Index(string page)
+        public IActionResult Page(string page)
         {
             if (!string.IsNullOrEmpty(page))
             {
+                Program.selectedPage = page;
                 ViewBag.pageName = page;
             }
             return View();
