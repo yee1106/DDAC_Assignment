@@ -20,11 +20,13 @@ namespace DDAC_Assignment
 {
     public class Program
     {
-        public static List<NewsTemplate> advertisementTemplateList = new List<NewsTemplate>(); 
+        public static List<NewsTemplate> advertisementTemplateList = new List<NewsTemplate>();
+        public static List<string> navigationItem = new List<string>();
         public static async Task Main(string[] args)
         {
             //CreateHostBuilder(args).Build().Run();
             var host = CreateHostBuilder(args).Build();
+            
 
             //invoke news template URL and retrive data
             try
@@ -61,6 +63,18 @@ namespace DDAC_Assignment
                     logger.LogError(ex, "An error occured seeding the news database");
                 }
 
+                try
+                {
+                    var context = services.GetRequiredService<DDAC_AssignmentNewsDatabase>();
+                    context.Database.Migrate();
+                    navigationItem = Navigation.getNavigationItem(services); // invoke the category database function before run the program
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "An error occured seeding the news database");
+                }
+
+                
                 // seed user database
                 try
                 {
