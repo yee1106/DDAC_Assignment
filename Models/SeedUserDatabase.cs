@@ -41,6 +41,7 @@ namespace DDAC_Assignment.Models
                 }
                 await SeedClaimsForAdmin(roleManager);
                 await SeedClaimsForStaff(roleManager);
+                await SeedClaimsForUser(roleManager);
             }
         }
 
@@ -60,7 +61,13 @@ namespace DDAC_Assignment.Models
 
         public async static Task SeedClaimsForUser(RoleManager<IdentityRole> roleManager)
         {
-            var suserRole = await roleManager.FindByNameAsync("User");
+            var userRole = await roleManager.FindByNameAsync("User");
+
+            var allClaims = await roleManager.GetClaimsAsync(userRole);
+            if (!allClaims.Any(a => a.Type == "Permission" && a.Value == Permissions.ReadNews.Read))
+            {
+                await roleManager.AddClaimAsync(userRole, new Claim("Permission", Permissions.ReadNews.Read));
+            }
         }
 
         public static async Task AddPermissionClaim(RoleManager<IdentityRole> roleManager, IdentityRole role, string module)

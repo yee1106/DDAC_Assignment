@@ -46,11 +46,22 @@ namespace DDAC_Assignment.Controllers
         // GET: Categories/Create
         public async Task<IActionResult> Create()
         {
-            //generate the listing for the drop down box
+            /*//generate the listing for the drop down box
             IQueryable<string> querydropdownlist = from m in _context.Category
                                                    orderby m.CategoryName
                                                    select m.CategoryName;
             List<string> list = new List<string>(await querydropdownlist.Distinct().ToListAsync());
+            foreach(var item in list) { }*/
+            List<string> list = new List<string>();
+            var categories = await _context.Category.ToListAsync();
+            foreach(var item in categories)
+            {
+                if(item.ParentCategory == "None")
+                {
+                    list.Add(item.CategoryName);
+                }
+            }
+
             ViewBag.Category = list;
             return View();
         }
@@ -66,6 +77,7 @@ namespace DDAC_Assignment.Controllers
             {
                 _context.Add(category);
                 await _context.SaveChangesAsync();
+                await UpdateNavigation();
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
@@ -113,7 +125,7 @@ namespace DDAC_Assignment.Controllers
                      UpdateItem(id, category);
                     //_context.Update(category);
                     await _context.SaveChangesAsync();
-
+                    await UpdateNavigation();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -129,6 +141,27 @@ namespace DDAC_Assignment.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
+        }
+
+        public async Task UpdateNavigation()
+        {
+            try
+            {
+                await _context.SaveChangesAsync();
+                var navigationItems = await _context.Category.ToListAsync();
+                List<string> navigationButtons = new List<string>();
+                foreach (var item in navigationItems)
+                {
+                    if (item.ParentCategory.Equals("None"))
+                    {
+                        navigationButtons.Add(item.CategoryName);
+                    }
+                }
+                Program.navigationItem = navigationButtons;
+            }catch(Exception ex)
+            {
+                //await UpdateNavigation();
+            }
         }
 
         public async Task UpdateItem(int id, Category category)
@@ -204,6 +237,7 @@ namespace DDAC_Assignment.Controllers
             var category = await _context.Category.FindAsync(id);
             _context.Category.Remove(category);
             await _context.SaveChangesAsync();
+            await UpdateNavigation();
             return RedirectToAction(nameof(Index));
         }
 

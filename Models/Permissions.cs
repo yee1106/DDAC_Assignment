@@ -43,6 +43,11 @@ namespace DDAC_Assignment.Models
             public const string Delete = "Permissions.News.Delete";
         }
 
+        public static class ReadNews
+        {
+            public const string Read = "Permissions.ReadNews.Read";
+        }
+
         public static class Advertisements
         {
             public const string View = "Permissions.Advertisements.View";
@@ -50,6 +55,7 @@ namespace DDAC_Assignment.Models
             public const string Edit = "Permissions.Advertisements.Edit";
             public const string Delete = "Permissions.Advertisements.Delete";
         }
+
     }
 
     public class PermissionViewModel
