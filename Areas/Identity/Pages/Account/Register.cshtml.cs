@@ -121,7 +121,7 @@ namespace DDAC_Assignment.Areas.Identity.Pages.Account
                         protocol: Request.Scheme);
 
                     // Call api to send confirmation email by using aws lambda function
-                    //await Email.send_email_confirmation_api(user.Email, user.FullName, callbackUrl);
+                    // await Email.send_email_confirmation_api(user.Email, user.FullName, callbackUrl);
 
                     // TODO Remove these lines
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",

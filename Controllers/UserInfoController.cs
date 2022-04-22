@@ -8,6 +8,10 @@ using DDAC_Assignment.Areas.Identity.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using DDAC_Assignment.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
+using Microsoft.AspNetCore.WebUtilities;
+using DDAC_Assignment.Models.APIs;
+using Newtonsoft.Json.Linq;
 
 namespace DDAC_Assignment.Controllers
 {
@@ -220,6 +224,29 @@ namespace DDAC_Assignment.Controllers
                 return RedirectToAction("Index", "UserInfo", new { msg = "Unable to delete user" });
             }
             return RedirectToAction("Index", "UserInfo", new { msg = "User deleted!" });
+        }
+
+        public async Task<IActionResult> resetPassword(string id)
+        {
+            string msg = "Failed to send password reset link.";
+            var user = await userManager.FindByIdAsync(id);
+            var code = await userManager.GeneratePasswordResetTokenAsync(user);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            var callbackUrl = Url.Page(
+                "/Account/ResetPassword",
+                pageHandler: null,
+                values: new { area = "Identity", code },
+                protocol: Request.Scheme);
+
+            // Call api to send password reset email by using aws lambda function
+            var response = JObject.Parse(await Email.send_password_reset_link_api(user.Email, user.FullName, callbackUrl));
+
+            if (response["statusCode"].ToString() == "200")
+            {
+                msg = "Password Reset Link Sent!";
+            }
+
+            return RedirectToAction("Index", "UserInfo", new { msg = msg });
         }
 
     }
