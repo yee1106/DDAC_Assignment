@@ -1,6 +1,7 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Transfer;
 using DDAC_Assignment.Data;
+using DDAC_Assignment.Models.APIs;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +31,7 @@ namespace DDAC_Assignment.Models
                 }
                 if (!context.News.Any())
                 {
-                    Uri addressForReturn = new Uri("https://pauyre9e93.execute-api.us-east-1.amazonaws.com/getNewsTemplate");
+                    /*Uri addressForReturn = new Uri("https://pauyre9e93.execute-api.us-east-1.amazonaws.com/getNewsTemplate");
                     HttpClient clientReturn = new HttpClient();
                     GetApiModel getApiModel = new GetApiModel();
 
@@ -47,23 +48,42 @@ namespace DDAC_Assignment.Models
                             foreach(var newsItem in getApiModel.body)
                             {
                                 context.News.Add(
-                               new News
-                               {
-                                   Title = newsItem.Title,
-                                   Content = newsItem.Content,
-                                   Actor = newsItem.Actor,
-                                   PublishedDate = DateTime.Parse(newsItem.PublishedDate),
-                                   Category = newsItem.ParentCategory,
-                                   ParentCategory = "None",
-                                   Status = "Pending",
-                                   LastUpdated = DateTime.Parse(newsItem.LastUpdatedDate),
-                                   Visibility = "Invisible"
-                               }
+                                   new News
+                                   {
+                                       Title = newsItem.Title,
+                                       Content = newsItem.Content,
+                                       Actor = newsItem.Actor,
+                                       PublishedDate = DateTime.Parse(newsItem.PublishedDate),
+                                       Category = newsItem.ParentCategory,
+                                       ParentCategory = "None",
+                                       Status = "Pending",
+                                       LastUpdated = DateTime.Parse(newsItem.LastUpdatedDate),
+                                       Visibility = "Invisible"
+                                   }
                                );
                             }
                             context.SaveChanges();
                         }
+                    }*/
+                    List<NewsTemplate> newsTemplateData = GetNewsDataApi.Get();
+                    foreach (var newsItem in newsTemplateData)
+                    {
+                        context.News.Add(
+                           new News
+                           {
+                               Title = newsItem.Title,
+                               Content = newsItem.Content,
+                               Actor = newsItem.Actor,
+                               PublishedDate = DateTime.Parse(newsItem.PublishedDate),
+                               Category = newsItem.ParentCategory,
+                               ParentCategory = "None",
+                               Status = "Pending",
+                               LastUpdated = DateTime.Parse(newsItem.LastUpdatedDate),
+                               Visibility = "Invisible"
+                           }
+                       );
                     }
+                    context.SaveChanges();
                 }
             }
         }

@@ -23,7 +23,7 @@ namespace DDAC_Assignment.Controllers
     public class AdvertisementsController : Controller
     {
         private readonly DDAC_AssignmentNewsDatabase _context;
-        const string bucketname = "ddacimagebucket";
+        string bucketname = Configuration.bucketName;
         /*Uri addressForRefresh = new Uri("https://40jdw173md.execute-api.us-east-1.amazonaws.com/refreshNewsTemplateAPI");
         string refreshURL = "https://40jdw173md.execute-api.us-east-1.amazonaws.com/refreshNewsTemplateAPI";
         Uri addressForReturn = new Uri("https://pauyre9e93.execute-api.us-east-1.amazonaws.com/getNewsTemplate");

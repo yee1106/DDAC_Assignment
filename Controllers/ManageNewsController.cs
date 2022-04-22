@@ -32,7 +32,7 @@ namespace DDAC_Assignment.Controllers
             _hostEnvironemnt = environment;
         }
 
-        const string bucketname = "ddacimagebucket";
+        string bucketname = Configuration.bucketName;
 
         public List<string> getAWSCredential()
         {
@@ -184,7 +184,7 @@ namespace DDAC_Assignment.Controllers
             news = GetItems(news, sortproperty, sortOrder);
 
             var pageNumber = page ?? 1;
-            int pageSize = 5;
+            int pageSize = 10;
             var newsList = news.ToPagedList(pageNumber, pageSize);
             return View(newsList);
             //return View(await news.ToListAsync());
@@ -192,6 +192,7 @@ namespace DDAC_Assignment.Controllers
             //return View(await _context.News.ToListAsync());
         }
 
+        //sorting
         public IQueryable<News> GetItems(IQueryable<News> news, string SortProperty, SortOrder sortOrder)
         {
             /*var news = from m in _context.News
