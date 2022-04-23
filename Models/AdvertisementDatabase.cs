@@ -14,7 +14,20 @@ namespace DDAC_Assignment.Models
 
         public static List<NewsTemplate> Initialize()
         {
-            /*string refreshURL = "https://40jdw173md.execute-api.us-east-1.amazonaws.com/refreshNewsTemplateAPI";
+            string writeNewsDataApi_url = Configuration.writeNewsDataApi_url;
+            HttpClient clientRefresh = new HttpClient();
+            GetApiModel postApiModel = new GetApiModel();
+            HttpResponseMessage responseRefresh = clientRefresh.PostAsync(writeNewsDataApi_url, new StringContent(JsonConvert.SerializeObject(postApiModel), Encoding.UTF8, "application/json")).Result;
+            if (responseRefresh.IsSuccessStatusCode)
+            {
+                return GetNewsDataApi.Get();
+            }
+            return new List<NewsTemplate>(); 
+        }
+    }
+}
+
+/*string refreshURL = "https://40jdw173md.execute-api.us-east-1.amazonaws.com/refreshNewsTemplateAPI";
             Uri urlForReturn = new Uri("https://pauyre9e93.execute-api.us-east-1.amazonaws.com/getNewsTemplate");
             HttpClient clientRefresh = new HttpClient();
             HttpClient clientReturn = new HttpClient();
@@ -38,16 +51,3 @@ namespace DDAC_Assignment.Models
                 }
             }
             return new List<NewsTemplate>();*/
-
-            string writeNewsDataApi_url = Configuration.writeNewsDataApi_url;
-            HttpClient clientRefresh = new HttpClient();
-            GetApiModel postApiModel = new GetApiModel();
-            HttpResponseMessage responseRefresh = clientRefresh.PostAsync(writeNewsDataApi_url, new StringContent(JsonConvert.SerializeObject(postApiModel), Encoding.UTF8, "application/json")).Result;
-            if (responseRefresh.IsSuccessStatusCode)
-            {
-                return GetNewsDataApi.Get();
-            }
-            return new List<NewsTemplate>(); 
-        }
-    }
-}

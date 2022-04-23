@@ -89,7 +89,7 @@ namespace DDAC_Assignment.Controllers
             ViewBag.totalApproved = totalApproved;
             ViewBag.today = DateTime.Now;
 
-
+            //searching
             if (!String.IsNullOrEmpty(searchString))
             {
                 news = news.Where(s => s.Title.Contains(searchString) || s.Actor.Contains(searchString) || s.Content.Contains(searchString));
@@ -116,6 +116,7 @@ namespace DDAC_Assignment.Controllers
             ViewData["sortByPublishedDate"] = String.IsNullOrEmpty(sortByPublishedDate) ? "PublishedDate" : "";
             var sortByPublishedDateVar = String.IsNullOrEmpty(sortByPublishedDate) ? (news = news.OrderBy(s => s.PublishedDate)) : (news = news.OrderByDescending(s => s.PublishedDate));*/
 
+            //sorting 
             ViewData["SortParamTitle"] = "title";
             ViewData["SortPublishedDateDesc"] = "publisheddate";
             ViewData["SortCategory"] = "category";
@@ -181,11 +182,13 @@ namespace DDAC_Assignment.Controllers
                     break;
             }
 
-            news = GetItems(news, sortproperty, sortOrder);
+            news = Sorting(news, sortproperty, sortOrder);
 
+            //pagination
             var pageNumber = page ?? 1;
             int pageSize = 10;
             var newsList = news.ToPagedList(pageNumber, pageSize);
+
             return View(newsList);
             //return View(await news.ToListAsync());
 
@@ -193,7 +196,7 @@ namespace DDAC_Assignment.Controllers
         }
 
         //sorting
-        public IQueryable<News> GetItems(IQueryable<News> news, string SortProperty, SortOrder sortOrder)
+        public IQueryable<News> Sorting(IQueryable<News> news, string SortProperty, SortOrder sortOrder)
         {
             /*var news = from m in _context.News
                        select m;*/

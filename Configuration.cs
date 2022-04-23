@@ -9,8 +9,8 @@ namespace DDAC_Assignment
     {
         //Api Url
         public static string base_url = "https://ybxr7veqs2.execute-api.us-east-1.amazonaws.com/";
-        public static string writeNewsDataApi_url = "https://40jdw173md.execute-api.us-east-1.amazonaws.com/refreshNewsTemplateAPI";
-        public static string getNewsDataApi_url = "https://pauyre9e93.execute-api.us-east-1.amazonaws.com/getNewsTemplate";
+        public static string writeNewsDataApi_url = "https://hgthey6w51.execute-api.us-east-1.amazonaws.com/writeNewsApi";
+        public static string getNewsDataApi_url = "https://xj1uzxn50g.execute-api.us-east-1.amazonaws.com/readNewsApi";
 
         //bucket
         public static string bucketName = "ddacimagebucket";
