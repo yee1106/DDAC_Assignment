@@ -55,7 +55,7 @@
                                                 @Model.roleSelectors[i].Name
                                                 <input type="hidden" asp-for="@Model.roleSelectors[i].Id" />
                                                 <input type="hidden" asp-for="@Model.roleSelectors[i].Name" />
-                                                @if (Model.Email == "admin@ddac.com" && Model.roleSelectors[i].Name == "Admin")
+                                                @if (Model.Email == Configuration.default_admin.Email && Model.roleSelectors[i].Name == "Admin")
                                                 {
                                                     <input type="checkbox" disabled asp-for="@Model.roleSelectors[i].Selected" class="form-check-input" />
                                                 }

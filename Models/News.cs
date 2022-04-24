@@ -33,7 +33,7 @@ namespace DDAC_Assignment.Models
         [Display(Name = "Parent Category")]
         public string ParentCategory { get; set; }
 
-        public string Status { get; set; }
+        public bool Status { get; set; }
 
         [Display(Name = "Image Path")]
         public string ImagePath { get; set; }

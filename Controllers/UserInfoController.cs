@@ -171,14 +171,14 @@ namespace DDAC_Assignment.Controllers
             {
  
                 current_user.FullName = user.FullName;
-                if (current_user.Email != "admin@ddac.com")
+                if (current_user.Email != Configuration.default_admin.Email)
                 {
                     current_user.Email = user.Email;
                     current_user.UserName = user.Email;
                 }
                 else
                 {
-                    // put back admin details
+                    // put back default admin details
                     user.Email = current_user.Email;
                     for (int s = 0; s < user.roleSelectors.Count; s++)
                     {

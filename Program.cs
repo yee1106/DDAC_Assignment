@@ -75,7 +75,25 @@ namespace DDAC_Assignment
                     logger.LogError(ex, "An error occured seeding the news database");
                 }
 
-                
+                // TODO create topic for SNS
+                //var snsClient = new AmazonSimpleNotificationServiceClient();
+
+                //var topicRequest = new CreateTopicRequest
+                //{
+                //    Name = "CodingTestResults"
+                //};
+
+                //var topicResponse = snsClient.CreateTopic(topicRequest);
+
+                //var topicAttrRequest = new SetTopicAttributesRequest
+                //{
+                //    TopicArn = topicResponse.TopicArn,
+                //    AttributeName = "DisplayName",
+                //    AttributeValue = "Coding Test Results"
+                //};
+
+                //snsClient.SetTopicAttributes(topicAttrRequest);
+
                 // seed user database
                 try
                 {

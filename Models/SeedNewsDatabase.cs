@@ -77,7 +77,7 @@ namespace DDAC_Assignment.Models
                                PublishedDate = DateTime.Parse(newsItem.PublishedDate),
                                Category = newsItem.ParentCategory,
                                ParentCategory = "None",
-                               Status = "Pending",
+                               Status = false,
                                LastUpdated = DateTime.Parse(newsItem.LastUpdatedDate),
                                Visibility = "Invisible"
                            }

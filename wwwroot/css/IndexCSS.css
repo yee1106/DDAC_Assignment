@@ -50,6 +50,14 @@
     width: 80px;
 }
 
+.approveButton {
+    color: white;
+    background-color: forestgreen;
+    border-radius: 5px;
+    border-color: forestgreen;
+    width: 80px;
+}
+
 .searchFilter {
     display: inline;
     width: 40%;

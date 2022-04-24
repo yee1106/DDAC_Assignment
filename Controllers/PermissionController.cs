@@ -67,10 +67,13 @@ namespace DDAC_Assignment.Controllers
             policies.Add(typeof(Permissions.News));
             policies.Add(typeof(Permissions.Category));
             policies.Add(typeof(Permissions.Advertisements));
+            policies.Add(typeof(Permissions.ReadNews));
             allPermissions.GetPermissions(policies, roleId);
+
             var role = await _roleManager.FindByIdAsync(roleId);
             model.RoleId = roleId;
             ViewBag.role_name = role.Name;
+
             var claims = await _roleManager.GetClaimsAsync(role);
             var allClaimValues = allPermissions.Select(a => a.Value).ToList();
             var roleClaimValues = claims.Select(a => a.Value).ToList();
@@ -107,7 +110,7 @@ namespace DDAC_Assignment.Controllers
             if (await Publish(Message))
                 return RedirectToAction("Index", new { roleId = model.RoleId, msg = "Permissions have been updated." });
             else
-                return RedirectToAction("Index", new { msg = "Failed to send notification to SNS!" });
+                return RedirectToAction("Index", new { roleId = model.RoleId, msg = "Failed to send notification to SNS!" });
         }
     }
 }

@@ -39,10 +39,13 @@ namespace DDAC_Assignment.Models
                     await userManager.AddToRoleAsync(defaultUser, role.Roles.User.ToString());
                     await userManager.AddToRoleAsync(defaultUser, role.Roles.Admin.ToString());
                     await userManager.AddToRoleAsync(defaultUser, role.Roles.Staff.ToString());
+
+                    // seeds permissions for user, staff, admin
+                    await SeedClaimsForAdmin(roleManager);
+                    await SeedClaimsForStaff(roleManager);
+                    await SeedClaimsForUser(roleManager);
                 }
-                await SeedClaimsForAdmin(roleManager);
-                await SeedClaimsForStaff(roleManager);
-                await SeedClaimsForUser(roleManager);
+                
             }
         }
 
@@ -50,6 +53,16 @@ namespace DDAC_Assignment.Models
         {
             var adminRole = await roleManager.FindByNameAsync("Admin");
             await AddPermissionClaim(roleManager, adminRole, "User");
+
+            var allClaims = await roleManager.GetClaimsAsync(adminRole);
+            if (!allClaims.Any(a => a.Type == "Permission" && a.Value == Permissions.News.Approve))
+            {
+                await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.News.Approve));
+            }
+            if (!allClaims.Any(a => a.Type == "Permission" && a.Value == Permissions.News.View))
+            {
+                await roleManager.AddClaimAsync(adminRole, new Claim("Permission", Permissions.News.View));
+            }
         }
 
         public async static Task SeedClaimsForStaff(RoleManager<IdentityRole> roleManager)

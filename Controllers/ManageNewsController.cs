@@ -49,8 +49,10 @@ namespace DDAC_Assignment.Controllers
         }
 
         // GET: News
-        public async Task<IActionResult> Index(int? page, string searchString, string Category, string Status, string Visibility, string sortExpression="")
+        public async Task<IActionResult> Index(int? page, string searchString, string Category, string Status, string Visibility, string sortExpression="", string msg=null)
         {
+            ViewBag.msg = msg;
+
             var news = from m in _context.News
                          select m;
             //generate the listing for the drop down box
@@ -62,8 +64,8 @@ namespace DDAC_Assignment.Controllers
             ViewBag.Category = items;
 
             var statusList = new List<SelectListItem>();
-            statusList.Add(new SelectListItem() { Text = "Pending", Value = "Pending" });
-            statusList.Add(new SelectListItem() { Text = "Approved", Value = "Approved" });
+            statusList.Add(new SelectListItem() { Text = "Pending", Value = "0" });
+            statusList.Add(new SelectListItem() { Text = "Approved", Value = "1" });
             ViewBag.Status = statusList;
 
             var visibilityList = new List<SelectListItem>();
@@ -71,12 +73,13 @@ namespace DDAC_Assignment.Controllers
             visibilityList.Add(new SelectListItem() { Text = "Invisible", Value = "Invisible" });
             ViewBag.Visibility = visibilityList;
 
+
             ViewBag.totalNews = news.Count();
             int totalApproved = 0;
             int totalNotPublish = 0;
             foreach (var item in news)
             {
-                if (item.Status == "Approved")
+                if (item.Status)
                 {
                     totalApproved++;
                 }
@@ -102,7 +105,7 @@ namespace DDAC_Assignment.Controllers
 
             if (!String.IsNullOrEmpty(Status))
             {
-                news = news.Where(s => s.Status.Equals(Status));
+                news = news.Where(s => s.Status == (Status == "0" ? false : true));
             }
 
             if (!String.IsNullOrEmpty(Visibility))
@@ -678,6 +681,31 @@ namespace DDAC_Assignment.Controllers
         private bool NewsExists(int id)
         {
             return _context.News.Any(e => e.ID == id);
+        }
+
+        // approve news written
+        public async Task<IActionResult> Approve(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var news = await _context.News.FindAsync(id);
+
+            if (news == null)
+            {
+                return NotFound();
+            }
+
+            // set status to true to represent approved
+            news.Status = true; 
+
+            // update and save news
+            _context.Update(news);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index", "ManageNews", new { msg = "The news has been approved." });
         }
     }
 }

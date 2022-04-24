@@ -1,4 +1,7 @@
 ﻿@model DDAC_Assignment.Models.News
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using DDAC_Assignment.Models
 
 @{
     ViewData["Title"] = "Details";
@@ -62,7 +65,10 @@
     <h2>Comments</h2>
 </div>
 <div class="mt-5">
-    <a class="categoryTag pr-2 btnHover" style="background-color:darkblue; text-decoration: none;" asp-action="Edit" asp-route-id="@Model.ID">Edit</a>
+    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.News.Edit)).Result.Succeeded)
+    {
+        <a class="categoryTag pr-2 btnHover" style="background-color:darkblue; text-decoration: none;" asp-action="Edit" asp-route-id="@Model.ID">Edit</a>
+    }
     <a class="categoryTag btnHover" style="background-color:indigo; text-decoration: none;" asp-action="Index">Back</a>
 </div>
 

@@ -1,4 +1,7 @@
 ﻿@model DDAC_Assignment.Models.News
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using DDAC_Assignment.Models
 
 @{
     ViewData["Title"] = "Edit";
@@ -64,14 +67,14 @@
                                         </select>
                                         <span asp-validation-for="Category" class="text-danger"></span>
                                     </div>
-                                    <div class="form-group">
+                                    @*<div class="form-group">
                                         <label asp-for="Status" class="control-label"></label>
                                         <select asp-for="Status" class="form-control">
                                             <option value="Pending">Pending</option>
                                             <option value="Approved">Approved</option>
                                         </select>
                                         <span asp-validation-for="Status" class="text-danger"></span>
-                                    </div>
+                                    </div>*@
                                     <div class="form-group">
                                         <label asp-for="Visibility" class="control-label"></label>
                                         <select asp-for="Visibility" class="form-control">

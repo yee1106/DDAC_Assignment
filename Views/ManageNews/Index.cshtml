@@ -1,5 +1,8 @@
 ﻿@using X.PagedList.Mvc.Core; <!--import to get HTML Helper-->
 @using X.PagedList;
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using DDAC_Assignment.Models
 
 @model IEnumerable<DDAC_Assignment.Models.News>
 
@@ -9,6 +12,10 @@
 
 <link rel="stylesheet" href="~/css/IndexCSS.css" />
 
+@if (ViewBag.msg != null)
+{
+    <script>alert("@ViewBag.msg");</script>
+}
 
 <div class="row">
     <div class="col-lg-4 d-flex grid-margin stretch-card">
@@ -71,113 +78,59 @@
                             <br /><br /><br />
                         </form>
 
+                        @if ((AuthorizationService.AuthorizeAsync(User, Permissions.News.Edit)).Result.Succeeded)
+                        {
                             <p>
                                 <a asp-action="Create"><input type="button" class="createButton mb-2 button" style="width:100px" value="Create New" /></a>
                             </p>
+                        }
 
-                            @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page = page }),
-                            new X.PagedList.Mvc.Common.PagedListRenderOptions
-                            {
-                                DisplayItemSliceAndTotal = true,
-                                ContainerDivClasses = new[] { "navigation" },
-                                LiElementClasses = new[] { "page-item" },
-                                PageClasses = new[] { "page-link" },
-                            })
+                        @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page = page }),
+                        new X.PagedList.Mvc.Common.PagedListRenderOptions
+                        {
+                            DisplayItemSliceAndTotal = true,
+                            ContainerDivClasses = new[] { "navigation" },
+                            LiElementClasses = new[] { "page-item" },
+                            PageClasses = new[] { "page-link" },
+                        })
 
-                            <div id="content">
-                                <ul id="tabs" class="nav nav-tabs">
-                                    <li class="nav-item active">
-                                        <a class="nav-link active" href="#tab1" data-toggle="tab">News Content</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#tab2" data-toggle="tab">News Details</a>
-                                    </li>
+                        <div id="content">
+                            <ul id="tabs" class="nav nav-tabs">
+                                <li class="nav-item active">
+                                    <a class="nav-link active" href="#tab1" data-toggle="tab">News Content</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#tab2" data-toggle="tab">News Details</a>
+                                </li>
 
-                                </ul>
-                                <div id="my-tab-content" class="tab-content">
-                                    <div class="tab-pane active" id="tab1">
-                                        <div class="table-responsive">
-                                            <table class="table table-hover">
-                                                <thead>
-                                                    <tr>
-                                                        <th>
-                                                            <a class="text-decoration-none" asp-action="Index" asp-route-sortExpression="@ViewData["SortParamTitle"]">@Html.DisplayNameFor(model => model.Title)</a>
-                                                            <i class="@ViewData["SortIconTitle"]" aria-hidden="true"></i>
-                                                        </th>
-                                                        <th>
-                                                            <a class="text-decoration-none" asp-action="Index" asp-route-sortExpression="@ViewData["SortActor"]">@Html.DisplayNameFor(model => model.Actor)</a>
-                                                            <i class="@ViewData["SortIconActor"]" aria-hidden="true"></i>
-                                                        </th>
-                                                        <th>
-                                                            <a class="text-decoration-none" asp-action="Index" asp-route-sortExpression="@ViewData["SortPublishedDateDesc"]">@Html.DisplayNameFor(model => model.PublishedDate)</a>
-                                                            <i class="@ViewData["SortIconPublishedDate"]" aria-hidden="true"></i>
-                                                        </th>
-                                                        <th>
-                                                            <a class="text-decoration-none" asp-action="Index" asp-route-sortExpression="@ViewData["SortCategory"]">@Html.DisplayNameFor(model => model.Category)</a>
-                                                            <i class="@ViewData["SortIconCategory"]" aria-hidden="true"></i>
-                                                        </th>
-                                                        <th>
-                                                            @Html.DisplayNameFor(model => model.ParentCategory)
-                                                        </th>
-                                                        <th>
-                                                            @Html.DisplayNameFor(model => model.Content)
-                                                        </th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach (var item in Model)
-                                                    {
-                                                        <tr>
-                                                            <td>
-                                                                @Html.DisplayFor(modelItem => item.Title)
-                                                            </td>
-                                                            <td>
-                                                                @Html.DisplayFor(modelItem => item.Actor)
-                                                            </td>
-                                                            <td>
-                                                                @Html.DisplayFor(modelItem => item.PublishedDate)
-                                                            </td>
-                                                            <td>
-                                                                @Html.DisplayFor(modelItem => item.Category)
-                                                            </td>
-                                                            <td>
-                                                                @Html.DisplayFor(modelItem => item.ParentCategory)
-                                                            </td>
-                                                            <td>
-                                                                <div class="contentRow">
-                                                                    @Html.Raw(item.Content)
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <a asp-action="Edit" asp-route-id="@item.ID"><input type="button" class="editButton mb-2 button" style="width:80px" value="Edit" /></a>
-                                                                <a asp-action="Details" asp-route-id="@item.ID"><input type="button" class="detailsButton mb-2 button" style="width:80px" value="View" /></a>
-                                                                <a asp-action="Delete" asp-route-id="@item.ID"><input type="button" class="deleteButton mb-2 button" style="width:80px" value="Delete" /></a>
-                                                            </td>
-                                                        </tr>
-                                                    }
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane table-responsive" id="tab2">
+                            </ul>
+                            <div id="my-tab-content" class="tab-content">
+                                <div class="tab-pane active" id="tab1">
+                                    <div class="table-responsive">
                                         <table class="table table-hover">
                                             <thead>
                                                 <tr>
                                                     <th>
-                                                        @Html.DisplayNameFor(model => model.Title)
+                                                        <a class="text-decoration-none" asp-action="Index" asp-route-sortExpression="@ViewData["SortParamTitle"]">@Html.DisplayNameFor(model => model.Title)</a>
+                                                        <i class="@ViewData["SortIconTitle"]" aria-hidden="true"></i>
                                                     </th>
                                                     <th>
-                                                        @Html.DisplayNameFor(model => model.Visibility)
+                                                        <a class="text-decoration-none" asp-action="Index" asp-route-sortExpression="@ViewData["SortActor"]">@Html.DisplayNameFor(model => model.Actor)</a>
+                                                        <i class="@ViewData["SortIconActor"]" aria-hidden="true"></i>
                                                     </th>
                                                     <th>
-                                                        @Html.DisplayNameFor(model => model.Status)
+                                                        <a class="text-decoration-none" asp-action="Index" asp-route-sortExpression="@ViewData["SortPublishedDateDesc"]">@Html.DisplayNameFor(model => model.PublishedDate)</a>
+                                                        <i class="@ViewData["SortIconPublishedDate"]" aria-hidden="true"></i>
                                                     </th>
                                                     <th>
-                                                        @Html.DisplayNameFor(model => model.ImagePath)
+                                                        <a class="text-decoration-none" asp-action="Index" asp-route-sortExpression="@ViewData["SortCategory"]">@Html.DisplayNameFor(model => model.Category)</a>
+                                                        <i class="@ViewData["SortIconCategory"]" aria-hidden="true"></i>
                                                     </th>
                                                     <th>
-                                                        @Html.DisplayNameFor(model => model.LastUpdated)
+                                                        @Html.DisplayNameFor(model => model.ParentCategory)
+                                                    </th>
+                                                    <th>
+                                                        @Html.DisplayNameFor(model => model.Content)
                                                     </th>
                                                     <th>Action</th>
                                                 </tr>
@@ -190,34 +143,117 @@
                                                             @Html.DisplayFor(modelItem => item.Title)
                                                         </td>
                                                         <td>
-                                                            @Html.DisplayFor(modelItem => item.Visibility)
+                                                            @Html.DisplayFor(modelItem => item.Actor)
                                                         </td>
                                                         <td>
-                                                            @Html.DisplayFor(modelItem => item.Status)
+                                                            @Html.DisplayFor(modelItem => item.PublishedDate)
                                                         </td>
                                                         <td>
-                                                            @if (string.IsNullOrEmpty(item.ImagePath))
+                                                            @Html.DisplayFor(modelItem => item.Category)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.ParentCategory)
+                                                        </td>
+                                                        <td>
+                                                            <div class="contentRow">
+                                                                @Html.Raw(item.Content)
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            @if ((AuthorizationService.AuthorizeAsync(User, Permissions.News.Edit)).Result.Succeeded)
                                                             {
-                                                                <span>None</span>
+                                                                <a asp-action="Edit" asp-route-id="@item.ID"><input type="button" class="editButton mb-2 button" style="width:80px" value="Edit" /></a>
                                                             }
-                                                            else
-                                                            {
-                                                                @Html.DisplayFor(modelItem => item.ImagePath)
-                                                            }
-                                                        </td>
-                                                        <td>
-                                                            @Html.DisplayFor(modelItem => item.LastUpdated)
-                                                        </td>
-                                                        <td>
-                                                            <a asp-action="Edit" asp-route-id="@item.ID"><input type="button" class="editButton mb-2 button" style="width:80px" value="Edit" /></a>
                                                             <a asp-action="Details" asp-route-id="@item.ID"><input type="button" class="detailsButton mb-2 button" style="width:80px" value="View" /></a>
-                                                            <a asp-action="Delete" asp-route-id="@item.ID"><input type="button" class="deleteButton mb-2 button" style="width:80px" value="Delete" /></a>
+                                                            @if ((AuthorizationService.AuthorizeAsync(User, Permissions.News.Delete)).Result.Succeeded)
+                                                            {
+                                                                <a asp-action="Delete" asp-route-id="@item.ID"><input type="button" class="deleteButton mb-2 button" style="width:80px" value="Delete" /></a>
+                                                            }
+                                                            @if ((AuthorizationService.AuthorizeAsync(User, Permissions.News.Approve)).Result.Succeeded)
+                                                            {
+                                                                <a asp-action="Approve" asp-route-id="@item.ID"><input type="button" class="approveButton mb-2 button" style="width:80px" value="Approve" /></a>
+                                                            }
                                                         </td>
                                                     </tr>
                                                 }
                                             </tbody>
                                         </table>
                                     </div>
+                                </div>
+                                <div class="tab-pane table-responsive" id="tab2">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Title)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Visibility)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Status)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.ImagePath)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.LastUpdated)
+                                                </th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Title)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Visibility)
+                                                    </td>
+
+                                                    @if (item.Status)
+                                                    {
+                                                        <td>Approved</td>
+}
+                                                    else
+                                                    {
+                                                        <td>Pending</td>
+                                                    }
+
+                                                    <td>
+                                                        @if (string.IsNullOrEmpty(item.ImagePath))
+                                                        {
+                                                            <span>None</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.DisplayFor(modelItem => item.ImagePath)
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.LastUpdated)
+                                                    </td>
+                                                    <td>
+                                                        @if ((AuthorizationService.AuthorizeAsync(User, Permissions.News.Edit)).Result.Succeeded)
+                                                        {
+                                                            <a asp-action="Edit" asp-route-id="@item.ID"><input type="button" class="editButton mb-2 button" style="width:80px" value="Edit" /></a>
+                                                        }
+                                                        <a asp-action="Details" asp-route-id="@item.ID"><input type="button" class="detailsButton mb-2 button" style="width:80px" value="View" /></a>
+                                                        @if ((AuthorizationService.AuthorizeAsync(User, Permissions.News.Delete)).Result.Succeeded)
+                                                        {
+                                                            <a asp-action="Delete" asp-route-id="@item.ID"><input type="button" class="deleteButton mb-2 button" style="width:80px" value="Delete" /></a>
+                                                        }
+                                                        @if ((AuthorizationService.AuthorizeAsync(User, Permissions.News.Approve).Result.Succeeded))
+                                                        {
+                                                            <a asp-action="Approve" asp-route-id="@item.ID"><input type="button" class="approveButton mb-2 button" style="width:80px" value="Approve" /></a>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -226,14 +262,15 @@
             </div>
         </div>
     </div>
+</div>
 
-    @section Scripts{
-        <script>
-            // Workaround to fix style of text for showing items .. through ..
-            // Problem related to Boostrap 4 according to issue in link below
-            // https://github.com/dncuug/X.PagedList/issues/127
-            $(document).ready(function () {
-                $('ul.pagination > li.disabled > a').addClass('page-link');
-            });
-        </script>
-    }
+@section Scripts{
+    <script>
+        // Workaround to fix style of text for showing items .. through ..
+        // Problem related to Boostrap 4 according to issue in link below
+        // https://github.com/dncuug/X.PagedList/issues/127
+        $(document).ready(function () {
+            $('ul.pagination > li.disabled > a').addClass('page-link');
+        });
+    </script>
+}
