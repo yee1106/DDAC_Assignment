@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Amazon.SimpleNotificationService;
+using Amazon.SimpleNotificationService.Model;
 using DDAC_Assignment.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace DDAC_Assignment.Controllers
 {
@@ -17,10 +21,45 @@ namespace DDAC_Assignment.Controllers
         {
             _roleManager = roleManager;
         }
+        public List<string> getAWSCredential()
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json");
+            IConfigurationRoot configure = builder.Build();
+            List<string> accesskeylist = new List<string>();
+            accesskeylist.Add(configure["AWSCredential:accesskey"]);
+            accesskeylist.Add(configure["AWSCredential:secretkey"]);
+            accesskeylist.Add(configure["AWSCredential:sectiontoken"]);
+
+            return accesskeylist;
+        }
+
+        public async Task<bool> Publish(string Message)
+        {
+            try
+            {
+                // create SNS client 
+                List<string> accesskeylist = getAWSCredential();
+                var SNSClient = new AmazonSimpleNotificationServiceClient(accesskeylist[0],
+                    accesskeylist[1], accesskeylist[2], Amazon.RegionEndpoint.USEast1);
+
+                // publish message to AWS SNS
+                PublishRequest pubRequest = new PublishRequest(Configuration.topicArn, Message);
+                PublishResponse pubResponse = await SNSClient.PublishAsync(pubRequest);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
 
         // Permission Management for the selected role
-        public async Task<ActionResult> Index(string roleId)
+        public async Task<ActionResult> Index(string roleId, string msg=null)
         {
+            ViewBag.msg = msg;
             var model = new PermissionViewModel();
             var allPermissions = new List<RoleClaimsViewModel>();
             List<Type> policies = new List<Type>();
@@ -61,7 +100,14 @@ namespace DDAC_Assignment.Controllers
             {
                 await _roleManager.AddPermissionClaim(role_to_update, claim.Value);
             }
-            return RedirectToAction("Index", new { roleId = model.RoleId });
+            string Message = "Dear Subscriber, \n\n"
+                        + "Please be informed the permissions for the role '" + role_to_update.Name + "' has been updated.'"
+                        + "'.\n\n" + "Thank You.";
+
+            if (await Publish(Message))
+                return RedirectToAction("Index", new { roleId = model.RoleId, msg = "Permissions have been updated." });
+            else
+                return RedirectToAction("Index", new { msg = "Failed to send notification to SNS!" });
         }
     }
 }

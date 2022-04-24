@@ -7,6 +7,12 @@ using Microsoft.AspNetCore.Identity;
 using DDAC_Assignment.Areas.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using DDAC_Assignment.Models;
+using Amazon.SimpleNotificationService.Model;
+using Amazon.SimpleNotificationService;
+using Microsoft.Extensions.Configuration;
+using System.IO;
+using static System.Text.Json.JsonSerializer;
+using Newtonsoft.Json.Linq;
 
 namespace DDAC_Assignment.Controllers
 {
@@ -15,10 +21,26 @@ namespace DDAC_Assignment.Controllers
         
         private RoleManager<IdentityRole> roleManager;
         private UserManager<DDAC_AssignmentUser> userManager;
+        private static string topicArn = Configuration.topicArn;
+
         public RoleController(RoleManager<IdentityRole> roleMgr, UserManager<DDAC_AssignmentUser> usrMgr)
         {
             roleManager = roleMgr;
             userManager = usrMgr;
+        }
+
+        public List<string> getAWSCredential()
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json");
+            IConfigurationRoot configure = builder.Build();
+            List<string> accesskeylist = new List<string>();
+            accesskeylist.Add(configure["AWSCredential:accesskey"]);
+            accesskeylist.Add(configure["AWSCredential:secretkey"]);
+            accesskeylist.Add(configure["AWSCredential:sectiontoken"]);
+
+            return accesskeylist;
         }
 
         public IActionResult Index(string msg = null)
@@ -33,6 +55,58 @@ namespace DDAC_Assignment.Controllers
                 ModelState.AddModelError("", error.Description);
         }
 
+        // subscribe to role and permission management using AWS SNS
+        public async Task<IActionResult> SubscribeAsync()
+        {
+            string msg = "";
+            try
+            {
+                // retrieve current logged in user
+                DDAC_AssignmentUser user = await userManager.GetUserAsync(User);
+
+                // create SNS client 
+                List<string> accesskeylist = getAWSCredential();
+                var SNSClient = new AmazonSimpleNotificationServiceClient(accesskeylist[0],
+                    accesskeylist[1], accesskeylist[2], Amazon.RegionEndpoint.USEast1);
+
+                // add email as the subscriber
+                SubscribeRequest emailRequest = new SubscribeRequest(topicArn, "email", user.Email);
+                SubscribeResponse emailSubscribeResponse = await SNSClient.SubscribeAsync(emailRequest);
+                var arn = emailSubscribeResponse;
+                System.Diagnostics.Debug.WriteLine(arn);
+
+                msg = "Subscription confirmation has been sent! Please check your email to confirm the subscription.";
+
+            }
+            catch (Exception ex)
+            {
+                msg = ex.Message;
+            }
+
+            return RedirectToAction("Index", "Role", new { msg = msg });
+        }
+
+        public async Task<bool> Publish(string Message)
+        {
+            try
+            {
+                // create SNS client 
+                List<string> accesskeylist = getAWSCredential();
+                var SNSClient = new AmazonSimpleNotificationServiceClient(accesskeylist[0],
+                    accesskeylist[1], accesskeylist[2], Amazon.RegionEndpoint.USEast1);
+
+                // publish message to AWS SNS
+                PublishRequest pubRequest = new PublishRequest(topicArn, Message);
+                PublishResponse pubResponse = await SNSClient.PublishAsync(pubRequest);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         // show the page for create new role
         public IActionResult Create()
         {
@@ -43,13 +117,23 @@ namespace DDAC_Assignment.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(role role)
         {
+
             if (ModelState.IsValid)
             {
                 // create new role
                 IdentityResult result = await roleManager.CreateAsync(new IdentityRole(role.Name));
+
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Role", new { msg = "Role created!" });
+
+                    string Message = "Dear Subscriber, \n\n"
+                        + "The new role '"+role.Name + "' has been created.'"
+                        + "'.\n\n" + "Thank You.";
+
+                    if (await Publish(Message))
+                        return RedirectToAction("Index", "Role", new { msg = "Role created!" });
+                    else
+                        return RedirectToAction("Update", new { msg = "Failed to send notification to SNS!" });
                 }
                 else
                 {
@@ -78,13 +162,27 @@ namespace DDAC_Assignment.Controllers
         {
             // get selected role
             IdentityRole role = await roleManager.FindByIdAsync(id);
+
             if (role != null)
             {
+                string old_role_name = role.Name;
+
                 // update selected with new role name
                 role.Name = Name;
                 IdentityResult result = await roleManager.UpdateAsync(role);
                 if (result.Succeeded)
-                    return RedirectToAction("Index", new { msg = "Role updated!" });
+                {
+                    string Message = "Dear Subscriber, \n\n"
+                        + "'"+old_role_name + "' has been updated to '" + Name 
+                        + "'.\n\n" + "Thank You.";
+
+                    if (await Publish(Message))
+                        return RedirectToAction("Index", new { msg = "Role updated!" });
+                    else {
+                        return RedirectToAction("Update", new { msg = "Failed to send notification to SNS!" });
+                    }
+                }
+                    
                 else
                     return View(role);
             }
@@ -102,12 +200,20 @@ namespace DDAC_Assignment.Controllers
             {
                 // delete selected role
                 await roleManager.DeleteAsync(role);
+
+                string Message = "Dear Subscriber, \n\n"
+                    + "Please be informed the role '" + role.Name + "' has been deleted.'"
+                    + "'.\n\n" + "Thank You.";
+
+                if (await Publish(Message))
+                    return RedirectToAction("Index", "Role", new { msg = "Role deleted!" });
+                else
+                    return RedirectToAction("Index", new { msg = "Failed to send notification to SNS!" });
             }
             else
             {
                 return RedirectToAction("Index", "Role", new { msg = "Unable to delete role" });
             }
-            return RedirectToAction("Index", "Role", new { msg = "Role deleted!" });
         }
 
         // View all users with selected role
