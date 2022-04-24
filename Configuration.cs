@@ -15,6 +15,9 @@ namespace DDAC_Assignment
         //bucket
         public static string bucketName = "ddacimagebucket";
 
+        // AWS SNS Topic
+        public static string topicArn = "arn:aws:sns:us-east-1:532715210025:roles_and_permissions_update";
+
         public class default_admin
         {
              public static string UserName = "ddac.enews@gmail.com";
