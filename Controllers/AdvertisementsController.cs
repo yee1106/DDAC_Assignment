@@ -243,8 +243,8 @@ namespace DDAC_Assignment.Controllers
 
                 if (image != null)
                 {
-                    advertisement.ImagePath = image.FileName;
-                    await uploadImageToS3Async(image);   
+                    advertisement.ImagePath = Guid.NewGuid() + "-" + image.FileName;
+                    await uploadImageToS3Async(image, advertisement.ImagePath);   
                 }
                 else
                 {
@@ -259,7 +259,7 @@ namespace DDAC_Assignment.Controllers
         }
 
         //upload image to S3
-        public async Task uploadImageToS3Async(IFormFile image)
+        public async Task uploadImageToS3Async(IFormFile image, string imagePath)
         {
             List<string> accesskeylist = getAWSCredential();
             if (image != null)
@@ -268,11 +268,11 @@ namespace DDAC_Assignment.Controllers
                 {
                     using (var uploadStream = new MemoryStream())
                     {
-                        image.CopyToAsync(uploadStream);
+                        await image.CopyToAsync(uploadStream);
                         var uploadRequest = new TransferUtilityUploadRequest
                         {
                             InputStream = uploadStream,
-                            Key = image.FileName,
+                            Key = imagePath,
                             BucketName = bucketname + "/advertisementImages",
                             CannedACL = S3CannedACL.PublicRead
                         };
@@ -325,11 +325,9 @@ namespace DDAC_Assignment.Controllers
                 {
                     if (image != null)
                     {
-                        await uploadImageToS3Async(image);
-
-
                         await DeleteImage(advertisement.ImagePath);
-                        advertisement.ImagePath = image.FileName;
+                        advertisement.ImagePath = Guid.NewGuid() + "-" + image.FileName;
+                        await uploadImageToS3Async(image, advertisement.ImagePath);
                     }
                     _context.Update(advertisement);
                     await _context.SaveChangesAsync();

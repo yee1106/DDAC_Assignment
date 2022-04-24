@@ -461,9 +461,9 @@ namespace DDAC_Assignment.Controllers
                     news.ImagePath = image.FileName;
                 }*/
                 if (image != null)
-                {
-                    await uploadImageToS3Async(image);
-                    news.ImagePath = image.FileName;
+                {     
+                    news.ImagePath = Guid.NewGuid() + "-" + image.FileName;
+                    await uploadImageToS3Async(image, news.ImagePath);
                 }
 
                 _context.Add(news);
@@ -474,7 +474,7 @@ namespace DDAC_Assignment.Controllers
         }
 
         //upload image to S3
-        public async Task uploadImageToS3Async(IFormFile image)
+        public async Task uploadImageToS3Async(IFormFile image, string imagePath)
         {
             string message = "";
             List<string> accesskeylist = getAWSCredential();
@@ -484,11 +484,11 @@ namespace DDAC_Assignment.Controllers
                 {
                     using (var uploadStream = new MemoryStream())
                     {
-                        image.CopyToAsync(uploadStream);
+                        await image.CopyToAsync(uploadStream);
                         var uploadRequest = new TransferUtilityUploadRequest
                         {
                             InputStream = uploadStream,
-                            Key = image.FileName,
+                            Key = imagePath,
                             BucketName = bucketname + "/newsImages",
                             CannedACL = S3CannedACL.PublicRead
                         };
@@ -586,11 +586,9 @@ namespace DDAC_Assignment.Controllers
                     news.LastUpdated = DateTime.Now;
                     if (image != null)
                     {
-                        await uploadImageToS3Async(image);
-                        
-
                         await DeleteImage(news.ImagePath);
-                        news.ImagePath = image.FileName;
+                        news.ImagePath = Guid.NewGuid() + "-" + image.FileName;
+                        await uploadImageToS3Async(image, news.ImagePath);
                     }
 
                     _context.Update(news);

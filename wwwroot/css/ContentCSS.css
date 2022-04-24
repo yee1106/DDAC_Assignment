@@ -61,4 +61,7 @@
     align-items: center;
     text-decoration: none;
 }
-    
+
+.note-editor.note-airframe.fullscreen, .note-editor.note-frame.fullscreen {
+    background-color: white !important;
+}

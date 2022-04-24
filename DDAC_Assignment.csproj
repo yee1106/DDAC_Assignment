@@ -8,6 +8,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20220417143429_user.cs" />
     <Compile Remove="Migrations\20220417143429_user.Designer.cs" />
+    <Compile Remove="Migrations\DDAC_Assignment\20220411040254_updateAllTable.cs" />
+    <Compile Remove="Migrations\DDAC_Assignment\20220411040254_updateAllTable.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +31,10 @@
 
   <ItemGroup>
     <None Include="wwwroot\vendors\mdi\fonts\materialdesignicons-webfont.woff2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\DDAC_Assignment\" />
   </ItemGroup>
 
 </Project>
