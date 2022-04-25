@@ -60,18 +60,25 @@
                                     }
                                     <!--<div style="flex-wrap: wrap;">@Html.DisplayFor(model => model.Content)</div>-->
                                     <!--@foreach (var item in Model.Content.Split("\n"))
-                                    {
-                                        <div id="summernote" style="font-size:18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @item</div>
-                                    }-->
+                                {
+                                    <div id="summernote" style="font-size:18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @item</div>
+                                }-->
 
                                     <div style="font-size:18px;">@Html.Raw(@Model.Content)</div>
                                 </div>
 
                             </div>
-                            <h2></h2>
+                            <h2>Comments</h2>
                         </div>
+                        <!--<div class="mt-5">
+                        <a class="categoryTag pr-2 btnHover" style="background-color:darkblue; text-decoration: none;" asp-action="Edit" asp-route-id="@Model.ID">Edit</a>
+                        <a class="categoryTag btnHover" style="background-color:indigo; text-decoration: none;" asp-action="Index">Back</a>
+                    </div>-->
                         <div class="mt-5">
-                            <a class="categoryTag pr-2 btnHover" style="background-color:darkblue; text-decoration: none;" asp-action="Edit" asp-route-id="@Model.ID">Edit</a>
+                            @if ((AuthorizationService.AuthorizeAsync(User, Permissions.News.Edit)).Result.Succeeded)
+                            {
+                                <a class="categoryTag pr-2 btnHover" style="background-color:darkblue; text-decoration: none;" asp-action="Edit" asp-route-id="@Model.ID">Edit</a>
+                            }
                             <a class="categoryTag btnHover" style="background-color:indigo; text-decoration: none;" asp-action="Index">Back</a>
                         </div>
                     </div>
@@ -79,13 +86,6 @@
             </div>
         </div>
     </div>
-    <h2>Comments</h2>
 </div>
-<div class="mt-5">
-    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.News.Edit)).Result.Succeeded)
-    {
-        <a class="categoryTag pr-2 btnHover" style="background-color:darkblue; text-decoration: none;" asp-action="Edit" asp-route-id="@Model.ID">Edit</a>
-    }
-    <a class="categoryTag btnHover" style="background-color:indigo; text-decoration: none;" asp-action="Index">Back</a>
-</div>
+
                        
