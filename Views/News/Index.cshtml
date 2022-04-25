@@ -1,0 +1,46 @@
+﻿@model DDAC_Assignment.Models.News
+
+@{
+    ViewData["Title"] = @Model.Title;
+}
+
+<div class="contentMargin overflow-auto">
+    <div class="pb-2">
+        @if (Model.ParentCategory != "None")
+        {
+            <span class="categoryTag pr-2" style="background-color:indianred">@Html.DisplayFor(model => model.ParentCategory)</span>
+        }
+        @if (Model.Category != "None")
+        {
+            <span style="background-color: lightcoral" class="categoryTag">@Html.DisplayFor(model => model.Category)</span>
+        }
+    </div>
+
+    <div>
+        <h1 class="pb-2" style="font-weight:bold;">@Html.DisplayFor(model => model.Title)</h1>
+        <div class="newsDetails mb-4">
+            <div><strong class="mr-1">By</strong>@Html.DisplayFor(model => model.Actor)</div>
+            <span><strong class="mr-1">Published</strong>@Html.DisplayFor(model => model.PublishedDate)</span>
+            <span><strong class="mr-1">Updated</strong>@Html.DisplayFor(model => model.LastUpdated)</span>
+        </div>
+
+        <div class="mb-4">
+            @if (ViewBag.isImagePathNull == "No")
+            {
+                <div class="displayLayout mb-4"><img src="@ViewBag.path" style="max-width: 900px; max-height: 500px" /></div>
+            }
+            <!--<div style="flex-wrap: wrap;">@Html.DisplayFor(model => model.Content)</div>-->
+            <!--@foreach (var item in Model.Content.Split("\n"))
+                {
+                    <div id="summernote" style="font-size:18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @item</div>
+                }-->
+
+            <div style="font-size:18px;">@Html.Raw(@Model.Content)</div>
+        </div>
+
+    </div>
+    <h2>Comments</h2>
+</div>
+<div class="mt-5">
+    <a class="categoryTag btnHover" style="background-color:indigo; text-decoration: none;" asp-action="Index" asp-controller="Home" >Back</a>
+</div>

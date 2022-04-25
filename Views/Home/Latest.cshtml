@@ -1,18 +1,15 @@
-﻿
-@model List<News>
+﻿@model List<News>
 
 @{
-    ViewData["Title"] = @ViewBag.pageName;
+    ViewData["Title"] = "Latest News";
 }
-
-
 <div class="text-center overflow-auto">
     <div class="d-flex justify-content-start align-items-center">
-        <h1 class="display-4">@ViewBag.pageName News</h1>
+        <h1 class="display-4">Latest News</h1>
     </div>
     @foreach (var news in @Model)
     {
-        <a asp-action="Index" asp-controller="News" asp-route-id="@news.ID.ToString()"  class="d-block text-black test" style="text-decoration: none;">
+        <a asp-action="Index" asp-controller="News" asp-route-id="@news.ID.ToString()" class="d-block text-black test" style="text-decoration: none;">
             <div class="rounded-3 shadow shadow-sm rounded my-5 mx-2 newsLink">
                 <div class="d-flex">
                     <div class="ml-2"><img src="@(@news.ImagePath ?? "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg")" alt="thumbnail" width="160" height="160"/></div>
@@ -25,8 +22,7 @@
             </div>
         </a>
     }
-    @* <a asp-action="Latest">See more</a> *@
-
+    <a asp-action="Privacy">See more</a>
 </div>
 
 <style type="text/css">
