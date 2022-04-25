@@ -5,95 +5,104 @@
 }
 <link rel="stylesheet" href="~/css/ContentCSS.css" />
 
-<h1>Preview</h1>
+<div class="container-fluid page-body-wrapper">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h1>Preview</h1>
 
-<div>
-    <h4>Advertisement</h4>
-    <hr />
-    @if (ViewBag.Position == "Header")
-    {
-        <div class="displayLayout mb-1"><img src="@ViewBag.path" /></div>
-        <div class="displayLayout mb-3" style="font-size:14px; color:grey">Advertisement</div>
-    }
-    <div class="contentMargin">
-        <div class="pb-2">
-            <span class="categoryTag pr-2" style="background-color:indianred">@ViewBag.data.ParentCategory</span>
-            @if (@ViewBag.data.Category != "None")
-            {
-                <span style="background-color: lightcoral" class="categoryTag">@ViewBag.data.Category</span>
-            }
-        </div>
+                        <div>
+                            <h4>Advertisement</h4>
+                            <hr />
+                            @if (ViewBag.Position == "Header")
+                            {
+                                <div class="displayLayout mb-1"><img src="@ViewBag.path" /></div>
+                                <div class="displayLayout mb-3" style="font-size:14px; color:grey">Advertisement</div>
+                            }
+                            <div class="contentMargin">
+                                <div class="pb-2">
+                                    <span class="categoryTag pr-2" style="background-color:indianred">@ViewBag.data.ParentCategory</span>
+                                    @if (@ViewBag.data.Category != "None")
+                                    {
+                                        <span style="background-color: lightcoral" class="categoryTag">@ViewBag.data.Category</span>
+                                    }
+                                </div>
 
-        <div>
-            <h1 class="pb-2" style="font-weight:bold;">@ViewBag.data.Title</h1>
-            <div class="newsDetails mb-4">
-                <div><strong class="mr-1">By</strong>@ViewBag.data.Actor</div>
-                <span><strong class="mr-1">Published</strong>@ViewBag.data.PublishedDate</span>
-                <span><strong class="mr-1">Updated</strong>@ViewBag.data.LastUpdatedDate</span>
-            </div>
-            <div class="mb-4">
-                <!--@if (ViewBag.category == "Technology")
-    {
-        string str = "/newsImage/techImage.png";
-        <div class="displayLayout"><img src="@str" /></div>
-    }
-    else if (ViewBag.category == "Business")
-    {
-        <div class="displayLayout"><img src="/newsImage/businessImage.png" /></div>
-    }
-    else if (ViewBag.category == "World")
-    {
-        <div class="displayLayout"><img src="/newsImage/worldImage.png" /></div>
-    }
-    else if (ViewBag.category == "Entertainment")
-    {
-        <div class="displayLayout"><img src="/newsImage/entertainmentImage.png" /></div>
-    }
-    else if (ViewBag.category == "Sport")
-    {
-        <div class="displayLayout"><img src="/newsImage/sportImage.png" /></div>
-    }
-    else if (ViewBag.category == "Science")
-    {
-        <div class="displayLayout"><img src="/newsImage/scienceImage.png" /></div>
-    }
-    else if (ViewBag.category == "Health")
-    {
-        <div class="displayLayout"><img src="/newsImage/healthImage.png" /></div>
-    }
-    else
-    {
-        <div class="displayLayout"><img src="/newsImage/localImage.png" /></div>
-    }-->
-                @if (!string.IsNullOrEmpty(ViewBag.data.ImagePath))
-                {
-                    string path = "/newsImage/" + @ViewBag.data.ImagePath;
-                    <div class="displayLayout"><img src="@path" /></div>
-                }
+                                <div>
+                                    <h1 class="pb-2" style="font-weight:bold;">@ViewBag.data.Title</h1>
+                                    <div class="newsDetails mb-4">
+                                        <div><strong class="mr-1">By</strong>@ViewBag.data.Actor</div>
+                                        <span><strong class="mr-1">Published</strong>@ViewBag.data.PublishedDate</span>
+                                        <span><strong class="mr-1">Updated</strong>@ViewBag.data.LastUpdatedDate</span>
+                                    </div>
+                                    <div class="mb-4">
+                                        <!--@if (ViewBag.category == "Technology")
+                                        {
+                                            string str = "/newsImage/techImage.png";
+                                            <div class="displayLayout"><img src="@str" /></div>
+                                        }
+                                        else if (ViewBag.category == "Business")
+                                        {
+                                            <div class="displayLayout"><img src="/newsImage/businessImage.png" /></div>
+                                        }
+                                        else if (ViewBag.category == "World")
+                                        {
+                                            <div class="displayLayout"><img src="/newsImage/worldImage.png" /></div>
+                                        }
+                                        else if (ViewBag.category == "Entertainment")
+                                        {
+                                            <div class="displayLayout"><img src="/newsImage/entertainmentImage.png" /></div>
+                                        }
+                                        else if (ViewBag.category == "Sport")
+                                        {
+                                            <div class="displayLayout"><img src="/newsImage/sportImage.png" /></div>
+                                        }
+                                        else if (ViewBag.category == "Science")
+                                        {
+                                            <div class="displayLayout"><img src="/newsImage/scienceImage.png" /></div>
+                                        }
+                                        else if (ViewBag.category == "Health")
+                                        {
+                                            <div class="displayLayout"><img src="/newsImage/healthImage.png" /></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="displayLayout"><img src="/newsImage/localImage.png" /></div>
+                                        }-->
+                                        @if (!string.IsNullOrEmpty(ViewBag.data.ImagePath))
+                                        {
+                                            string path = "/newsImage/" + @ViewBag.data.ImagePath;
+                                            <div class="displayLayout"><img src="@path" /></div>
+                                        }
 
+                                        <div class="displayLayout mb-4" style="font-size:14px; color:grey">@ViewBag.data.ImageDesciption</div>
 
+                                        <!--<div style="flex-wrap: wrap;">@ViewBag.data.Content</div>-->
+                                        @foreach (var item in @ViewBag.data.Content.Split("\n"))
+                                        {
+                                            <div class="px-5 mx-2" style="font-size: 18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@item</div>
+                                            <br />
+                                        }
 
-                <div class="displayLayout mb-4" style="font-size:14px; color:grey">@ViewBag.data.ImageDesciption</div>
-
-                <!--<div style="flex-wrap: wrap;">@ViewBag.data.Content</div>-->
-
-                @foreach (var item in @ViewBag.data.Content.Split("\n"))
-                {
-                    <div class="px-5 mx-2" style="font-size: 18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@item</div>
-                    <br />
-                }
-
+                                    </div>
+                                </div>
+                            </div>
+                            @if (ViewBag.Position == "Footer")
+                            {
+                                <div class="displayLayout mx-3"><img src="@ViewBag.path" /></div>
+                                <div class="displayLayout mb-3" style="font-size:14px; color:grey">Advertisement</div>
+                            }
+                            <h2 class="contentMargin">Comments</h2>
+                        </div>
+                        <div class="mb-2">
+                            <a class="categoryTag pr-2 btnHover" style="background-color:darkblue; text-decoration: none;" asp-action="Edit" asp-route-id="@Model.ID">Edit</a>
+                            <a class="categoryTag btnHover" style="background-color:indigo; text-decoration: none;" asp-action="Index">Back</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    @if (ViewBag.Position == "Footer")
-    {
-        <div class="displayLayout mx-3"><img src="@ViewBag.path" /></div>
-        <div class="displayLayout mb-3" style="font-size:14px; color:grey">Advertisement</div>
-    }
-    <h2 class="contentMargin">Comments</h2>
-</div>
-<div class="mb-2">
-    <a class="categoryTag pr-2 btnHover" style="background-color:darkblue; text-decoration: none;" asp-action="Edit" asp-route-id="@Model.ID">Edit</a>
-    <a class="categoryTag btnHover" style="background-color:indigo; text-decoration: none;" asp-action="Index">Back</a>
 </div>
