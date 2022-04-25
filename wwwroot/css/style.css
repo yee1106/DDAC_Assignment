@@ -15897,7 +15897,7 @@ fieldset:disabled .btn {
 }
 
 .flex-row, .horizontal-menu .top-navbar .navbar-menu-wrapper .navbar-nav {
-  flex-direction: row !important;
+
 }
 
 .flex-column, .nav-tabs.nav-tabs-vertical, .nav-tabs.nav-tabs-vertical-custom, .nav-pills.nav-pills-vertical {

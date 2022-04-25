@@ -1,50 +1,53 @@
 ﻿
 @model User
+@{
+    ViewData["Title"] = "Create User";
+}
 
 <div asp-validation-summary="All" class="text-danger"></div>
 <div class="container-fluid page-body-wrapper">
-        <div class="content-wrapper">
-            <div class="row">
-                <div class="col-md-2"> </div>
-                <div class="col-md-8 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <a asp-action="Index" class="btn btn-secondary">Back</a>
-                            <h4 class="card-title text-primary" style="text-align: center">Create User</h4>
-                            <section>
-                                <form method="post">
-                                    <div class="form-group">
-                                        <label asp-for="FullName"></label>
-                                        <input asp-for="FullName" class="form-control" />
-                                        <span asp-validation-for="FullName" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="Email"></label>
-                                        <input asp-for="Email" class="form-control" />
-                                        <span asp-validation-for="Email" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="@Model.roleSelectors"></label>
-                                        @for (int i = 0; i < Model.roleSelectors.Count; i++)
-                                        {
-                                            <div class="form-check form-check-primary">
-                                                <label class="form-check-label" asp-for="@Model.roleSelectors[i].Selected">
-                                                    @Model.roleSelectors[i].Name
-                                                    <input type="hidden" asp-for="@Model.roleSelectors[i].Id" />
-                                                    <input type="hidden" asp-for="@Model.roleSelectors[i].Name" />
-                                                    <input type="checkbox" asp-for="@Model.roleSelectors[i].Selected" class="form-check-input" />
-                                                </label>
-                                            </div>
-                                        }
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Create</button>
-                                </form>
-                            </section>
-                        </div>
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-md-2"> </div>
+            <div class="col-md-8 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <a asp-action="Index" class="btn btn-secondary">Back</a>
+                        <h4 class="card-title text-primary" style="text-align: center">Create User</h4>
+                        <section>
+                            <form method="post">
+                                <div class="form-group">
+                                    <label asp-for="FullName"></label>
+                                    <input asp-for="FullName" class="form-control" />
+                                    <span asp-validation-for="FullName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Email"></label>
+                                    <input asp-for="Email" class="form-control" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="@Model.roleSelectors"></label>
+                                    @for (int i = 0; i < Model.roleSelectors.Count; i++)
+                                    {
+                                        <div class="form-check form-check-primary">
+                                            <label class="form-check-label" asp-for="@Model.roleSelectors[i].Selected">
+                                                @Model.roleSelectors[i].Name
+                                                <input type="hidden" asp-for="@Model.roleSelectors[i].Id" />
+                                                <input type="hidden" asp-for="@Model.roleSelectors[i].Name" />
+                                                <input type="checkbox" asp-for="@Model.roleSelectors[i].Selected" class="form-check-input" />
+                                            </label>
+                                        </div>
+                                    }
+                                </div>
+                                <button type="submit" class="btn btn-primary">Create</button>
+                            </form>
+                        </section>
                     </div>
                 </div>
-                <div class="col-md-2"> </div>
             </div>
+            <div class="col-md-2"> </div>
         </div>
     </div>
+</div>
 

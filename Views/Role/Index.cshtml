@@ -1,5 +1,10 @@
 ﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
 
+@{
+    ViewData["Title"] = "Role Management";
+}
+
+
 @if (ViewBag.msg != null)
 {
     <script>alert("@ViewBag.msg");</script>
