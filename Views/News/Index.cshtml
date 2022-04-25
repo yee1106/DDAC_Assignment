@@ -1,28 +1,8 @@
 ﻿@model DDAC_Assignment.Models.News
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = @Model.Title;
 }
-
-<link rel="stylesheet" href="~/css/ContentCSS.css" />
-
-<h1>View News</h1>
-<br />
-<div style="display:flex; justify-content:space-between">
-    @if (ViewBag.hasPrevious)
-    {
-        <a class="categoryTag pr-2 btnHover switchPageBtn" asp-action="Details" asp-route-id="@Model.ID" asp-route-switchPageId="@ViewBag.previousId"><i class="mdi mdi-arrow-left"></i>Previous</a>
-    }
-    else
-    {
-        <span></span>
-    }
-    @if (ViewBag.hasNext)
-    {
-        <a class="categoryTag btnHover switchPageBtn" asp-action="Details" asp-route-id="@Model.ID" asp-route-switchPageId="@ViewBag.nextId">Next<i class="mdi mdi-arrow-right"></i></a>
-    }
-</div>
-<hr />
 
 <div class="contentMargin overflow-auto">
     <div class="pb-2">
@@ -51,9 +31,9 @@
             }
             <!--<div style="flex-wrap: wrap;">@Html.DisplayFor(model => model.Content)</div>-->
             <!--@foreach (var item in Model.Content.Split("\n"))
-            {
-                <div id="summernote" style="font-size:18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @item</div>
-            }-->
+                {
+                    <div id="summernote" style="font-size:18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @item</div>
+                }-->
 
             <div style="font-size:18px;">@Html.Raw(@Model.Content)</div>
         </div>
@@ -62,7 +42,5 @@
     <h2>Comments</h2>
 </div>
 <div class="mt-5">
-    <a class="categoryTag pr-2 btnHover" style="background-color:darkblue; text-decoration: none;" asp-action="Edit" asp-route-id="@Model.ID">Edit</a>
-    <a class="categoryTag btnHover" style="background-color:indigo; text-decoration: none;" asp-action="Index">Back</a>
+    <a class="categoryTag btnHover" style="background-color:indigo; text-decoration: none;" asp-action="Index" asp-controller="Home" >Back</a>
 </div>
-

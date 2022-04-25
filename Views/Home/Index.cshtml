@@ -1,8 +1,50 @@
-﻿@{
+﻿@model List<News>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcomeeee To DDAC - from admin branch</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center overflow-auto">
+    <div class="d-flex justify-content-start align-items-center">
+        <h1 class="display-4">Latest News</h1>
+    </div>
+    @foreach (var news in @Model)
+    {
+        <a asp-action="Index" asp-controller="News" asp-route-id="@news.ID.ToString()"  class="d-block text-black" style="text-decoration: none;">
+            <div class="rounded-3 shadow shadow-sm rounded my-5 mx-2 newsLink w-75">
+                <div class="d-flex">
+                    <div class="ml-2"><img src="@(@news.ImagePath ?? "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg")" alt="thumbnail" width="160" height="160"/></div>
+                    <div class="d-flex flex-column align-items-start p-2 mt-2">
+                        <h3 class="font-weight-bold text-start">@news.Title</h3>
+                        <p>Posted at: @news.PublishedDate</p>
+                        <p>Category:@news.Category </p>
+                    </div>
+                </div>
+            </div>
+        </a>
+    }
+    <a asp-action="Latest">See more</a>
+
 </div>
+
+<style type="text/css">
+    .newsLink:hover {
+        color: blue;
+    }
+</style>
+
+@* @section Scripts *@
+@* { *@
+@*     <script type="text/javascript"> *@
+@*         $(".newsLink").hover((e) => { *@
+@*             e.target.addClass("shadow-lg") *@
+@*         }) *@
+@*     </script> *@
+@* } *@
+
+
+@* @section Styles{ *@
+@*     <style type="text/css"> *@
+@* *@
+@*     </style> *@
+@* } *@
