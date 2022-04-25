@@ -13,7 +13,7 @@ namespace DDAC_Assignment.Models
         public int ID { get; set; }
 
         [Required(ErrorMessage ="You must key in title!")]
-        [StringLength(256, ErrorMessage ="The title between 6 - 256 characters!", MinimumLength = 6)]
+        [StringLength(256, ErrorMessage ="The title between 3 - 256 characters!", MinimumLength = 3)]
         public string Title { get; set; }
 
         [Required(ErrorMessage = "You must key in content!")]
@@ -40,7 +40,6 @@ namespace DDAC_Assignment.Models
 
         public DateTime LastUpdated { get; set; }
 
-        [Required]
         public string Visibility { get; set; }
 
         //public int CommentsCount
