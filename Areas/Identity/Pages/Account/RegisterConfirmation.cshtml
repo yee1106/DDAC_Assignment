@@ -1,0 +1,31 @@
+﻿@page
+@model RegisterConfirmationModel
+@{
+    ViewData["Title"] = "Register confirmation";
+}
+
+<center>
+    <div class="container-fluid page-body-wrapper">
+        <div class="content-wrapper">
+            <div class="row">
+                <i class="mdi mdi-account-check icon-lg text-success"></i>
+                <h1 class="text-success">@ViewData["Title"]</h1>
+                @if (@Model.Role == "Staff")
+                {
+                    <p>
+                        Please wait your registration to be approved. We will send an email to notify you once your account is ready.
+                    </p>
+                }
+                else
+                {
+                    <p>
+                        Please check your email to confirm your account.
+                    </p>
+                }
+            </div>
+        </div>
+    </div>
+</center>
+
+
+

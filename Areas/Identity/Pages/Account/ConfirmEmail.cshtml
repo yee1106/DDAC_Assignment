@@ -11,7 +11,14 @@
                 <i class="mdi mdi-account-check icon-lg text-success"></i>
                 <h1 class="text-success">@ViewData["Title"]</h1>
                 <div>
-                    <p>Your account has been confirmed.</p>
+                    @if (Model.Role == "User")
+                    {
+                        <p>Your account has been confirmed.</p>
+                    }
+                    else
+                    {
+                        <p>You have successfully approved the staff registration.</p>
+                    }
                     <a class="btn btn-inverse-success" asp-area="Identity" asp-page="/Account/Login">Click Here to Log In</a>
                 </div>
             </div>

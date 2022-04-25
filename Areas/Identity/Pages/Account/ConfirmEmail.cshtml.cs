@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using DDAC_Assignment.Models.APIs;
 
 namespace DDAC_Assignment.Areas.Identity.Pages.Account
 {
@@ -22,10 +23,12 @@ namespace DDAC_Assignment.Areas.Identity.Pages.Account
             _userManager = userManager;
         }
 
+        public string Role { get; set; }
+
         [TempData]
         public string StatusMessage { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string userId, string code)
+        public async Task<IActionResult> OnGetAsync(string userId, string code, string role)
         {
             if (userId == null || code == null)
             {
@@ -40,7 +43,23 @@ namespace DDAC_Assignment.Areas.Identity.Pages.Account
 
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
             var result = await _userManager.ConfirmEmailAsync(user, code);
-            StatusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
+
+            Role = role;
+            if (role == "Staff")
+            {
+                if(result.Succeeded)
+                {
+                    //send email notification to user
+                    await Email.notify_registration_success(user.Email, user.FullName);
+                }
+
+                StatusMessage = result.Succeeded ? "You have successfully approved the staff registration." : "Error approving staff registration.";
+            }
+            else
+            {
+                StatusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
+            }
+            
             return Page();
         }
     }

@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using DDAC_Assignment.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using DDAC_Assignment.Models.APIs;
+using Newtonsoft.Json.Linq;
 
 namespace DDAC_Assignment.Areas.Identity.Pages.Account
 {
@@ -112,29 +113,34 @@ namespace DDAC_Assignment.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    
+                    string role = Input.userrole;
                     _logger.LogInformation("User created a new account with password.");         
 
-                    await _userManager.AddToRoleAsync(user, Input.userrole); // assign user role
+                    await _userManager.AddToRoleAsync(user, role); // assign user role
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl, role=role },
                         protocol: Request.Scheme);
 
                     // Call api to send confirmation email by using aws lambda function
-                    // await Email.send_email_confirmation_api(user.Email, user.FullName, callbackUrl);
-
-                    // TODO Remove these lines
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    if (role == "Staff")
+                    {
+                        // send registration application to default admin to approve the user
+                        string response = await Email.approve_staff_registration_api(user.Email, user.FullName, callbackUrl); 
+                    }
+                    else
+                    {
+                        // send email confirmation link to user
+                        await Email.send_email_confirmation_api(user.Email, user.FullName, callbackUrl);
+                    }
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, role = role, returnUrl = returnUrl });
                     }
                     else
                     {
