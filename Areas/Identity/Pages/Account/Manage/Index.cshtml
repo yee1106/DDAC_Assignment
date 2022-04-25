@@ -1,53 +1,64 @@
 ﻿@page
 @model IndexModel
+
+@using static DDAC_Assignment.Configuration;
+
 @{
     ViewData["Title"] = "Profile";
+
     ViewData["ActivePage"] = ManageNavPages.Index;
+    @if (@Model.profilePictureS3Path == null)
+    {
+        ViewData["source"] = "https://" + bucketName + ".s3.amazonaws.com/profilePictures/" + "default_profile_picture";
+    }
+    else
+    {
+        ViewData["source"] = @Model.profilePictureS3Path;
+    }
+    
 }
-@using static DDAC_Assignment.Configuration;
+
 <partial name="_StatusMessage" model="Model.StatusMessage" />
 <div class="card">
     <div class="card-body">
-        <h4 class="card-title text-success" >@ViewData["Title"]</h4>
+        <h4 class="card-title text-success">@ViewData["Title"]</h4>
         <div class="row">
             <div class="col-md-12">
                 <form id="profile-form" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                    <img src="@Model.profilePictureS3Path" alt="Profile Picture"
+                    <img src=@ViewData["source"] alt="Profile Picture"
                          style="border-radius: 50%; margin: 10px; text-align: center;"
                          width="110" height="110" id="profile_pic">
-
                     <br>
                     <label class="btn btn-inverse-success " style="cursor: pointer;">
                         <input type="file" asp-for="@Model.ProfilePicture" class="file-upload-default " accept="image/*" onchange="loadFile(event)" style="display: none;" />
                         Change Photo
                     </label>
-                        <br>
-                        <br>
+                    <br>
+                    <br>
+                    <div class="form-group">
+                        <label asp-for="Username"></label>
+                        <input asp-for="Username" class="form-control" disabled>
+                    </div>
+                    @if (@Model.Input.Email == default_admin.Email)
+                    {
                         <div class="form-group">
-                            <label asp-for="Username"></label>
-                            <input asp-for="Username" class="form-control" disabled>
+                            <label asp-for="Input.Email"></label>
+                            <input asp-for="Input.Email" class="form-control" placeholder="Email" disabled>
                         </div>
-                        @if (@Model.Input.Email == default_admin.Email)
-                        {
-                            <div class="form-group">
-                                <label asp-for="Input.Email"></label>
-                                <input asp-for="Input.Email" class="form-control" placeholder="Email" disabled>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="form-group">
-                                <label asp-for="Input.Email"></label>
-                                <input asp-for="Input.Email" class="form-control" placeholder="Email">
-                            </div>
-                        }
+                    }
+                    else
+                    {
                         <div class="form-group">
-                            <label asp-for="Input.FullName"></label>
-                            <input asp-for="Input.FullName" class="form-control" placeholder="Email">
+                            <label asp-for="Input.Email"></label>
+                            <input asp-for="Input.Email" class="form-control" placeholder="Email">
                         </div>
-                        <button id="update-profile-button" type="submit" class="btn btn-success" style="color: white;">Save</button>
+                    }
+                    <div class="form-group">
+                        <label asp-for="Input.FullName"></label>
+                        <input asp-for="Input.FullName" class="form-control" placeholder="Email">
+                    </div>
+                    <button id="update-profile-button" type="submit" class="btn btn-success" style="color: white;">Save</button>
                 </form>
             </div>
         </div>

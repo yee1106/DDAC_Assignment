@@ -3,12 +3,13 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - DDAC_Assignment</title>
+    <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="~/vendors/base/vendor.bundle.base.css">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/style.css" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" />
+    <link rel="shortcut icon" href="~/favicon.png" />
 </head>
 <body>
     <div class="container-scroller">
@@ -16,17 +17,22 @@
             <nav class="navbar top-navbar col-lg-12 col-12 p-0">
                 <div class="container-fluid">
                     <div class="navbar-menu-wrapper d-flex align-items-center justify-content-between">
-                        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">E-News</a>
-                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                                    aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
+                        <div class="col-lg-4">
+                            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="horizontal-menu-toggle">
+                                <span class="mdi mdi-menu"></span>
                             </button>
                         </div>
-                        <partial name="_LoginPartial2" />
-                        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="horizontal-menu-toggle">
-                            <span class="mdi mdi-menu"></span>
-                        </button>
+                        <div class="col-lg-4 text-center navbar-brand-wrapper d-flex align-items-center justify-content-center"
+                             style="margin-left: 6%;">
+                            &nbsp
+                            <img src="~/favicon-md.png" alt="Icon">
+                            &nbsp &nbsp
+                            <a class="navbar-brand text-primary" asp-area="" asp-controller="Home" asp-action="Index">E-News</a>
+                        </div>
+                        <div class="col-lg-4" style="margin-right: 0%;">
+                            <partial name="_LoginPartial2" />
+                        </div>
+                        
                     </div>
                 </div>
             </nav>
@@ -46,19 +52,6 @@
                             </a>
                         </li>
                         <partial name="_LoginPartial" />
-                        @*<li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="mdi mdi-codepen menu-icon"></i>
-                                <span class="menu-title">Sample Pages</span>
-                                <i class="menu-arrow"></i>
-                            </a>
-                            <div class="submenu">
-                                <ul class="submenu-item">
-                                    <li class="nav-item"><a class="nav-link" href="pages/samples/login.html">Login</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="pages/samples/login-2.html">Login 2</a></li>
-                                </ul>
-                            </div>
-                        </li>*@
                     </ul>
                 </div>
             </nav>
