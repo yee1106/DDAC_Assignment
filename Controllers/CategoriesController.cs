@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DDAC_Assignment.Data;
 using DDAC_Assignment.Models;
+using Microsoft.Extensions.Configuration;
+using System.IO;
+using Amazon.SQS;
+using Amazon.SQS.Model;
+using Newtonsoft.Json;
 
 namespace DDAC_Assignment.Controllers
 {
@@ -20,9 +25,138 @@ namespace DDAC_Assignment.Controllers
         }
 
         // GET: Categories
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string message="")
         {
+            ViewBag.msg = message;
+            List<string> credentialInfo = getAWSCredential();
+            var sqsClient = new AmazonSQSClient(credentialInfo[0], credentialInfo[1], credentialInfo[2], Amazon.RegionEndpoint.USEast1);
+            var queueURL = await sqsClient.GetQueueUrlAsync(new GetQueueUrlRequest { QueueName = Configuration.SQSQueue });
+
+            GetQueueAttributesRequest attReq = new GetQueueAttributesRequest();
+            attReq.QueueUrl = queueURL.QueueUrl;
+            attReq.AttributeNames.Add("ApproximateNumberOfMessages");
+            GetQueueAttributesResponse response1 = await sqsClient.GetQueueAttributesAsync(attReq);
+
+            ViewBag.count = response1.ApproximateNumberOfMessages;
+            ViewBag.requestList = await readMessage();
+
             return View(await _context.Category.ToListAsync());
+        }
+
+        public async Task<List<KeyValuePair<UpdateCategoryRequest, string>>> readMessage()
+        {
+
+            List<string> credentialInfo = getAWSCredential();
+            var sqsClient = new AmazonSQSClient(credentialInfo[0], credentialInfo[1], credentialInfo[2], Amazon.RegionEndpoint.USEast1);
+
+            var queueURL = await sqsClient.GetQueueUrlAsync(new GetQueueUrlRequest { QueueName = Configuration.SQSQueue });
+            List<KeyValuePair<UpdateCategoryRequest, string>> updateCategoryRequestList = new List<KeyValuePair<UpdateCategoryRequest, string>>();
+
+
+            try
+            {
+                //create received request
+                ReceiveMessageRequest receiveMessageRequest = new ReceiveMessageRequest();
+                receiveMessageRequest.QueueUrl = queueURL.QueueUrl;
+                receiveMessageRequest.MaxNumberOfMessages = 10; // 1 - 10 message for 1 round - for 1 single staff
+                receiveMessageRequest.WaitTimeSeconds = 5;  //polling - short polling = 0(min) seconds, long polling = 1 -20 (max) seconds
+                receiveMessageRequest.VisibilityTimeout = 1;  //to block other admin to see during the current admin reading
+                ReceiveMessageResponse receivedContent = await sqsClient.ReceiveMessageAsync(receiveMessageRequest);
+
+
+                if (receivedContent.Messages.Count > 0)
+                {
+                    for (int i = 0; i < receivedContent.Messages.Count; i++)
+                    {
+                        var customer = JsonConvert.DeserializeObject<UpdateCategoryRequest>(receivedContent.Messages[i].Body);
+                        var deleteToken = receivedContent.Messages[i].ReceiptHandle;
+                        updateCategoryRequestList.Add(new KeyValuePair<UpdateCategoryRequest, string>(customer, deleteToken));
+                    }
+
+                }
+                else
+                {
+                    
+                }
+            }
+            catch (AmazonSQSException ex)
+            {
+                 ViewBag.message = "Error: " + ex.Message;
+            }
+            catch (Exception ex)
+            {
+                ViewBag.message = "Error: " + ex.Message;
+            }
+            return updateCategoryRequestList;
+        }
+
+        public async Task<IActionResult> deleteMessage(string deleteToken, int CategoryID, string CategoryName, string ParentCategoryName, string Description, string RequestType, string isApproved)
+        {
+            string msg="";
+            if (isApproved == "Yes")
+            {
+                if (RequestType == "Create"){
+                    msg = CategoryName + " category is created!!";
+                    Category category = new Category
+                    {
+                        CategoryName = CategoryName,
+                        ParentCategory = ParentCategoryName,
+                        Description = Description
+                    };
+                    _context.Add(category);
+                    await _context.SaveChangesAsync();
+                    await UpdateNavigation();
+                }
+                if (RequestType == "Delete")
+                {
+                    msg = CategoryName + " category is deleted!!";
+                    var category = await _context.Category.FindAsync(CategoryID);
+                    _context.Category.Remove(category);
+                    await _context.SaveChangesAsync();
+                    await UpdateNavigation();
+                }
+            }
+            else
+            {
+                msg = "The deletion of " +CategoryName + " category is rejected!!";
+            }
+
+            try
+            {
+                List<string> credentialInfo = getAWSCredential();
+                var sqsClient = new AmazonSQSClient(credentialInfo[0], credentialInfo[1], credentialInfo[2], Amazon.RegionEndpoint.USEast1);
+                var response = await sqsClient.GetQueueUrlAsync(new GetQueueUrlRequest { QueueName = Configuration.SQSQueue });
+
+                var delRequest = new DeleteMessageRequest
+                {
+                    QueueUrl = response.QueueUrl,
+                    ReceiptHandle = deleteToken
+                };
+                var delResponse = await sqsClient.DeleteMessageAsync(delRequest);
+                return RedirectToAction("Index", "Categories", new { message = msg });
+            }
+            catch (AmazonSQSException ex)
+            {
+                return RedirectToAction("Index", "Categories", new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", "Categories", new { message = ex.Message });
+            }
+        }
+
+        public List<string> getAWSCredential()
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json");
+            IConfigurationRoot configure = builder.Build();
+            List<string> accesskeylist = new List<string>();
+            accesskeylist.Add(configure["AWSCredential:accesskey"]);
+            accesskeylist.Add(configure["AWSCredential:secretkey"]);
+            accesskeylist.Add(configure["AWSCredential:sectiontoken"]);
+
+            return accesskeylist;
         }
 
         // GET: Categories/Details/5
@@ -75,9 +209,52 @@ namespace DDAC_Assignment.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(category);
-                await _context.SaveChangesAsync();
-                await UpdateNavigation();
+                //if role is staff then should get approved from admin then just can create category
+                if (User.IsInRole("Admin"))
+                {
+                    _context.Add(category);
+                    await _context.SaveChangesAsync();
+                    await UpdateNavigation();
+                }
+                else
+                {
+                    UpdateCategoryRequest updateCategoryRequest = new UpdateCategoryRequest
+                    {
+                        CategoryName = category.CategoryName,
+                        ParentCategoryName = category.ParentCategory,
+                        Description = category.Description,
+                        RequestType = "Create",
+                        StaffName = "Chew Chang Wang",
+                        RequestTime = DateTime.Now
+                    };
+
+                    List<string> credentialInfo = getAWSCredential();
+                    var sqsClient = new AmazonSQSClient(credentialInfo[0], credentialInfo[1], credentialInfo[2], Amazon.RegionEndpoint.USEast1);
+
+                    var queueURL = await sqsClient.GetQueueUrlAsync(new GetQueueUrlRequest { QueueName = Configuration.SQSQueue });
+
+                    try //push the message content to queue
+                    {
+                        //create send message request
+                        SendMessageRequest message = new SendMessageRequest();
+                        message.MessageBody = JsonConvert.SerializeObject(updateCategoryRequest);
+                        message.QueueUrl = queueURL.QueueUrl;
+
+
+                        //send message now
+                        await sqsClient.SendMessageAsync(message);
+                        return RedirectToAction("Index", "Categories", new { message = "Your request is send to the admin. Please wait to get approved" });
+                    }
+                    catch (AmazonSQSException ex)
+                    {
+                        return RedirectToAction("Index", "Categories", new { message = "Error: " + ex.Message });
+                    }
+                    catch (Exception ex)
+                    {
+                        return RedirectToAction("Index", "Categories", new { message = "Error: " + ex.Message });
+                    }
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
@@ -234,10 +411,54 @@ namespace DDAC_Assignment.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            //if role is staff then should get approved from admin then just can create category
             var category = await _context.Category.FindAsync(id);
-            _context.Category.Remove(category);
-            await _context.SaveChangesAsync();
-            await UpdateNavigation();
+            if (User.IsInRole("Admin"))
+            {
+                _context.Category.Remove(category);
+                await _context.SaveChangesAsync();
+                await UpdateNavigation();
+            }
+            else
+            {
+                UpdateCategoryRequest updateCategoryRequest = new UpdateCategoryRequest
+                {
+                    CategoryID = id,
+                    CategoryName = category.CategoryName,
+                    ParentCategoryName = category.ParentCategory,
+                    Description = category.Description,
+                    RequestType = "Delete",
+                    StaffName = "Chew Chang Wang",
+                    RequestTime = DateTime.Now
+                };
+
+                List<string> credentialInfo = getAWSCredential();
+                var sqsClient = new AmazonSQSClient(credentialInfo[0], credentialInfo[1], credentialInfo[2], Amazon.RegionEndpoint.USEast1);
+
+                var queueURL = await sqsClient.GetQueueUrlAsync(new GetQueueUrlRequest { QueueName = Configuration.SQSQueue });
+
+                try //push the message content to queue
+                {
+                    //create send message request
+                    SendMessageRequest message = new SendMessageRequest();
+                    message.MessageBody = JsonConvert.SerializeObject(updateCategoryRequest);
+                    message.QueueUrl = queueURL.QueueUrl;
+
+
+                    //send message now
+                    await sqsClient.SendMessageAsync(message);
+                    return RedirectToAction("Index", "Categories", new { message = "Your request is send to the admin. Please wait to get approved" });
+                }
+                catch (AmazonSQSException ex)
+                {
+                    return RedirectToAction("Index", "Categories", new { message = "Error: " + ex.Message });
+                }
+                catch (Exception ex)
+                {
+                    return RedirectToAction("Index", "Categories", new { message = "Error: " + ex.Message });
+                }
+            }
+
             return RedirectToAction(nameof(Index));
         }
 

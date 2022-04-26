@@ -4,9 +4,14 @@
     ViewData["Title"] = "Index";
 }
 
+@if(ViewBag.msg != "")
+{
+    <script>alert("@ViewBag.msg");</script>
+}
+
 <link rel="stylesheet" href="~/css/IndexCSS.css" />
 
-<div class="container-fluid page-body-wrapper">
+
     <div class="content-wrapper">
         <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
@@ -58,6 +63,60 @@
                         </div>
                      </div>
                  </div>
+            </div>
+        </div>
+    </div>
+
+<div class="container-fluid page-body-wrapper">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h1>Update Category Request Queue: </h1>
+                        <p>Number of request in the queue: @ViewBag.count</p>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Request Type</th>
+                                        <th>Staff Name</th>
+                                        <th>CategoryID</th>
+                                        <th>Category Name</th>
+                                        <th>ParentCategory Name</th>
+                                        <th>Description</th>
+                                        <th>Request Time</th>
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                            <th>Approve or Reject</th>
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in ViewBag.requestList)
+                                    {
+                                    <tr>
+                                        <td>@item.Key.RequestType</td>
+                                        <td>@item.Key.StaffName</td>
+                                        <td>@item.Key.CategoryID</td>
+                                        <td>@item.Key.CategoryName</td>
+                                        <td>@item.Key.ParentCategoryName</td>
+                                        <td>@item.Key.Description</td>
+                                        <td>@item.Key.RequestTime</td>
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                            <td>
+                                                <a asp-action="deleteMessage" asp-route-deleteToken="@item.Value" asp-route-CategoryID="@item.Key.CategoryID" asp-route-RequestType="@item.Key.RequestType" asp-route-CategoryName="@item.Key.CategoryName" asp-route-ParentCategoryName="@item.Key.ParentCategoryName" asp-route-Description="@item.Key.Description" asp-route-isApproved="Yes"><input type="button" class="editButton mb-2 button" style="width:80px" value="Approve" /></a>
+                                                <a asp-action="deleteMessage" asp-route-deleteToken="@item.Value" asp-route-CategoryID="@item.Key.CategoryID" asp-route-RequestType="@item.Key.RequestType" asp-route-CategoryName="@item.Key.CategoryName" asp-route-ParentCategoryName="@item.Key.ParentCategoryName" asp-route-Description="@item.Key.Description" asp-route-isApproved="No"><input type="button" class="deleteButton mb-2 button" style="width:80px" value="Reject" /></a>
+                                            </td>
+                                        }
+                                     </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
