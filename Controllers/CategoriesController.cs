@@ -12,16 +12,20 @@ using System.IO;
 using Amazon.SQS;
 using Amazon.SQS.Model;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Identity;
+using DDAC_Assignment.Areas.Identity.Data;
 
 namespace DDAC_Assignment.Controllers
 {
     public class CategoriesController : Controller
     {
         private readonly DDAC_AssignmentNewsDatabase _context;
+        private UserManager<DDAC_AssignmentUser> userManager;
 
-        public CategoriesController(DDAC_AssignmentNewsDatabase context)
+        public CategoriesController(DDAC_AssignmentNewsDatabase context, UserManager<DDAC_AssignmentUser> usrMgr)
         {
             _context = context;
+            userManager = usrMgr;
         }
 
         // GET: Categories
@@ -61,6 +65,7 @@ namespace DDAC_Assignment.Controllers
                 receiveMessageRequest.MaxNumberOfMessages = 10; // 1 - 10 message for 1 round - for 1 single staff
                 receiveMessageRequest.WaitTimeSeconds = 5;  //polling - short polling = 0(min) seconds, long polling = 1 -20 (max) seconds
                 receiveMessageRequest.VisibilityTimeout = 1;  //to block other admin to see during the current admin reading
+                
                 ReceiveMessageResponse receivedContent = await sqsClient.ReceiveMessageAsync(receiveMessageRequest);
 
 
@@ -78,6 +83,7 @@ namespace DDAC_Assignment.Controllers
                 {
                     
                 }
+                updateCategoryRequestList = (List<KeyValuePair<UpdateCategoryRequest, string>>)updateCategoryRequestList.Distinct();
             }
             catch (AmazonSQSException ex)
             {
@@ -88,6 +94,11 @@ namespace DDAC_Assignment.Controllers
                 ViewBag.message = "Error: " + ex.Message;
             }
             return updateCategoryRequestList;
+        }
+
+        public IActionResult RefreshQueue()
+        {
+            return RedirectToAction("Index", "Categories", new { message = "" });
         }
 
         public async Task<IActionResult> deleteMessage(string deleteToken, int CategoryID, string CategoryName, string ParentCategoryName, string Description, string RequestType, string isApproved)
@@ -118,7 +129,7 @@ namespace DDAC_Assignment.Controllers
             }
             else
             {
-                msg = "The deletion of " +CategoryName + " category is rejected!!";
+                msg = "The " + RequestType.ToLower() + " operation for " + CategoryName + " category is rejected!!";
             }
 
             try
@@ -218,13 +229,14 @@ namespace DDAC_Assignment.Controllers
                 }
                 else
                 {
+                    DDAC_AssignmentUser user = await userManager.GetUserAsync(User);
                     UpdateCategoryRequest updateCategoryRequest = new UpdateCategoryRequest
                     {
                         CategoryName = category.CategoryName,
                         ParentCategoryName = category.ParentCategory,
                         Description = category.Description,
                         RequestType = "Create",
-                        StaffName = "Chew Chang Wang",
+                        StaffUserName = user.UserName,
                         RequestTime = DateTime.Now
                     };
 
@@ -428,7 +440,7 @@ namespace DDAC_Assignment.Controllers
                     ParentCategoryName = category.ParentCategory,
                     Description = category.Description,
                     RequestType = "Delete",
-                    StaffName = "Chew Chang Wang",
+                    StaffUserName = "Chew Chang Wang",
                     RequestTime = DateTime.Now
                 };
 

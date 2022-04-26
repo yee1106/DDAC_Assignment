@@ -17,7 +17,7 @@ namespace DDAC_Assignment.Models
 
         public string RequestType { get; set; }
 
-        public string StaffName { get; set; }
+        public string StaffUserName { get; set; }
 
         public DateTime RequestTime { get; set; }
     }

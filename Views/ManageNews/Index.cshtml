@@ -238,16 +238,16 @@
                                                     <td>
                                                         @if ((AuthorizationService.AuthorizeAsync(User, Permissions.News.Edit)).Result.Succeeded)
                                                         {
-                                                            <a asp-action="Edit" asp-route-id="@item.ID"><input type="button" class="editButton mb-2 button" style="width:80px" value="Edit" /></a>
+                                                            <a class="d-block" asp-action="Edit" asp-route-id="@item.ID"><input type="button" class="editButton mb-2 button" style="width:80px" value="Edit" /></a>
                                                         }
-                                                        <a asp-action="Details" asp-route-id="@item.ID"><input type="button" class="detailsButton mb-2 button" style="width:80px" value="View" /></a>
+                                                        <a class="d-block" asp-action="Details" asp-route-id="@item.ID"><input type="button" class="detailsButton mb-2 button" style="width:80px" value="View" /></a>
                                                         @if ((AuthorizationService.AuthorizeAsync(User, Permissions.News.Delete)).Result.Succeeded)
                                                         {
-                                                            <a asp-action="Delete" asp-route-id="@item.ID"><input type="button" class="deleteButton mb-2 button" style="width:80px" value="Delete" /></a>
+                                                            <a class="d-block" asp-action="Delete" asp-route-id="@item.ID"><input type="button" class="deleteButton mb-2 button" style="width:80px" value="Delete" /></a>
                                                         }
                                                         @if ((AuthorizationService.AuthorizeAsync(User, Permissions.News.Approve).Result.Succeeded))
                                                         {
-                                                            <a asp-action="Approve" asp-route-id="@item.ID"><input type="button" class="approveButton mb-2 button" style="width:80px" value="Approve" /></a>
+                                                            <a class="d-block" asp-action="Approve" asp-route-id="@item.ID"><input type="button" class="approveButton mb-2 button" style="width:80px" value="Approve" /></a>
                                                         }
                                                     </td>
                                                 </tr>
