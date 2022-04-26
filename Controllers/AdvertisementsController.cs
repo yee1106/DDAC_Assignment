@@ -248,7 +248,7 @@ namespace DDAC_Assignment.Controllers
                 }
                 else
                 {
-                    string message = "You must select an image!!!";
+                    string message = "Please select an advertisement image!!!";
                     return RedirectToAction("Create", "Advertisements", new { msg = message });
                 }
                 _context.Add(advertisement);
