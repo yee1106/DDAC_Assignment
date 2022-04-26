@@ -13,7 +13,8 @@ namespace DDAC_Assignment
         public static string getNewsDataApi_url = "https://xj1uzxn50g.execute-api.us-east-1.amazonaws.com/readNewsApi";
 
         //bucket
-        public static string bucketName = "ddacimagebucket";
+        //public static string bucketName = "ddacimagebucket";
+        public static string bucketName = "advertisementimage";
 
         // AWS SNS Topic
         public static string topicArn = "arn:aws:sns:us-east-1:532715210025:roles_and_permissions_update";

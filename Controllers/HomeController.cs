@@ -23,7 +23,7 @@ namespace DDAC_Assignment.Controllers
 
         public IActionResult Index()
         {
-            var news = _context.News.OrderByDescending(n=>n.PublishedDate).Take(10).ToList();
+            List<News> news = _context.News.OrderByDescending(news => news.PublishedDate).Take(10).ToList();
             return View(news);
         }
 

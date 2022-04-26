@@ -28,8 +28,4 @@
     <None Include="wwwroot\vendors\mdi\fonts\materialdesignicons-webfont.woff2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\customer\" />
-  </ItemGroup>
-
 </Project>
