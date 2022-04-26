@@ -12,9 +12,8 @@ namespace DDAC_Assignment
         public static string writeNewsDataApi_url = "https://hgthey6w51.execute-api.us-east-1.amazonaws.com/writeNewsApi";
         public static string getNewsDataApi_url = "https://xj1uzxn50g.execute-api.us-east-1.amazonaws.com/readNewsApi";
 
-
-        //S3 bucket
-        public static string bucketName = "ddacimagebucket";
+        //s3 bucket
+        public static string bucketName = "ddacimagebucket1";
 
 
         //AWS SQS
