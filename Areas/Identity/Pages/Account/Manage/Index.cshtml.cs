@@ -148,59 +148,12 @@ namespace DDAC_Assignment.Areas.Identity.Pages.Account.Manage
         }
         public async Task LoadImageFromS3(string user_id)
         {
-            List<string> accesskeylist = getAWSCredential();
-            var result = new List<S3Object>();
-            string presignedURL ="";
-            var urlForImage = "";
-            try
-            {
-                AmazonS3Client s3Client = new AmazonS3Client(accesskeylist[0], accesskeylist[1], accesskeylist[2], Amazon.RegionEndpoint.USEast1);
+            //create each presign URL to the objects
+            var path = "profilePictures/" + user_id;
 
-                //grab the objects and its information
-                string token = null;
-                do
-                {
-                    ListObjectsRequest request = new ListObjectsRequest()
-                    {
-                        BucketName = bucketname,
-                        Prefix = "profilePictures"
-                    };
-                    ListObjectsResponse response = await s3Client.ListObjectsAsync(request).ConfigureAwait(false);
-                    result.AddRange(response.S3Objects);
-                    token = response.NextMarker;
-                }
-                while (token != null);
-
-                //create each presign URL to the objects
-                var path = "profilePictures/" + user_id;
-                foreach (var image in result)
-                {
-                    if (image.Key == path)
-                    {
-                        /* //create presigned URL for temp access from public
-                         GetPreSignedUrlRequest request = new GetPreSignedUrlRequest
-                         {
-                             BucketName = bucketname,
-                             Key = user_id,
-                             Expires = DateTime.Now.AddMinutes(1)
-                         };
-
-                         //get the generated URL path
-                         //presignedURLS.Add(s3Client.GetPreSignedURL(request));
-                         urlForImage = s3Client.GetPreSignedURL(request);*/
-
-                        //permanent image access
-                        string permanent_url = "https://" + image.BucketName + ".s3.amazonaws.com/" + path;
-                        urlForImage = permanent_url;
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                StatusMessage = ex.Message;
-            }
-            profilePictureS3Path = urlForImage;
+            //permanent image access
+            string permanent_url = "https://" + bucketname + ".s3.amazonaws.com/" + path;
+            profilePictureS3Path = permanent_url;
         }
 
         //upload image to S3
