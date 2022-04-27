@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using DDAC_Assignment.Data;
 using DDAC_Assignment.Models;
 using DDAC_Assignment.Models.customer;
@@ -35,37 +36,48 @@ namespace DDAC_Assignment.Controllers
         public async Task<IActionResult> Index(string id)
         {
             ViewBag.id = id;
-            var news = await  _context.News.FirstAsync(n => n.ID.ToString() == id);
+            var news =  await _context.News.FirstAsync(n => n.ID.ToString() == id);
 
-            var headerAdvertisement = await  _context.Advertisement.FirstOrDefaultAsync(a =>
+            var headerAdvertisement = await  _context.Advertisement.Where(a =>
                 DateTime.Now >= a.PublishedDate && DateTime.Now <= a.PublishedDate.AddDays(a.Duration) &&
-                a.Category == news.Category && a.Position == "Header" && a.Visibility == "Visible");
+                a.Category == news.Category && a.Position == "Header" && a.Visibility == "Visible").FirstAsync();
             //var headerAdvertisement = _context.Advertisement.FirstOrDefault();
 
-            var footerAdvertisement = await _context.Advertisement.FirstOrDefaultAsync(a =>
+            var footerAdvertisement = await  _context.Advertisement.FirstOrDefaultAsync(a =>
                 DateTime.Now >= a.PublishedDate && DateTime.Now <= a.PublishedDate.AddDays(a.Duration) &&
                 a.Category == news.Category && a.Position == "Footer" && a.Visibility == "Visible");
             //var footerAdvertisement = _context.Advertisement.FirstOrDefault();
 
+            // if (headerAdvertisement != null)
+            // {
+            //
+            //     var formatted = news.ImagePath.Replace(" ", "+");
+            //     ViewBag.headerAd = $"https://{bucketname}.s3.amazonaws.com/advertisementImages/{formatted}";
+            //     _logger.LogInformation(formatted);
+            // }
 
             if (headerAdvertisement != null)
             {
-
+                
                 var headerAd = await ViewImageFromS3Ad(headerAdvertisement, "advertisementImages");
                 ViewBag.headerAd = await ViewImageFromS3Ad(headerAdvertisement, "advertisementImages");
                 _logger.LogInformation(headerAd);
             }
-
+            
             if (footerAdvertisement != null)
             {
                 var footerAd = await ViewImageFromS3Ad(footerAdvertisement, "advertisementImages");
                 ViewBag.footerAd = await ViewImageFromS3Ad(footerAdvertisement, "advertisementImages");
                 _logger.LogInformation(footerAd);
             }
-
-            ViewBag.newsImage = await ViewImageFromS3(news, "newsImages");
-
             
+            if (!string.IsNullOrEmpty(news.ImagePath))
+            {
+                ViewBag.newsImage = await ViewImageFromS3(news, "newsImages");
+                _logger.LogInformation(await ViewImageFromS3(news, "newsImages"));
+            }
+
+
 
 
             return View(news);
@@ -97,8 +109,9 @@ namespace DDAC_Assignment.Controllers
                 } while (token != null);
 
                 //create each presign URL to the objects
-                var formatted = news.ImagePath.Replace(" ", "+");
-                var path = $"{folderKey}/" + formatted;
+                //var formatted = news.ImagePath.Replace(" ", "+");
+                //var formatted = HttpUtility.UrlEncode(news.ImagePath);
+                var path = $"{folderKey}/" + news.ImagePath;
                 foreach (var image in result)
                 {
                     if (image.Key == path)
@@ -116,7 +129,7 @@ namespace DDAC_Assignment.Controllers
                          urlForImage = s3Client.GetPreSignedURL(request);*/
 
                         //permanent image access
-                        string link = "https://" + image.BucketName + ".s3.amazonaws.com/" + image.Key;
+                        string link = "https://" + image.BucketName + ".s3.amazonaws.com/" + HttpUtility.UrlEncode(image.Key);
                         urlForImage = link;
                     }
                 }
@@ -158,8 +171,9 @@ namespace DDAC_Assignment.Controllers
                 } while (token != null);
 
                 //create each presign URL to the objects
-                var formatted = ad.ImagePath.Replace(" ", "+");
-                var path = $"{folderKey}/" + formatted;
+                //var formatted = ad.ImagePath.Replace(" ", "+");
+                var path = $"{folderKey}/" + ad.ImagePath;
+                _logger.LogInformation(path);
                 foreach (var image in result)
                 {
                     if (image.Key == path)
@@ -177,7 +191,7 @@ namespace DDAC_Assignment.Controllers
                          urlForImage = s3Client.GetPreSignedURL(request);*/
 
                         //permanent image access
-                        string link = "https://" + image.BucketName + ".s3.amazonaws.com/" + image.Key;
+                        string link = "https://" + image.BucketName + ".s3.amazonaws.com/" + HttpUtility.UrlEncode(image.Key);
                         urlForImage = link;
                     }
                 }

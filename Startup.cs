@@ -12,6 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using DDAC_Assignment.Data;
 using Microsoft.AspNetCore.Authorization;
 using DDAC_Assignment.Models.Permission;
+using Amazon.XRay.Recorder.Core;
+using Amazon.XRay.Recorder.Handlers.AwsSdk;
 
 namespace DDAC_Assignment
 {
@@ -20,6 +22,9 @@ namespace DDAC_Assignment
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            AWSXRayRecorder.InitializeInstance(Configuration);
+            AWSSDKHandler.RegisterXRayForAllServices();
+            //AWSSDKHandler.RegisterXRay<IAmazonDynamoDB>();
         }
 
         public IConfiguration Configuration { get; }
@@ -36,6 +41,7 @@ namespace DDAC_Assignment
 
             services.AddDbContext<DDAC_AssignmentNewsDatabase>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DDAC_AssignmentNewsDatabase")));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +58,7 @@ namespace DDAC_Assignment
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+            app.UseXRay("DDACAssignment-app");
             app.UseStaticFiles();
 
             app.UseRouting();

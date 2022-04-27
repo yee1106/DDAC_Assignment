@@ -16,16 +16,18 @@
                 <div class="card">
                     <div class="card-body">
                         <br/>
-                        
+
                         <hr/>
 
                         <div class="contentMargin">
-                            @if(ViewBag.headerAd != null){
-                                
-                                <div style="height: 200px; width: 100%" class="mb-2">
-                                    <img src=@(@ViewBag.headerAd ?? "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg") height="200"/>
+                            @if (ViewBag.headerAd != null)
+                            {
+                                <div style="height: 200px; width: 100%" class="mb-2 d-flex justify-content-center flex-column">
+                                    <div class="d-flex justify-content-center">
+                                        <img src=@(@ViewBag.headerAd ?? "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg") height="200"/>
+                                    </div>
+                                    <div class="d-flex justify-content-center">Advertisement</div>
                                 </div>
-                                <p>Advertisement</p>
                             }
 
                             <div class="pb-2">
@@ -55,10 +57,13 @@
                                 </div>
 
                                 <div class="mb-4">
-                                    @* @if (ViewBag.isImagePathNull == "No") *@
-                                    @* { *@
-                                    @*     <div class="displayLayout mb-4"><img src="@ViewBag.path" style="max-width: 900px; max-height: 500px" /></div> *@
-                                    @* } *@
+                                    @if (ViewBag.newsImage != null)
+                                    {
+                                        <div class="displayLayout mb-4">
+                                            <img src="@ViewBag.newsImage" style="max-width: 900px; max-height: 500px"/>
+                                        </div>
+                                    }
+
                                     <!--<div style="flex-wrap: wrap;">@Html.DisplayFor(model => model.Content)</div>-->
                                     <!--@foreach (var item in Model.Content.Split("\n"))
                                         {
@@ -69,12 +74,14 @@
                                 </div>
 
                             </div>
-                            @if(ViewBag.footerAd != null){
-                                
-                                <div style="height: 200px; width: 100%" class="mb-2">
-                                    <img src=@(@ViewBag.footerAd ?? "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg") height="200"/>
+                            @if (ViewBag.footerAd != null)
+                            {
+                                <div style="height: 200px; width: 100%" class="mb-2 d-flex justify-content-center flex-column">
+                                    <div class="d-flex justify-content-center">
+                                        <img src=@(@ViewBag.footerAd ?? "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg") height="200"/>
+                                    </div>
+                                    <div class="d-flex justify-content-center">Advertisement</div>
                                 </div>
-                                <p>Advertisement</p>
                             }
                         </div>
                         <!--<div class="mt-5">

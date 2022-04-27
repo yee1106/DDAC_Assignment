@@ -35,10 +35,13 @@ namespace DDAC_Assignment.Controllers
             news.ForEach(n => newsViewList.Add(new NewsViewModel {News = n}));
             foreach (var newsView in newsViewList)
             {
-                var newsImage = await ViewImageFromS3(newsView.News, "newsImages");
-                newsView.NewsImageUri = newsImage;
+                if (!String.IsNullOrEmpty(newsView.News.ImagePath))
+                {
+                    var newsImage = await ViewImageFromS3(newsView.News, "newsImages");
+                    newsView.NewsImageUri = newsImage;
+                }
             }
-
+            _logger.LogInformation(newsViewList[0].NewsImageUri);
             return View(newsViewList);
         }
 
