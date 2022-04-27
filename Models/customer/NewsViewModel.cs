@@ -5,5 +5,11 @@ namespace DDAC_Assignment.Models.customer
     {
         public Advertisement Advertisement { get; set; }
         public News News { get; set; }
+
+        public string NewsImageUri { get; set; }
+
+        public string HeaderAdvertisementImage { get; set; }
+        public string FooterAdvertisementImage { get; set; }
+
     }
 }

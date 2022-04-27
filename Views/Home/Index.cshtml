@@ -1,4 +1,4 @@
-﻿@model List<News>
+﻿@model List<DDAC_Assignment.Models.customer.NewsViewModel>
 
 @{
     ViewData["Title"] = "Home Page";
@@ -10,14 +10,14 @@
     </div>
     @foreach (var news in @Model)
     {
-        <a asp-action="Index" asp-controller="News" asp-route-id="@news.ID.ToString()"  class="d-block text-black" style="text-decoration: none;">
+        <a asp-action="Index" asp-controller="News" asp-route-id="@news.News.ID.ToString()"  class="d-block text-black" style="text-decoration: none;">
             <div class="rounded-3 shadow shadow-sm rounded my-5 mx-2 newsLink w-75">
                 <div class="d-flex">
-                    <div class="ml-2"><img src="@(@news.ImagePath ?? "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg")" alt="thumbnail" width="160" height="160"/></div>
+                    <div class="ml-2"><img src="@(String.IsNullOrEmpty(news.NewsImageUri) ? "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg" : news.NewsImageUri)" alt="thumbnail" width="160" height="160"/></div>
                     <div class="d-flex flex-column align-items-start p-2 mt-2">
-                        <h3 class="font-weight-bold text-start">@news.Title</h3>
-                        <p>Posted at: @news.PublishedDate</p>
-                        <p>Category:@news.Category </p>
+                        <h3 class="font-weight-bold text-start">@news.News.Title</h3>
+                        <p>Posted at: @news.News.PublishedDate</p>
+                        <p>Category:@news.News.Category </p>
                     </div>
                 </div>
             </div>
