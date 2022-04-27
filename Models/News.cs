@@ -19,7 +19,8 @@ namespace DDAC_Assignment.Models
         [Required(ErrorMessage = "You must key in content!")]
         public string Content { get; set; }
 
-        [StringLength(100, ErrorMessage = "The title between 3 - 100 characters!", MinimumLength = 3)]
+        [Display(Name = "Author")]
+        [StringLength(100, ErrorMessage = "The author between 3 - 100 characters!", MinimumLength = 3)]
         public string Actor { get; set; }
 
         [Display(Name = "Published Date")]
