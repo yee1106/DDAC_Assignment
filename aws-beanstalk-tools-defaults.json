@@ -8,13 +8,6 @@
     "environment"    : "DDACAssignment-prod",
     "enable-xray"    : true,
     "enhanced-health-type" : "basic",
-    "additional-options"   : "\"aws:autoscaling:launchconfiguration,SecurityGroups\"=\"sg-081beecfe8b6d4c8c,sg-094f6d3c1526b0086\";\"aws:ec2:vpc,Subnets\"=\"subnet-0d00e85f6888a6ade\"",
-    "solution-stack"       : "64bit Amazon Linux 2 v2.3.0 running .NET Core",
-    "environment-type"     : "SingleInstance",
-    "cname"                : "ddacassignment-prod",
-    "instance-type"        : "t2.micro",
-    "key-pair"             : "",
-    "instance-profile"     : "LabInstanceProfile",
-    "service-role"         : "LabRole",
+    "additional-options"   : "",
     "proxy-server"         : "nginx"
 }

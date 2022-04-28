@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20220425093803_customer.cs" />
+    <Compile Remove="Migrations\20220425093803_customer.Designer.cs" />
+    <Compile Remove="Migrations\DDAC_AssignmentNewsDatabaseMigrations\20220426081342_addedComment.cs" />
+    <Compile Remove="Migrations\DDAC_AssignmentNewsDatabaseMigrations\20220426081342_addedComment.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AWSSDK.S3" Version="3.7.8.17" />
     <PackageReference Include="AWSSDK.SimpleNotificationService" Version="3.7.3.50" />
     <PackageReference Include="AWSSDK.SQS" Version="3.7.2.47" />

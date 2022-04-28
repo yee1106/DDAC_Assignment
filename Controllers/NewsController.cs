@@ -40,12 +40,12 @@ namespace DDAC_Assignment.Controllers
 
             var headerAdvertisement = await  _context.Advertisement.Where(a =>
                 DateTime.Now >= a.PublishedDate && DateTime.Now <= a.PublishedDate.AddDays(a.Duration) &&
-                a.Category == news.Category && a.Position == "Header" && a.Visibility == "Visible").FirstAsync();
+                a.Category == news.Category && a.Position == "Header" && a.Visibility == "Visible").FirstOrDefaultAsync();
             //var headerAdvertisement = _context.Advertisement.FirstOrDefault();
 
-            var footerAdvertisement = await  _context.Advertisement.FirstOrDefaultAsync(a =>
+            var footerAdvertisement = await  _context.Advertisement.Where(a =>
                 DateTime.Now >= a.PublishedDate && DateTime.Now <= a.PublishedDate.AddDays(a.Duration) &&
-                a.Category == news.Category && a.Position == "Footer" && a.Visibility == "Visible");
+                a.Category == news.Category && a.Position == "Footer" && a.Visibility == "Visible").FirstOrDefaultAsync();
             //var footerAdvertisement = _context.Advertisement.FirstOrDefault();
 
             // if (headerAdvertisement != null)
