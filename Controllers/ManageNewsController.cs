@@ -411,7 +411,7 @@ namespace DDAC_Assignment.Controllers
                 }
 
                 //set the status to pending after create
-                //news.Status = "Pending";
+                news.Status = false;
                 news.LastUpdated = DateTime.Now;
 
                 /*//file upload
@@ -531,7 +531,7 @@ namespace DDAC_Assignment.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Title,Content,Actor,PublishedDate,Visibility,Category,ParentCategory,Status,ImagePath")] News news, IFormFile image)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Title,Content,Actor,PublishedDate,Visibility,Category,ParentCategory,ImagePath")] News news, IFormFile image)
         {
             if (id != news.ID)
             {
