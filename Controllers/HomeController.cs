@@ -30,7 +30,7 @@ namespace DDAC_Assignment.Controllers
 
         public async Task<IActionResult> Index()
         {
-            List<News> news = await _context.News.OrderByDescending(news => news.PublishedDate).Take(10).ToListAsync();
+            List<News> news = await _context.News.Where(n=>n.Visibility == "Visible" && n.Status).OrderByDescending(news => news.PublishedDate).Take(10).ToListAsync();
             List<NewsViewModel> newsViewList = new List<NewsViewModel>(news.Count);
             news.ForEach(n => newsViewList.Add(new NewsViewModel {News = n}));
             foreach (var newsView in newsViewList)
@@ -41,7 +41,6 @@ namespace DDAC_Assignment.Controllers
                     newsView.NewsImageUri = newsImage;
                 }
             }
-            _logger.LogInformation(newsViewList[0].NewsImageUri);
             return View(newsViewList);
         }
 

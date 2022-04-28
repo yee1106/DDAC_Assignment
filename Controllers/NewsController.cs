@@ -228,7 +228,7 @@ namespace DDAC_Assignment.Controllers
                 ViewBag.pageName = page;
             }
 
-            List<News> news = _context.News.Where(n => n.Category.Equals(page)).OrderByDescending(n => n.PublishedDate)
+            List<News> news = _context.News.Where(n => n.Category.Equals(page) && n.Visibility == "Visible" && n.Status).OrderByDescending(n => n.PublishedDate)
                 .Take(10).ToList();
             return View(news);
         }
