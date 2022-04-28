@@ -531,10 +531,12 @@ namespace DDAC_Assignment.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Title,Content,Actor,PublishedDate,Visibility,Category,ParentCategory,ImagePath")] News news, IFormFile image)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Title,Content,Actor,PublishedDate,Visibility,Status,Category,ParentCategory,ImagePath")] News news, IFormFile image)
         {
+            
             if (id != news.ID)
             {
+                
                 return NotFound();
             }
 
