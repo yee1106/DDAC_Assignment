@@ -143,6 +143,7 @@ namespace DDAC_Assignment.Controllers
                     Id = role.Id,
                     Name = role.Name
                 };
+                System.Diagnostics.Debug.WriteLine(role.Name);
 
                 if (await userManager.IsInRoleAsync(user, role.Name))
                 {
